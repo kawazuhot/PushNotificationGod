@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+
+# Unity generated folders
+/Library/
+/Temp/
+/Obj/
+/Logs/
+/UserSettings/
+/MemoryCaptures/
+
+# Unity build/cache outputs
+/Build/
+/Builds/
+/[Bb]uild/
+/[Bb]uilds/
+
+# Visual Studio / Rider / IDE
+.vs/
+.idea/
+*.csproj
+*.sln
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity crash and profiler artifacts
+sysinfo.txt
+*.stackdump
+*.traceevents
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Keep GitHub Pages output tracked.
+!/docs/
+!/docs/**
