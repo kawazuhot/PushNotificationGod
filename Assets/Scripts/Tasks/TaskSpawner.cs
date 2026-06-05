@@ -21,12 +21,14 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private float spawnIntervalAfter30Seconds = 1.2f;
 
         private float spawnTimer;
+        private float lastInterval;
         private bool running;
 
         public void Begin()
         {
             running = true;
-            spawnTimer = CurrentInterval();
+            lastInterval = CurrentInterval();
+            spawnTimer = lastInterval;
 
             for (int i = 0; i < initialTaskCount; i++)
             {
@@ -54,6 +56,13 @@ namespace PushNotificationGod.Tasks
                 }
             }
 
+            float interval = CurrentInterval();
+            if (!Mathf.Approximately(interval, lastInterval))
+            {
+                spawnTimer = Mathf.Min(Mathf.Max(spawnTimer, 0.15f), interval);
+                lastInterval = interval;
+            }
+
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0f)
             {
@@ -62,7 +71,7 @@ namespace PushNotificationGod.Tasks
                     SpawnOne();
                 }
 
-                spawnTimer = CurrentInterval();
+                spawnTimer = interval;
             }
         }
 

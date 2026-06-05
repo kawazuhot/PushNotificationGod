@@ -1,8 +1,0 @@
-<linker>
-	<assembly fullname="Assembly-CSharp" ignoreIfMissing="1">
-		<type fullname="PushNotificationGod.UI.ResultManager">
-			<method name="OnRetryButton"/>
-			<method name="OnTitleButton"/>
-		</type>
-	</assembly>
-</linker>

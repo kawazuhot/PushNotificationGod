@@ -20,6 +20,7 @@ namespace PushNotificationGod.UI
         private void Start()
         {
             UIJapaneseFont.ApplyToSceneTexts();
+            GameResult.RestoreFromSaveIfEmpty();
             BindButtons();
             if (audioManager == null)
             {

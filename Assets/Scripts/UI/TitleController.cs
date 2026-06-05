@@ -34,6 +34,7 @@ namespace PushNotificationGod.UI
 
         private Transform uiRoot;
         private Font uiFont;
+        private bool titleBgmUnlocked;
 
         private void Start()
         {
@@ -58,8 +59,25 @@ namespace PushNotificationGod.UI
             audioManager?.PlayTitleBgm();
         }
 
+        private void Update()
+        {
+            if (titleBgmUnlocked)
+            {
+                return;
+            }
+
+            if (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.touchCount > 0)
+            {
+                titleBgmUnlocked = true;
+                EnsureAudioManager();
+                audioManager?.PlayTitleBgm();
+            }
+        }
+
         public void StartGame()
         {
+            EnsureAudioManager();
+            audioManager?.PlayTitleBgm();
             ShowPlayerNameInput();
         }
 
@@ -99,6 +117,8 @@ namespace PushNotificationGod.UI
 
         public void ShowSettings()
         {
+            EnsureAudioManager();
+            audioManager?.PlayTitleBgm();
             EnsurePanels();
             HideAllPanels();
             if (bgmVolumeSlider != null)
