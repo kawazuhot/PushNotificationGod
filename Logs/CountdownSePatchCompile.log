@@ -1,0 +1,370 @@
+Unity Editor version:    6000.4.6f1 (0b051c2e5d54)
+Branch:                  6000.4/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 26.4.1 (Build 25E253)
+Darwin version:          25.4.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        16384 MB
+Date:                    2026-06-05T03:55:49Z
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-user" at "2026-06-05T03:55:49.297461Z"
+Launching external process: /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Helpers/PackageManager/Server/UnityPackageManager
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/MacOS/Unity
+-batchmode
+-quit
+-projectPath
+/Users/user/Documents/UnityProjects/PushNotificationGod
+-logFile
+/Users/user/Documents/UnityProjects/PushNotificationGod/Logs/CountdownSePatchCompile.log
+Successfully changed project path to: /Users/user/Documents/UnityProjects/PushNotificationGod
+/Users/user/Documents/UnityProjects/PushNotificationGod
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Player connection [8381077696]  Target information:
+
+Player connection [8381077696]  * "[IP] 192.168.1.4 [Port] 55504 [Flags] 2 [Guid] 15807139 [EditorId] 15807139 [Version] 1048832 [Id] OSXEditor(0,usernoMacBook-Air.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" 
+
+Player connection [8381077696] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [8381077696] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-76715" after 0.2 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-user"
+[Licensing::IpcConnector] LicenseClient-user channel disconnected successfully.
+[Licensing::IpcConnector] Channel LicenseClient-user-6000.4.6 doesn't exist
+Launching external process: /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Helpers/UnityLicensingClient.app/Contents/MacOS/Unity.Licensing.Client
+[Licensing::Module] Successfully launched the LicensingClient (PId: 76718)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-user-6000.4.6" at "2026-06-05T03:55:50.038936Z"
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              8dda1b8a9e23412cb14c9878cee2c5fb
+  Correlation Id:          7be71b2f0a80dd4330281ca4b4e62580
+  External correlation Id: 4093636750527391838
+  Machine Id:              dfPQlxD1sMgPma9v0p8fSxOU5X8=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-user-6000.4.6" (connect: 0.38s, validation: 0.02s, handshake: 0.35s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-user-6000.4.6-notifications" at "2026-06-05T03:55:50.412018Z"
+[Licensing::Module] Connected to LicensingClient (PId: 76718, launch time: 0.00, total connection time: 0.76s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 15669700947987-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 1.13s
+[Licensing::Module] Licensing is initialized (took 0.84s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 2 unused hashed content files
+Initialize engine version: 6000.4.6f1 (0b051c2e5d54)
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/user/Documents/UnityProjects/PushNotificationGod/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+ preferred device: Apple M1 (high power)
+Metal devices available: 1
+0: Apple M1 (high power)
+Using device Apple M1 (high power)
+Initializing Metal device caps: Apple M1
+Mac GPU Family: 2
+Apple GPU Family: 7
+MSL Version: 3.0
+Has Float MSAA: 1
+Has Float Filtering: 1
+ReadWrite Texture Tier: 2
+Initialize mono
+Mono path[0] = '/Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/Scripting/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/Scripting/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/Scripting/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56715
+CodeReloadManager initialized
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /Applications/Unity/Hub/Editor/6000.4.6f1/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Registered in 0.001641 seconds.
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.254 seconds
+Domain Reload Profiling: 546ms
+	BeginReloadAssembly (80ms)
+		CreateAndSetChildDomain (6ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (33ms)
+	LoadAllAssembliesAndSetupDomain (143ms)
+		LoadAssemblies (74ms)
+		AnalyzeDomain (136ms)
+			TypeCache.Refresh (135ms)
+				TypeCache.ScanAssembly (124ms)
+	FinalizeReload (255ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (26ms)
+			BeforeProcessingInitializeOnLoad (55ms)
+			ProcessInitializeOnLoadAttributes (66ms)
+			ProcessInitializeOnLoadMethodAttributes (63ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 38 packages:
+  Built-in packages:
+    com.unity.ugui@2.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.ugui@473409526770)
+    com.unity.multiplayer.center@1.0.1 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.multiplayer.center@f01f4ba8d00a)
+    com.unity.modules.accessibility@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: /Users/user/Documents/UnityProjects/PushNotificationGod/Library/PackageCache/com.unity.modules.hierarchycore)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-b5e68dd75172f0d20bd86e41ff9dd503
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /Users/user/Documents/UnityProjects/PushNotificationGod
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping - 200 - application/grpc 17.7747ms
+Starting: /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/200b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /Users/user/Documents/UnityProjects/PushNotificationGod
+DisplayProgressbar: Compiling Scripts
+ExitCode: 4 Duration: 2s57ms
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/200b0aE-inputdata.json
+[226/232    2s] Csc Library/Bee/artifacts/200b0aE.dag/Assembly-CSharp.dll (+2 others)
+*** Tundra requires additional run (2.03 seconds), 1 items updated, 225 evaluated
+Starting: /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/Scripting/netcorerun/netcorerun "/Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/200b0aE.dag.json" "Library/Bee/200b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: /Users/user/Documents/UnityProjects/PushNotificationGod
+ExitCode: 0 Duration: 0s370ms
+Starting: /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/200b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/200b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: /Users/user/Documents/UnityProjects/PushNotificationGod
+ExitCode: 0 Duration: 0s300ms
+Finished compiling graph: 235 nodes, 2093 flattened edges (1969 ToBuild, 20 ToUse), maximum node priority 118
+[227/232    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[228/232    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+[229/232    0s] Csc Library/Bee/artifacts/200b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[230/232    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+[231/232    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+*** Tundra build success (0.29 seconds), 5 items updated, 232 evaluated
+AssetDatabase: script compilation time: 3.123283s
+Begin MonoManager ReloadAssembly
+Total cache size 78609640
+Total cache size after purge 78609640, took 00:00:00.0541252
+Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Editor.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Editor.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.Common.Tests.dll at Library/ScriptAssemblies/UnityEditor.UI.Common.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.EditorTests.dll at Library/ScriptAssemblies/UnityEditor.UI.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly UnityEngine.UI.Tests.dll at Library/ScriptAssemblies/UnityEngine.UI.Tests.dll not valid. Loading of assembly skipped.
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.268 seconds
+Domain Reload Profiling: 458ms
+	BeginReloadAssembly (109ms)
+		DisableScriptedObjects (9ms)
+		CreateAndSetChildDomain (28ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (19ms)
+	LoadAllAssembliesAndSetupDomain (24ms)
+		LoadAssemblies (47ms)
+		AnalyzeDomain (15ms)
+			TypeCache.Refresh (10ms)
+				TypeCache.ScanAssembly (6ms)
+			BuildScriptInfoCaches (3ms)
+	FinalizeReload (269ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			BeforeProcessingInitializeOnLoad (71ms)
+			ProcessInitializeOnLoadAttributes (49ms)
+			ProcessInitializeOnLoadMethodAttributes (29ms)
+		AwakeInstancesAfterBackupRestoration (11ms)
+Start importing Assets/Scenes/ResultScene.unity using Guid(a0ab29e6c7d954e439233b7f4c192370) (DefaultImporter) -> (Import Result ID: '64a054a3f276b780b18ca63650fce01b') in 0.005136167 seconds [static dependencies only]. Details - ImportResultOutputID=0c01d7effdeef8c58a8bb5358a2d312f DependenciesID=76601b4e5df9f574fe03d2f233346093 StaticDependenciesID=a2a613cfad98d9748b9253a59e309498 
+Start importing Assets/Scenes/GameScene.unity using Guid(9de80bc56761a4d5eb0d27df63263f95) (DefaultImporter) -> (Import Result ID: '200015a1efc6366e913f5ea055e40ac0') in 0.000657417 seconds [static dependencies only]. Details - ImportResultOutputID=c05f4e36695ed729ad6a93392d688efc DependenciesID=d8046c3fb7c9c7b1ac7ec38b19dd8ce7 StaticDependenciesID=91791721e8e71f123582a9567c875105 
+(Values over 0.050ms)
+Asset Pipeline Refresh (id=0782ae8222ec04a85a856222423c2f7a): Total: 3.755 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=2 (actual=2, local cache=0, cache server=0)
+		Asset DB Process Time: managed=1 ms, native=382 ms
+		Asset DB Callback time: managed=46 ms, native=6 ms
+		Scripting: domain reloads=1, domain reload time=189 ms, compile time=3124 ms, other=3 ms
+		Project Asset Count: scripts=218, non-scripts=150
+		Asset File Changes: new=0, changed=5, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokePackagesCallback: 6.084ms
+	ApplyChangesToAssetFolders: 0.180ms
+	Scan: 60.929ms
+	OnSourceAssetsModified: 0.431ms
+	CategorizeScriptCompilationAssets: 0.998ms
+	ProcessAssetsWithTransientArtifactChanges: 4.898ms
+	CategorizeAssets: 1.823ms
+	CompileScripts: 3124.405ms
+	ImportOutOfDateAssets: 277.264ms (269.464ms without children)
+		ImportManagerImport: 7.439ms (0.602ms without children)
+		UnloadImportedAssets: 0.126ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.054ms
+		OnDemandSchedulerStart: 0.177ms
+	PostProcessAllAssets: 47.113ms
+		VCAutoAddAssetPostprocess 0.584ms
+		MonoPostProcessAllAssets: 46.254ms
+			AssetPostprocessor.OnPostprocessAllAssets 17.844ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 8.922ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 4.086ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 3.725ms
+			SyncVS.PostprocessSyncProject 2.290ms
+			AssetChangedListener.OnPostprocessAllAssets 1.016ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 0.703ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 0.427ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.378ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.341ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.324ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.206ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.152ms
+			AssetEvents.OnPostprocessAllAssets 0.142ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.122ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.084ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.082ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.065ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.059ms
+	PostAssetChangesProfiler: 0.428ms
+	UnloadStreamsBegin: 0.637ms
+	GenerateScriptTypeHashes: 0.339ms
+	GenerateScriptTypeSerializationHashes: 1.027ms
+	Untracked: 228.302ms
+
+Application.AssetDatabase Initial Refresh End
+Launching external process: /Applications/Unity/Hub/Editor/6000.4.6f1/Unity.app/Contents/Helpers/UnityShaderCompiler
+Launched and connected shader compiler UnityShaderCompiler after 0.03 seconds
+Scanning for USB devices : 0.030ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-PushNotificationGod
+2026-06-04 20:55:55.232 Unity[76715:11851692] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0x90bb6f8e0 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 458 unused Assets / (0.6 MB). Loaded Objects now: 1097.
+Memory consumption went from 110.1 MB to 109.5 MB.
+Total: 4.403458 ms (FindLiveObjects: 0.049416 ms CreateObjectMapping: 0.013875 ms MarkObjects: 4.101375 ms  DeleteObjects: 0.238417 ms)
+
+2026-06-04 20:55:55.260 Unity[76715:11851692] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0x90bb6fb60 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
+Batchmode quit successfully invoked - shutting down!
+Thread 0x171803000 may have been prematurely finalized
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+Curl error 42: Callback aborted
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+[Licensing::IpcConnector] LicenseClient-user-6000.4.6-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-user-6000.4.6 channel disconnected successfully.
+Thread 0x16e163000 may have been prematurely finalized
+Thread 0x16e1ef000 may have been prematurely finalized
+AcceleratorClientConnectionCallback - disconnected - :0
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+Cleanup mono
+CodeReloadManager destroyed
+debugger-agent: Unable to listen on 43
+Exiting batchmode successfully now!
+[Package Manager] Server process was shutdown
