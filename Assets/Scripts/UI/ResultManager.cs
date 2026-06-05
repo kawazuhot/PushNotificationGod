@@ -21,6 +21,7 @@ namespace PushNotificationGod.UI
         {
             UIJapaneseFont.ApplyToSceneTexts();
             GameResult.RestoreFromSaveIfEmpty();
+            Debug.Log($"[{BuildInfo.BuildId}] ResultManager started. LastScore={GameResult.LastScore}, LastMaxCombo={GameResult.LastMaxCombo}, BestScore={LocalSaveManager.BestScore}");
             BindButtons();
             if (audioManager == null)
             {
@@ -54,12 +55,14 @@ namespace PushNotificationGod.UI
 
         public void OnRetryButton()
         {
+            Debug.Log($"[{BuildInfo.BuildId}] Retry button pressed. Loading GameScene.");
             Time.timeScale = 1f;
             SceneManager.LoadScene("GameScene");
         }
 
         public void OnTitleButton()
         {
+            Debug.Log($"[{BuildInfo.BuildId}] Title button pressed. Loading TitleScene.");
             Time.timeScale = 1f;
             SceneManager.LoadScene("TitleScene");
         }

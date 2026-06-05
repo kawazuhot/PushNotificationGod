@@ -57,6 +57,7 @@ namespace PushNotificationGod.Core
             feedbackManager.Configure(uiManager.FeedbackParent, uiManager.ScoreText, uiManager.ComboText, audioManager);
             EnsureCountdownView();
             UIJapaneseFont.ApplyToSceneTexts();
+            Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, ResultScene target=ResultScene");
 
             lifeManager.OnLifeDepleted += EndGame;
             timerManager.OnTimeUp += EndGame;
@@ -131,6 +132,7 @@ namespace PushNotificationGod.Core
             gameState = GameState.Result;
             taskSpawner.Stop();
             timerManager.StopTimer();
+            Debug.Log($"[{BuildInfo.BuildId}] Game ending. score={scoreManager.Score}, maxCombo={comboManager.MaxCombo}, life={lifeManager.CurrentLife}, remaining={timerManager.RemainingSeconds:F1}");
             StartCoroutine(EndGameRoutine());
         }
 
@@ -141,6 +143,7 @@ namespace PushNotificationGod.Core
             yield return new WaitForSecondsRealtime(gameOverResultDelaySeconds);
 
             GameResult.Set(scoreManager.Score, comboManager.MaxCombo);
+            Debug.Log($"[{BuildInfo.BuildId}] Result data saved. score={GameResult.LastScore}, maxCombo={GameResult.LastMaxCombo}, newRecord={GameResult.LastWasNewRecord}");
             SceneManager.LoadScene("ResultScene");
         }
 

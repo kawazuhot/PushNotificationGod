@@ -31,6 +31,9 @@ namespace PushNotificationGod.Editor
 
         private static void BuildWebGL(string outputPath)
         {
+            Debug.Log($"Build ID: {PushNotificationGod.Core.BuildInfo.BuildId}");
+            CleanGitHubPagesOutput();
+
             if (Directory.Exists(outputPath))
             {
                 Directory.Delete(outputPath, true);
@@ -59,6 +62,17 @@ namespace PushNotificationGod.Editor
             CopyBuildToGitHubPagesDocs(outputPath);
         }
 
+        private static void CleanGitHubPagesOutput()
+        {
+            if (Directory.Exists(GitHubPagesOutputPath))
+            {
+                Directory.Delete(GitHubPagesOutputPath, true);
+                Debug.Log($"Cleaned GitHub Pages output before build: {GitHubPagesOutputPath}");
+            }
+
+            Directory.CreateDirectory(GitHubPagesOutputPath);
+        }
+
         private static void CopyBuildToGitHubPagesDocs(string buildOutputPath)
         {
             if (!Directory.Exists(buildOutputPath))
@@ -72,7 +86,45 @@ namespace PushNotificationGod.Editor
             }
 
             CopyDirectory(buildOutputPath, GitHubPagesOutputPath);
-            Debug.Log("WebGL build copied to docs for GitHub Pages");
+            RemoveUnexpectedDocsArtifacts();
+            string sourceIndex = Path.Combine(buildOutputPath, "index.html");
+            string destinationIndex = Path.Combine(GitHubPagesOutputPath, "index.html");
+            Debug.Log($"WebGL build copied to docs for GitHub Pages");
+            Debug.Log($"Copied {sourceIndex} -> {destinationIndex}");
+            Debug.Log($"docs/index.html updated at {File.GetLastWriteTime(destinationIndex):yyyy-MM-dd HH:mm:ss}");
+        }
+
+        private static void RemoveUnexpectedDocsArtifacts()
+        {
+            foreach (string file in Directory.GetFiles(GitHubPagesOutputPath))
+            {
+                string name = Path.GetFileName(file);
+                if (name == "index.html")
+                {
+                    continue;
+                }
+
+                File.Delete(file);
+                Debug.LogWarning($"Removed unexpected docs file: {file}");
+            }
+
+            foreach (string directory in Directory.GetDirectories(GitHubPagesOutputPath))
+            {
+                string name = Path.GetFileName(directory);
+                if (name == "Build" || name == "TemplateData")
+                {
+                    continue;
+                }
+
+                Directory.Delete(directory, true);
+                Debug.LogWarning($"Removed unexpected docs directory: {directory}");
+            }
+
+            foreach (string duplicateIndex in Directory.GetFiles(GitHubPagesOutputPath, "index *.html"))
+            {
+                File.Delete(duplicateIndex);
+                Debug.LogWarning($"Removed duplicate docs index file: {duplicateIndex}");
+            }
         }
 
         private static void CopyDirectory(string sourceDirectory, string destinationDirectory)

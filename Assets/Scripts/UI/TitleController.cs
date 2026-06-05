@@ -56,6 +56,8 @@ namespace PushNotificationGod.UI
             ForceHideModalPanels();
             UIJapaneseFont.ApplyToSceneTexts();
             EnsureAudioManager();
+            EnsureBuildText();
+            Debug.Log($"[{BuildInfo.BuildId}] TitleScene started. Controller={GetType().FullName}, AudioManager={(audioManager != null ? audioManager.name : "null")}");
             audioManager?.PlayTitleBgm();
         }
 
@@ -70,6 +72,7 @@ namespace PushNotificationGod.UI
             {
                 titleBgmUnlocked = true;
                 EnsureAudioManager();
+                Debug.Log($"[{BuildInfo.BuildId}] First title user input detected. Requesting title BGM.");
                 audioManager?.PlayTitleBgm();
             }
         }
@@ -77,6 +80,7 @@ namespace PushNotificationGod.UI
         public void StartGame()
         {
             EnsureAudioManager();
+            Debug.Log($"[{BuildInfo.BuildId}] Start button pressed. Requesting title BGM before name input.");
             audioManager?.PlayTitleBgm();
             ShowPlayerNameInput();
         }
@@ -98,6 +102,7 @@ namespace PushNotificationGod.UI
         {
             string playerName = playerNameInput != null ? playerNameInput.text : string.Empty;
             LocalSaveManager.SavePlayerName(string.IsNullOrWhiteSpace(playerName) ? DefaultPlayerName : playerName);
+            Debug.Log($"[{BuildInfo.BuildId}] Player name confirmed. Loading GameScene.");
             audioManager?.StopTitleBgm();
             SceneManager.LoadScene("GameScene");
         }
@@ -118,6 +123,7 @@ namespace PushNotificationGod.UI
         public void ShowSettings()
         {
             EnsureAudioManager();
+            Debug.Log($"[{BuildInfo.BuildId}] Settings button pressed. Requesting title BGM.");
             audioManager?.PlayTitleBgm();
             EnsurePanels();
             HideAllPanels();
@@ -576,6 +582,39 @@ namespace PushNotificationGod.UI
             MoveButton("HowToButton", new Vector2(0f, -525f), new Vector2(640f, 104f));
             MoveSettingsButton();
             EnsureCopyrightText();
+            EnsureBuildText();
+        }
+
+        private void EnsureBuildText()
+        {
+            Transform parent = GetTitleUiParent();
+            Transform existing = parent.Find("BuildInfoText");
+            Text buildText = existing != null ? existing.GetComponent<Text>() : null;
+            if (buildText == null)
+            {
+                buildText = new GameObject("BuildInfoText", typeof(RectTransform), typeof(Text), typeof(Shadow)).GetComponent<Text>();
+                buildText.transform.SetParent(parent, false);
+            }
+
+            buildText.text = $"Build: {BuildInfo.BuildId}";
+            buildText.font = uiFont;
+            buildText.fontSize = 20;
+            buildText.fontStyle = FontStyle.Normal;
+            buildText.alignment = TextAnchor.MiddleCenter;
+            buildText.color = new Color(1f, 1f, 1f, 0.72f);
+            buildText.raycastTarget = false;
+
+            Shadow shadow = buildText.GetComponent<Shadow>();
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.4f);
+            shadow.effectDistance = new Vector2(0f, -2f);
+
+            RectTransform rect = buildText.rectTransform;
+            rect.anchorMin = new Vector2(0.5f, 0f);
+            rect.anchorMax = new Vector2(0.5f, 0f);
+            rect.pivot = new Vector2(0.5f, 0f);
+            rect.anchoredPosition = new Vector2(0f, 74f);
+            rect.sizeDelta = new Vector2(820f, 34f);
+            buildText.transform.SetAsLastSibling();
         }
 
         private Image FindTitleBackgroundImage()

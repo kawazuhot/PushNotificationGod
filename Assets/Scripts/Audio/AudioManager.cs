@@ -80,6 +80,7 @@ namespace PushNotificationGod.Audio
 
         public void PlayTitleBgm()
         {
+            Debug.Log($"[{BuildInfo.BuildId}] Title BGM Play Requested");
             PlayBgm(titleBgm);
         }
 
@@ -132,12 +133,14 @@ namespace PushNotificationGod.Audio
         {
             if (bgmAudioSource == null || clip == null)
             {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] BGM play skipped. AudioSource null: {bgmAudioSource == null}, Clip null: {clip == null}");
                 return;
             }
 
             if (bgmAudioSource.clip == clip && bgmAudioSource.isPlaying)
             {
                 bgmAudioSource.volume = bgmVolume;
+                Debug.Log($"[{BuildInfo.BuildId}] BGM already playing: {clip.name}");
                 return;
             }
 
@@ -146,6 +149,7 @@ namespace PushNotificationGod.Audio
             bgmAudioSource.loop = true;
             bgmAudioSource.volume = bgmVolume;
             bgmAudioSource.Play();
+            Debug.Log($"[{BuildInfo.BuildId}] Title/Game BGM Started: {clip.name}, volume={bgmVolume}");
         }
 
         private void StopBgmIfClip(AudioClip clip)

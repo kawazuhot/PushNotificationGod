@@ -19,11 +19,14 @@ namespace PushNotificationGod.Tasks
 
         private float spawnTimer;
         private bool running;
+        private bool loggedThirtySecondsOrLess;
 
         public void Begin()
         {
             running = true;
             spawnTimer = CurrentInterval();
+            loggedThirtySecondsOrLess = false;
+            Debug.Log($"[{BuildInfo.BuildId}] TaskSpawner.Begin interval={CurrentInterval()}, maxVisible={maxVisibleBeforeSpawn}, initial={initialTaskCount}");
 
             for (int i = 0; i < initialTaskCount; i++)
             {
@@ -41,6 +44,12 @@ namespace PushNotificationGod.Tasks
             if (!running)
             {
                 return;
+            }
+
+            if (!loggedThirtySecondsOrLess && timerManager != null && timerManager.RemainingSeconds <= 30f)
+            {
+                loggedThirtySecondsOrLess = true;
+                Debug.Log($"[{BuildInfo.BuildId}] Remaining time <= 30 reached. interval still fixed={CurrentInterval()}, visible={taskManager.VisibleCount}, remaining={timerManager.RemainingSeconds:F1}");
             }
 
             if (taskManager.VisibleCount <= refillThreshold)
@@ -82,6 +91,8 @@ namespace PushNotificationGod.Tasks
             }
 
             taskManager.Spawn(task);
+            float remaining = timerManager != null ? timerManager.RemainingSeconds : -1f;
+            Debug.Log($"[{BuildInfo.BuildId}] Spawn task={task.taskId}, remaining={remaining:F1}, visible={taskManager.VisibleCount}, interval={CurrentInterval()}");
             audioManager?.PlayNotificationPop();
         }
 
