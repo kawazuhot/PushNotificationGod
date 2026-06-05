@@ -743,6 +743,7 @@ struct TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4  : public MonoBehav
 	int32_t ___initialTaskCount;
 	int32_t ___minimumVisibleTaskCount;
 	int32_t ___refillThreshold;
+	int32_t ___maxVisibleBeforeSpawn;
 	float ___spawnInterval0To10Seconds;
 	float ___spawnInterval10To20Seconds;
 	float ___spawnInterval20To30Seconds;

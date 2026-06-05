@@ -234,6 +234,7 @@ extern void TaskSpawner_Stop_m1B71F109775E3F2E5B185419BCCC4955FDBE9B36 (void);
 extern void TaskSpawner_Update_m5F860E97E3E23188DC5025D8397A6CA758EB40A0 (void);
 extern void TaskSpawner_CurrentInterval_m987EFC36D2B17E3A8BA1592915AE6593C21AD451 (void);
 extern void TaskSpawner_SpawnOne_m4F6AD63F764DF3FB6C013586FA571519710652F8 (void);
+extern void TaskSpawner_CanSpawn_m9931FC64D809219768CAFF28B91405F7A506D47D (void);
 extern void TaskSpawner__ctor_m176C7C4FA9AFB2D7956589A976073AF9FC9819A7 (void);
 extern void SwipeInputHandler_get_IsInteracting_m1232BA88ED87EA911F7AD18D3B64E5A723568B2A (void);
 extern void SwipeInputHandler_get_HasBasePosition_mDB9B8FA6AAF78E62D0DC5497C5ACA4C896B7CB15 (void);
@@ -382,7 +383,7 @@ extern void AudioManager_PlayBgm_mBABD9A2C9C0D564B0EF42CB09216D975DAA906EA (void
 extern void AudioManager_StopBgmIfClip_m7542608003AA1BF35A64237B733ED112449D789B (void);
 extern void AudioManager_Play_m644DE077B3F489EA556A46BCA5D72861868707C6 (void);
 extern void AudioManager__ctor_m22FF9651D03B1E1F760F4373F6C281B71C13CC6D (void);
-static Il2CppMethodPointer s_methodPointers[375] = 
+static Il2CppMethodPointer s_methodPointers[376] = 
 {
 	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033,
 	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1,
@@ -611,6 +612,7 @@ static Il2CppMethodPointer s_methodPointers[375] =
 	TaskSpawner_Update_m5F860E97E3E23188DC5025D8397A6CA758EB40A0,
 	TaskSpawner_CurrentInterval_m987EFC36D2B17E3A8BA1592915AE6593C21AD451,
 	TaskSpawner_SpawnOne_m4F6AD63F764DF3FB6C013586FA571519710652F8,
+	TaskSpawner_CanSpawn_m9931FC64D809219768CAFF28B91405F7A506D47D,
 	TaskSpawner__ctor_m176C7C4FA9AFB2D7956589A976073AF9FC9819A7,
 	SwipeInputHandler_get_IsInteracting_m1232BA88ED87EA911F7AD18D3B64E5A723568B2A,
 	SwipeInputHandler_get_HasBasePosition_mDB9B8FA6AAF78E62D0DC5497C5ACA4C896B7CB15,
@@ -760,7 +762,7 @@ static Il2CppMethodPointer s_methodPointers[375] =
 	AudioManager_Play_m644DE077B3F489EA556A46BCA5D72861868707C6,
 	AudioManager__ctor_m22FF9651D03B1E1F760F4373F6C281B71C13CC6D,
 };
-static const int32_t s_InvokerIndices[375] = 
+static const int32_t s_InvokerIndices[376] = 
 {
 	9404,
 	6689,
@@ -989,6 +991,7 @@ static const int32_t s_InvokerIndices[375] =
 	6689,
 	6621,
 	6689,
+	6460,
 	6689,
 	6460,
 	6460,
@@ -1142,7 +1145,7 @@ IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
 const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
 {
 	"Assembly-CSharp.dll",
-	375,
+	376,
 	s_methodPointers,
 	0,
 	NULL,

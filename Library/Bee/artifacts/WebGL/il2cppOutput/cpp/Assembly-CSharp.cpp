@@ -278,6 +278,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteral2392DA79205061FCDFD88B13F321714D6C101476
 IL2CPP_EXTERN_C String_t* _stringLiteral25E41B346F5F116E8C11C7016A08A0D0007EC127;
 IL2CPP_EXTERN_C String_t* _stringLiteral26A70CECD62B1372DEB46FE831322B4BA3616B51;
 IL2CPP_EXTERN_C String_t* _stringLiteral2789A0BE40A01991EA0D5CE4A43083429630E611;
+IL2CPP_EXTERN_C String_t* _stringLiteral285FA17A308CCEC9ED1B23681C354646A130D2F1;
 IL2CPP_EXTERN_C String_t* _stringLiteral28B7EDF9E324F8C7C00DCE82B9611E6089187E1F;
 IL2CPP_EXTERN_C String_t* _stringLiteral2A95D1B4E4AC28CACD273493E8E92B8428B66F75;
 IL2CPP_EXTERN_C String_t* _stringLiteral2B94F9069108276BC36B6B80B49CAC59FA4086CD;
@@ -299,7 +300,6 @@ IL2CPP_EXTERN_C String_t* _stringLiteral4A18256C44467909456011D3AB174DE446157AC9
 IL2CPP_EXTERN_C String_t* _stringLiteral4A1CF01F0B02578E2E86A3D930A0B968BE3601E7;
 IL2CPP_EXTERN_C String_t* _stringLiteral4D4D0C7A54054C2CCB53569B3656791036BDFEAB;
 IL2CPP_EXTERN_C String_t* _stringLiteral4DA0DD25A7C18210A8EC24E433DE2654296EAAC3;
-IL2CPP_EXTERN_C String_t* _stringLiteral4E0DC07FC52BB5F5A29C8EC4D45CF3F16BC05121;
 IL2CPP_EXTERN_C String_t* _stringLiteral5230F5FD1E0998B73530AA850D3A5872D61228EC;
 IL2CPP_EXTERN_C String_t* _stringLiteral5990507877B771C1A073BC8BA8D25A9573BC08C3;
 IL2CPP_EXTERN_C String_t* _stringLiteral5AE7E0E50D69F6EFAFF3E5720BF494F5127446FE;
@@ -347,7 +347,6 @@ IL2CPP_EXTERN_C String_t* _stringLiteralC33B42F255E07E4A910F212EE88163664AE59935
 IL2CPP_EXTERN_C String_t* _stringLiteralC49A46D862C3781A544F780AF7FD3EFD265CB8FB;
 IL2CPP_EXTERN_C String_t* _stringLiteralC49E3BD8F47DB00A40A8EE322887C3F2FE47E0C8;
 IL2CPP_EXTERN_C String_t* _stringLiteralC4A2C88D78C4375E1C2901F66668E80AA4328728;
-IL2CPP_EXTERN_C String_t* _stringLiteralC5BDD116B170B2A15BABCA9137FB18224535F211;
 IL2CPP_EXTERN_C String_t* _stringLiteralC66B6601AADA1959DF9E9D07855E8678DB917845;
 IL2CPP_EXTERN_C String_t* _stringLiteralC894E846006A722F235DCB8EA1DEBC94BE130257;
 IL2CPP_EXTERN_C String_t* _stringLiteralCED3BE2FFDD848D0CFA09E5EF1794015342E1AA3;
@@ -1712,6 +1711,7 @@ struct TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4  : public MonoBehav
 	int32_t ___initialTaskCount;
 	int32_t ___minimumVisibleTaskCount;
 	int32_t ___refillThreshold;
+	int32_t ___maxVisibleBeforeSpawn;
 	float ___spawnInterval0To10Seconds;
 	float ___spawnInterval10To20Seconds;
 	float ___spawnInterval20To30Seconds;
@@ -2989,6 +2989,7 @@ inline void List_1__ctor_m88C4BD8AC607DB3585552068F4DC437406358D5F (List_1_t8F37
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR float TaskSpawner_CurrentInterval_m987EFC36D2B17E3A8BA1592915AE6593C21AD451 (TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void TaskSpawner_SpawnOne_m4F6AD63F764DF3FB6C013586FA571519710652F8 (TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t TaskManager_get_VisibleCount_m0A5103D601574B53D15EA01B68F61383AB84230E (TaskManager_t9F273F7452A92A9FAF1856699DCE79856B8BD4FA* __this, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool TaskSpawner_CanSpawn_m9931FC64D809219768CAFF28B91405F7A506D47D (TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4* __this, const RuntimeMethod* method) ;
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float TimerManager_get_GameDurationSeconds_m210E8ECE8C4708F1E30A34314DBCF628DEB79B29_inline (TimerManager_t4E5599EB538666CACFE11E1FA22E7C032364B266* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* TaskDatabase_PickRandom_m7C6F043A8A01ADF96EE1727C8943E5FC447A25FF (TaskDatabase_tB447E2309A01D9496036DFFF85277C74D1C743A3* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR TaskCard_t4FF4E524754FDDFA82DBBC4A77FB371631CA7427* TaskManager_Spawn_m8E6FC39E3E5C003A38DBF740F3B06759CEB818DA (TaskManager_t9F273F7452A92A9FAF1856699DCE79856B8BD4FA* __this, TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* ___0_definition, const RuntimeMethod* method) ;
@@ -13481,9 +13482,8 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Font_tC95270EA3198038970422D78B74A7F2E218A96B
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Resources_Load_TisFont_tC95270EA3198038970422D78B74A7F2E218A96B6_m2B532BE5E14BE59B8F59F82BF8193EEEE249DC6D_RuntimeMethod_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral1BDC954035ABF22E7908F6AD9403D7F7FA9C466D);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral4E0DC07FC52BB5F5A29C8EC4D45CF3F16BC05121);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral285FA17A308CCEC9ED1B23681C354646A130D2F1);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral91EABC919E48AAD7331BDBE21DBB8D4C623A4A25);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralC5BDD116B170B2A15BABCA9137FB18224535F211);
 		s_Il2CppMethodInitialized = true;
 	}
 	{
@@ -13513,40 +13513,22 @@ IL_0013:
 		L_5 = Object_op_Equality_mB6120F782D83091EF56A198FCEBCF066DB4A9605(L_4, (Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C*)NULL, NULL);
 		if (!L_5)
 		{
-			goto IL_003e;
-		}
-	}
-	{
-		Font_tC95270EA3198038970422D78B74A7F2E218A96B6* L_6;
-		L_6 = Resources_Load_TisFont_tC95270EA3198038970422D78B74A7F2E218A96B6_m2B532BE5E14BE59B8F59F82BF8193EEEE249DC6D(_stringLiteralC5BDD116B170B2A15BABCA9137FB18224535F211, Resources_Load_TisFont_tC95270EA3198038970422D78B74A7F2E218A96B6_m2B532BE5E14BE59B8F59F82BF8193EEEE249DC6D_RuntimeMethod_var);
-		((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont = L_6;
-		Il2CppCodeGenWriteBarrier((void**)(&((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont), (void*)L_6);
-	}
-
-IL_003e:
-	{
-		Font_tC95270EA3198038970422D78B74A7F2E218A96B6* L_7 = ((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont;
-		il2cpp_codegen_runtime_class_init_inline(Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);
-		bool L_8;
-		L_8 = Object_op_Equality_mB6120F782D83091EF56A198FCEBCF066DB4A9605(L_7, (Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C*)NULL, NULL);
-		if (!L_8)
-		{
-			goto IL_0064;
+			goto IL_0048;
 		}
 	}
 	{
 		il2cpp_codegen_runtime_class_init_inline(Debug_t8394C7EEAECA3689C2C9B9DE9C7166D73596276F_il2cpp_TypeInfo_var);
-		Debug_LogWarning_m33EF1B897E0C7C6FF538989610BFAFFEF4628CA9(_stringLiteral4E0DC07FC52BB5F5A29C8EC4D45CF3F16BC05121, NULL);
-		Font_tC95270EA3198038970422D78B74A7F2E218A96B6* L_9;
-		L_9 = Resources_GetBuiltinResource_TisFont_tC95270EA3198038970422D78B74A7F2E218A96B6_m3B4545F25A016D36D9AE93723A3449804A127D73(_stringLiteral91EABC919E48AAD7331BDBE21DBB8D4C623A4A25, Resources_GetBuiltinResource_TisFont_tC95270EA3198038970422D78B74A7F2E218A96B6_m3B4545F25A016D36D9AE93723A3449804A127D73_RuntimeMethod_var);
-		((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont = L_9;
-		Il2CppCodeGenWriteBarrier((void**)(&((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont), (void*)L_9);
+		Debug_LogWarning_m33EF1B897E0C7C6FF538989610BFAFFEF4628CA9(_stringLiteral285FA17A308CCEC9ED1B23681C354646A130D2F1, NULL);
+		Font_tC95270EA3198038970422D78B74A7F2E218A96B6* L_6;
+		L_6 = Resources_GetBuiltinResource_TisFont_tC95270EA3198038970422D78B74A7F2E218A96B6_m3B4545F25A016D36D9AE93723A3449804A127D73(_stringLiteral91EABC919E48AAD7331BDBE21DBB8D4C623A4A25, Resources_GetBuiltinResource_TisFont_tC95270EA3198038970422D78B74A7F2E218A96B6_m3B4545F25A016D36D9AE93723A3449804A127D73_RuntimeMethod_var);
+		((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont = L_6;
+		Il2CppCodeGenWriteBarrier((void**)(&((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont), (void*)L_6);
 	}
 
-IL_0064:
+IL_0048:
 	{
-		Font_tC95270EA3198038970422D78B74A7F2E218A96B6* L_10 = ((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont;
-		return L_10;
+		Font_tC95270EA3198038970422D78B74A7F2E218A96B6* L_7 = ((UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_StaticFields*)il2cpp_codegen_static_fields_for(UIJapaneseFont_tB83386DE3347B25C03C37E83FF8BF1B207858BF9_il2cpp_TypeInfo_var))->___cachedFont;
+		return L_7;
 	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void UIJapaneseFont_ApplyToSceneTexts_m60A2B087C850C6B5C2478E3BEA089CA3A7164B22 (const RuntimeMethod* method) 
@@ -16420,7 +16402,7 @@ IL_0009:
 		int32_t L_3 = __this->___refillThreshold;
 		if ((((int32_t)L_2) > ((int32_t)L_3)))
 		{
-			goto IL_0037;
+			goto IL_003f;
 		}
 	}
 	{
@@ -16438,32 +16420,52 @@ IL_0024:
 		int32_t L_5;
 		L_5 = TaskManager_get_VisibleCount_m0A5103D601574B53D15EA01B68F61383AB84230E(L_4, NULL);
 		int32_t L_6 = __this->___minimumVisibleTaskCount;
-		if ((((int32_t)L_5) < ((int32_t)L_6)))
+		if ((((int32_t)L_5) >= ((int32_t)L_6)))
+		{
+			goto IL_003f;
+		}
+	}
+	{
+		bool L_7;
+		L_7 = TaskSpawner_CanSpawn_m9931FC64D809219768CAFF28B91405F7A506D47D(__this, NULL);
+		if (L_7)
 		{
 			goto IL_001e;
 		}
 	}
 
-IL_0037:
+IL_003f:
 	{
-		float L_7 = __this->___spawnTimer;
-		float L_8;
-		L_8 = Time_get_deltaTime_mC3195000401F0FD167DD2F948FD2BC58330D0865(NULL);
-		__this->___spawnTimer = ((float)il2cpp_codegen_subtract(L_7, L_8));
-		float L_9 = __this->___spawnTimer;
-		if ((!(((float)L_9) <= ((float)(0.0f)))))
+		float L_8 = __this->___spawnTimer;
+		float L_9;
+		L_9 = Time_get_deltaTime_mC3195000401F0FD167DD2F948FD2BC58330D0865(NULL);
+		__this->___spawnTimer = ((float)il2cpp_codegen_subtract(L_8, L_9));
+		float L_10 = __this->___spawnTimer;
+		if ((!(((float)L_10) <= ((float)(0.0f)))))
 		{
-			goto IL_0068;
+			goto IL_0078;
+		}
+	}
+	{
+		bool L_11;
+		L_11 = TaskSpawner_CanSpawn_m9931FC64D809219768CAFF28B91405F7A506D47D(__this, NULL);
+		if (!L_11)
+		{
+			goto IL_006c;
 		}
 	}
 	{
 		TaskSpawner_SpawnOne_m4F6AD63F764DF3FB6C013586FA571519710652F8(__this, NULL);
-		float L_10;
-		L_10 = TaskSpawner_CurrentInterval_m987EFC36D2B17E3A8BA1592915AE6593C21AD451(__this, NULL);
-		__this->___spawnTimer = L_10;
 	}
 
-IL_0068:
+IL_006c:
+	{
+		float L_12;
+		L_12 = TaskSpawner_CurrentInterval_m987EFC36D2B17E3A8BA1592915AE6593C21AD451(__this, NULL);
+		__this->___spawnTimer = L_12;
+	}
+
+IL_0078:
 	{
 		return;
 	}
@@ -16548,46 +16550,102 @@ IL_0063:
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void TaskSpawner_SpawnOne_m4F6AD63F764DF3FB6C013586FA571519710652F8 (TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4* __this, const RuntimeMethod* method) 
 {
 	TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* V_0 = NULL;
-	AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* G_B4_0 = NULL;
-	AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* G_B3_0 = NULL;
+	AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* G_B6_0 = NULL;
+	AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* G_B5_0 = NULL;
 	{
-		TaskDatabase_tB447E2309A01D9496036DFFF85277C74D1C743A3* L_0 = __this->___taskDatabase;
-		TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* L_1;
-		L_1 = TaskDatabase_PickRandom_m7C6F043A8A01ADF96EE1727C8943E5FC447A25FF(L_0, NULL);
-		V_0 = L_1;
-		TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* L_2 = V_0;
-		if (L_2)
+		bool L_0;
+		L_0 = TaskSpawner_CanSpawn_m9931FC64D809219768CAFF28B91405F7A506D47D(__this, NULL);
+		if (L_0)
 		{
-			goto IL_0010;
+			goto IL_0009;
 		}
 	}
 	{
 		return;
 	}
 
-IL_0010:
+IL_0009:
+	{
+		TaskDatabase_tB447E2309A01D9496036DFFF85277C74D1C743A3* L_1 = __this->___taskDatabase;
+		TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* L_2;
+		L_2 = TaskDatabase_PickRandom_m7C6F043A8A01ADF96EE1727C8943E5FC447A25FF(L_1, NULL);
+		V_0 = L_2;
+		TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* L_3 = V_0;
+		if (L_3)
+		{
+			goto IL_0019;
+		}
+	}
+	{
+		return;
+	}
+
+IL_0019:
+	{
+		TaskManager_t9F273F7452A92A9FAF1856699DCE79856B8BD4FA* L_4 = __this->___taskManager;
+		TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* L_5 = V_0;
+		TaskCard_t4FF4E524754FDDFA82DBBC4A77FB371631CA7427* L_6;
+		L_6 = TaskManager_Spawn_m8E6FC39E3E5C003A38DBF740F3B06759CEB818DA(L_4, L_5, NULL);
+		AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* L_7 = __this->___audioManager;
+		AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* L_8 = L_7;
+		if (L_8)
+		{
+			G_B6_0 = L_8;
+			goto IL_0031;
+		}
+		G_B5_0 = L_8;
+	}
+	{
+		return;
+	}
+
+IL_0031:
+	{
+		AudioManager_PlayNotificationPop_m957BFE36AE1F99376758FA73FB74056670DE9C1A(G_B6_0, NULL);
+		return;
+	}
+}
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool TaskSpawner_CanSpawn_m9931FC64D809219768CAFF28B91405F7A506D47D (TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4* __this, const RuntimeMethod* method) 
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	{
+		TaskManager_t9F273F7452A92A9FAF1856699DCE79856B8BD4FA* L_0 = __this->___taskManager;
+		il2cpp_codegen_runtime_class_init_inline(Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);
+		bool L_1;
+		L_1 = Object_op_Inequality_mD0BE578448EAA61948F25C32F8DD55AB1F778602(L_0, (Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C*)NULL, NULL);
+		if (!L_1)
+		{
+			goto IL_002d;
+		}
+	}
+	{
+		int32_t L_2 = __this->___maxVisibleBeforeSpawn;
+		if ((((int32_t)L_2) <= ((int32_t)0)))
+		{
+			goto IL_002b;
+		}
+	}
 	{
 		TaskManager_t9F273F7452A92A9FAF1856699DCE79856B8BD4FA* L_3 = __this->___taskManager;
-		TaskDefinition_t5122A70940E2B8E08087B90E9C05F7EB14D52D28* L_4 = V_0;
-		TaskCard_t4FF4E524754FDDFA82DBBC4A77FB371631CA7427* L_5;
-		L_5 = TaskManager_Spawn_m8E6FC39E3E5C003A38DBF740F3B06759CEB818DA(L_3, L_4, NULL);
-		AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* L_6 = __this->___audioManager;
-		AudioManager_t93EF71258BCA962F5E9F330E00D26B24D5C950FB* L_7 = L_6;
-		if (L_7)
-		{
-			G_B4_0 = L_7;
-			goto IL_0028;
-		}
-		G_B3_0 = L_7;
-	}
-	{
-		return;
+		int32_t L_4;
+		L_4 = TaskManager_get_VisibleCount_m0A5103D601574B53D15EA01B68F61383AB84230E(L_3, NULL);
+		int32_t L_5 = __this->___maxVisibleBeforeSpawn;
+		return (bool)((((int32_t)L_4) < ((int32_t)L_5))? 1 : 0);
 	}
 
-IL_0028:
+IL_002b:
 	{
-		AudioManager_PlayNotificationPop_m957BFE36AE1F99376758FA73FB74056670DE9C1A(G_B4_0, NULL);
-		return;
+		return (bool)1;
+	}
+
+IL_002d:
+	{
+		return (bool)0;
 	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void TaskSpawner__ctor_m176C7C4FA9AFB2D7956589A976073AF9FC9819A7 (TaskSpawner_t85093F6749B216E500294157ECCB502F2B7B8AE4* __this, const RuntimeMethod* method) 
@@ -16596,6 +16654,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void TaskSpawner__ctor_m176C7C4FA9AFB2D795658
 		__this->___initialTaskCount = 2;
 		__this->___minimumVisibleTaskCount = 2;
 		__this->___refillThreshold = 1;
+		__this->___maxVisibleBeforeSpawn = 6;
 		__this->___spawnInterval0To10Seconds = (2.0f);
 		__this->___spawnInterval10To20Seconds = (1.5f);
 		__this->___spawnInterval20To30Seconds = (1.29999995f);

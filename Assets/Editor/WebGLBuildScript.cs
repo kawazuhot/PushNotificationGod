@@ -30,6 +30,11 @@ namespace PushNotificationGod.Editor
 
         private static void BuildWebGL(string outputPath)
         {
+            if (Directory.Exists(outputPath))
+            {
+                Directory.Delete(outputPath, true);
+            }
+
             Directory.CreateDirectory(outputPath);
             EditorBuildSettings.scenes = new[]
             {

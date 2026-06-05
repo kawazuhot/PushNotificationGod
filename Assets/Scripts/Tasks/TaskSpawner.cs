@@ -14,6 +14,7 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private int initialTaskCount = 2;
         [SerializeField] private int minimumVisibleTaskCount = 2;
         [SerializeField] private int refillThreshold = 1;
+        [SerializeField] private int maxVisibleBeforeSpawn = 6;
         [SerializeField] private float spawnInterval0To10Seconds = 2.0f;
         [SerializeField] private float spawnInterval10To20Seconds = 1.5f;
         [SerializeField] private float spawnInterval20To30Seconds = 1.3f;
@@ -47,7 +48,7 @@ namespace PushNotificationGod.Tasks
 
             if (taskManager.VisibleCount <= refillThreshold)
             {
-                while (taskManager.VisibleCount < minimumVisibleTaskCount)
+                while (taskManager.VisibleCount < minimumVisibleTaskCount && CanSpawn())
                 {
                     SpawnOne();
                 }
@@ -56,7 +57,11 @@ namespace PushNotificationGod.Tasks
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0f)
             {
-                SpawnOne();
+                if (CanSpawn())
+                {
+                    SpawnOne();
+                }
+
                 spawnTimer = CurrentInterval();
             }
         }
@@ -89,6 +94,11 @@ namespace PushNotificationGod.Tasks
 
         private void SpawnOne()
         {
+            if (!CanSpawn())
+            {
+                return;
+            }
+
             TaskDefinition task = taskDatabase.PickRandom();
             if (task == null)
             {
@@ -97,6 +107,11 @@ namespace PushNotificationGod.Tasks
 
             taskManager.Spawn(task);
             audioManager?.PlayNotificationPop();
+        }
+
+        private bool CanSpawn()
+        {
+            return taskManager != null && (maxVisibleBeforeSpawn <= 0 || taskManager.VisibleCount < maxVisibleBeforeSpawn);
         }
     }
 }

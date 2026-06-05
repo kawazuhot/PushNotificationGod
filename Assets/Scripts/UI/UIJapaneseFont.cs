@@ -6,7 +6,6 @@ namespace PushNotificationGod.UI
     public static class UIJapaneseFont
     {
         private const string JapaneseFontResourcePath = "Fonts/HiraginoKakuGothicW6";
-        private const string FallbackJapaneseFontResourcePath = "Fonts/AppleGothic";
         private static Font cachedFont;
 
         public static Font Get()
@@ -19,12 +18,7 @@ namespace PushNotificationGod.UI
             cachedFont = Resources.Load<Font>(JapaneseFontResourcePath);
             if (cachedFont == null)
             {
-                cachedFont = Resources.Load<Font>(FallbackJapaneseFontResourcePath);
-            }
-
-            if (cachedFont == null)
-            {
-                Debug.LogWarning($"Japanese UI font not found at Resources/{JapaneseFontResourcePath} or Resources/{FallbackJapaneseFontResourcePath}. Falling back to LegacyRuntime.");
+                Debug.LogWarning($"Japanese UI font not found at Resources/{JapaneseFontResourcePath}. Falling back to LegacyRuntime.");
                 cachedFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             }
 
