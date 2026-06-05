@@ -14,21 +14,16 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private int initialTaskCount = 2;
         [SerializeField] private int minimumVisibleTaskCount = 2;
         [SerializeField] private int refillThreshold = 1;
-        [SerializeField] private int maxVisibleBeforeSpawn = 6;
-        [SerializeField] private float spawnInterval0To10Seconds = 2.0f;
-        [SerializeField] private float spawnInterval10To20Seconds = 1.5f;
-        [SerializeField] private float spawnInterval20To30Seconds = 1.3f;
-        [SerializeField] private float spawnIntervalAfter30Seconds = 1.2f;
+        [SerializeField] private int maxVisibleBeforeSpawn = 5;
+        [SerializeField] private float spawnIntervalSeconds = 2.0f;
 
         private float spawnTimer;
-        private float lastInterval;
         private bool running;
 
         public void Begin()
         {
             running = true;
-            lastInterval = CurrentInterval();
-            spawnTimer = lastInterval;
+            spawnTimer = CurrentInterval();
 
             for (int i = 0; i < initialTaskCount; i++)
             {
@@ -56,13 +51,6 @@ namespace PushNotificationGod.Tasks
                 }
             }
 
-            float interval = CurrentInterval();
-            if (!Mathf.Approximately(interval, lastInterval))
-            {
-                spawnTimer = Mathf.Min(Mathf.Max(spawnTimer, 0.15f), interval);
-                lastInterval = interval;
-            }
-
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0f)
             {
@@ -71,34 +59,13 @@ namespace PushNotificationGod.Tasks
                     SpawnOne();
                 }
 
-                spawnTimer = interval;
+                spawnTimer = CurrentInterval();
             }
         }
 
         private float CurrentInterval()
         {
-            float elapsedSeconds = 0f;
-            if (timerManager != null)
-            {
-                elapsedSeconds = Mathf.Max(0f, timerManager.GameDurationSeconds - timerManager.RemainingSeconds);
-            }
-
-            if (elapsedSeconds < 10f)
-            {
-                return spawnInterval0To10Seconds;
-            }
-
-            if (elapsedSeconds < 20f)
-            {
-                return spawnInterval10To20Seconds;
-            }
-
-            if (elapsedSeconds < 30f)
-            {
-                return spawnInterval20To30Seconds;
-            }
-
-            return spawnIntervalAfter30Seconds;
+            return Mathf.Max(0.5f, spawnIntervalSeconds);
         }
 
         private void SpawnOne()

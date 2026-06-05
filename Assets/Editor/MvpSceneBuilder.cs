@@ -377,10 +377,8 @@ public static class MvpSceneBuilder
         SetSerialized(spawner, "taskManager", taskManager);
         SetSerialized(spawner, "timerManager", timerManager);
         SetSerialized(spawner, "audioManager", audioManager);
-        SetSerializedFloat(spawner, "spawnInterval0To10Seconds", 2.0f);
-        SetSerializedFloat(spawner, "spawnInterval10To20Seconds", 1.5f);
-        SetSerializedFloat(spawner, "spawnInterval20To30Seconds", 1.3f);
-        SetSerializedFloat(spawner, "spawnIntervalAfter30Seconds", 1.2f);
+        SetSerializedInt(spawner, "maxVisibleBeforeSpawn", 5);
+        SetSerializedFloat(spawner, "spawnIntervalSeconds", 2.0f);
         SetSerialized(ui, "dateText", date);
         SetSerialized(ui, "remainingTimeText", remainingTime);
         SetSerialized(ui, "scoreText", score);
@@ -865,6 +863,14 @@ public static class MvpSceneBuilder
         SerializedObject serializedObject = new(target);
         SerializedProperty property = serializedObject.FindProperty(propertyName);
         property.floatValue = value;
+        serializedObject.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    private static void SetSerializedInt(Object target, string propertyName, int value)
+    {
+        SerializedObject serializedObject = new(target);
+        SerializedProperty property = serializedObject.FindProperty(propertyName);
+        property.intValue = value;
         serializedObject.ApplyModifiedPropertiesWithoutUndo();
     }
 
