@@ -9,6 +9,7 @@ namespace PushNotificationGod.Editor
     public static class WebGLBuildScript
     {
         private const string DefaultOutputPath = "Builds/WebGL";
+        private const string GitHubPagesOutputPath = "docs";
 
         private static readonly string[] ScenePaths =
         {
@@ -55,6 +56,40 @@ namespace PushNotificationGod.Editor
             }
 
             Debug.Log($"WebGL build succeeded: {outputPath}");
+            CopyBuildToGitHubPagesDocs(outputPath);
+        }
+
+        private static void CopyBuildToGitHubPagesDocs(string buildOutputPath)
+        {
+            if (!Directory.Exists(buildOutputPath))
+            {
+                throw new DirectoryNotFoundException($"WebGL build output not found: {buildOutputPath}");
+            }
+
+            if (Directory.Exists(GitHubPagesOutputPath))
+            {
+                Directory.Delete(GitHubPagesOutputPath, true);
+            }
+
+            CopyDirectory(buildOutputPath, GitHubPagesOutputPath);
+            Debug.Log("WebGL build copied to docs for GitHub Pages");
+        }
+
+        private static void CopyDirectory(string sourceDirectory, string destinationDirectory)
+        {
+            Directory.CreateDirectory(destinationDirectory);
+
+            foreach (string sourceFile in Directory.GetFiles(sourceDirectory))
+            {
+                string destinationFile = Path.Combine(destinationDirectory, Path.GetFileName(sourceFile));
+                File.Copy(sourceFile, destinationFile, true);
+            }
+
+            foreach (string sourceSubDirectory in Directory.GetDirectories(sourceDirectory))
+            {
+                string destinationSubDirectory = Path.Combine(destinationDirectory, Path.GetFileName(sourceSubDirectory));
+                CopyDirectory(sourceSubDirectory, destinationSubDirectory);
+            }
         }
 
         private static string GetCommandLineOutputPath()
