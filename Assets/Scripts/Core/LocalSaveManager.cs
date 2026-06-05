@@ -6,7 +6,10 @@ namespace PushNotificationGod.Core
     {
         private const string BestScoreKey = "PushNotificationGod.BestScore";
         private const string LastScoreKey = "PushNotificationGod.LastScore";
+        private const string LastSuccessCountKey = "PushNotificationGod.LastSuccessCount";
+        private const string LastMissCountKey = "PushNotificationGod.LastMissCount";
         private const string LastMaxComboKey = "PushNotificationGod.LastMaxCombo";
+        private const string LastRankTitleKey = "PushNotificationGod.LastRankTitle";
         private const string LastWasNewRecordKey = "PushNotificationGod.LastWasNewRecord";
         private const string PlayerNameKey = "player_name";
         private const string BgmVolumeKey = "bgm_volume";
@@ -16,7 +19,10 @@ namespace PushNotificationGod.Core
 
         public static int BestScore => PlayerPrefs.GetInt(BestScoreKey, 0);
         public static int LastScore => PlayerPrefs.GetInt(LastScoreKey, 0);
+        public static int LastSuccessCount => PlayerPrefs.GetInt(LastSuccessCountKey, 0);
+        public static int LastMissCount => PlayerPrefs.GetInt(LastMissCountKey, 0);
         public static int LastMaxCombo => PlayerPrefs.GetInt(LastMaxComboKey, 0);
+        public static string LastRankTitle => PlayerPrefs.GetString(LastRankTitleKey, string.Empty);
         public static bool LastWasNewRecord => PlayerPrefs.GetInt(LastWasNewRecordKey, 0) == 1;
         public static string PlayerName => PlayerPrefs.GetString(PlayerNameKey, string.Empty);
         public static float BgmVolume => PlayerPrefs.GetFloat(BgmVolumeKey, DefaultBgmVolume);
@@ -35,8 +41,16 @@ namespace PushNotificationGod.Core
 
         public static void SaveLastResult(int score, int maxCombo, bool wasNewRecord)
         {
+            SaveLastResult(score, 0, 0, maxCombo, GameResultData.GetRankTitle(score), wasNewRecord);
+        }
+
+        public static void SaveLastResult(int score, int successCount, int missCount, int maxCombo, string rankTitle, bool wasNewRecord)
+        {
             PlayerPrefs.SetInt(LastScoreKey, Mathf.Max(0, score));
+            PlayerPrefs.SetInt(LastSuccessCountKey, Mathf.Max(0, successCount));
+            PlayerPrefs.SetInt(LastMissCountKey, Mathf.Max(0, missCount));
             PlayerPrefs.SetInt(LastMaxComboKey, Mathf.Max(0, maxCombo));
+            PlayerPrefs.SetString(LastRankTitleKey, string.IsNullOrWhiteSpace(rankTitle) ? GameResultData.GetRankTitle(score) : rankTitle);
             PlayerPrefs.SetInt(LastWasNewRecordKey, wasNewRecord ? 1 : 0);
             PlayerPrefs.Save();
         }

@@ -8,23 +8,23 @@ namespace PushNotificationGod.Core
 
         public static void Set(int score, int maxCombo)
         {
-            LastScore = score;
-            LastMaxCombo = maxCombo;
-            LastWasNewRecord = score > LocalSaveManager.BestScore;
-            LocalSaveManager.SaveLastResult(score, maxCombo, LastWasNewRecord);
-            LocalSaveManager.SaveBestScore(score);
+            GameResultData.Save(score, 0, 0, maxCombo);
+            LastScore = GameResultData.FinalScore;
+            LastMaxCombo = GameResultData.MaxCombo;
+            LastWasNewRecord = GameResultData.WasNewRecord;
         }
 
         public static void RestoreFromSaveIfEmpty()
         {
+            GameResultData.RestoreFromSaveIfEmpty();
             if (LastScore > 0 || LastMaxCombo > 0)
             {
                 return;
             }
 
-            LastScore = LocalSaveManager.LastScore;
-            LastMaxCombo = LocalSaveManager.LastMaxCombo;
-            LastWasNewRecord = LocalSaveManager.LastWasNewRecord;
+            LastScore = GameResultData.FinalScore;
+            LastMaxCombo = GameResultData.MaxCombo;
+            LastWasNewRecord = GameResultData.WasNewRecord;
         }
     }
 }

@@ -39,6 +39,8 @@ namespace PushNotificationGod.Core
 
         private bool gameEnded;
         private GameState gameState = GameState.WaitingForStart;
+        private int successCount;
+        private int missCount;
 
         private void Start()
         {
@@ -47,6 +49,8 @@ namespace PushNotificationGod.Core
             scoreManager.ResetScore();
             lifeManager.ResetLife();
             comboManager.ResetCombo();
+            successCount = 0;
+            missCount = 0;
             timerManager.PrepareTimer();
             uiManager.Bind(scoreManager, lifeManager, comboManager, timerManager);
             if (feedbackManager == null)
@@ -89,6 +93,7 @@ namespace PushNotificationGod.Core
             bool correct = card.Definition.correctAction == action;
             if (correct)
             {
+                successCount++;
                 float multiplier = comboManager.RegisterCorrect();
                 int gainedScore = scoreManager.AddScore(card.Definition.baseScore, multiplier);
                 if (action == TaskAction.Tap)
@@ -104,6 +109,7 @@ namespace PushNotificationGod.Core
             }
             else
             {
+                missCount++;
                 comboManager.RegisterMistake();
                 lifeManager.ApplyMistakePenalty();
                 VibrationManager.PlayLightVibration();
@@ -132,7 +138,8 @@ namespace PushNotificationGod.Core
             gameState = GameState.Result;
             taskSpawner.Stop();
             timerManager.StopTimer();
-            Debug.Log($"[{BuildInfo.BuildId}] Game ending. score={scoreManager.Score}, maxCombo={comboManager.MaxCombo}, life={lifeManager.CurrentLife}, remaining={timerManager.RemainingSeconds:F1}");
+            Debug.Log($"[GameEnd] score={scoreManager.Score}, success={successCount}, miss={missCount}, maxCombo={comboManager.MaxCombo}");
+            GameResultData.Save(scoreManager.Score, successCount, missCount, comboManager.MaxCombo);
             StartCoroutine(EndGameRoutine());
         }
 
@@ -142,8 +149,7 @@ namespace PushNotificationGod.Core
             audioManager?.PlayGameOver();
             yield return new WaitForSecondsRealtime(gameOverResultDelaySeconds);
 
-            GameResult.Set(scoreManager.Score, comboManager.MaxCombo);
-            Debug.Log($"[{BuildInfo.BuildId}] Result data saved. score={GameResult.LastScore}, maxCombo={GameResult.LastMaxCombo}, newRecord={GameResult.LastWasNewRecord}");
+            Debug.Log($"[{BuildInfo.BuildId}] Loading ResultScene with FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}");
             SceneManager.LoadScene("ResultScene");
         }
 

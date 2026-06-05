@@ -20,8 +20,8 @@ namespace PushNotificationGod.UI
         private void Start()
         {
             UIJapaneseFont.ApplyToSceneTexts();
-            GameResult.RestoreFromSaveIfEmpty();
-            Debug.Log($"[{BuildInfo.BuildId}] ResultManager started. LastScore={GameResult.LastScore}, LastMaxCombo={GameResult.LastMaxCombo}, BestScore={LocalSaveManager.BestScore}");
+            GameResultData.RestoreFromSaveIfEmpty();
+            Debug.Log($"[ResultView] FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}");
             BindButtons();
             if (audioManager == null)
             {
@@ -30,12 +30,12 @@ namespace PushNotificationGod.UI
 
             if (finalScoreText != null)
             {
-                finalScoreText.text = GameResult.LastScore.ToString();
+                finalScoreText.text = GameResultData.FinalScore.ToString();
             }
 
             if (maxComboText != null)
             {
-                maxComboText.text = $"{GameResult.LastMaxCombo} COMBO";
+                maxComboText.text = $"{GameResultData.MaxCombo} COMBO";
             }
 
             if (bestScoreText != null)
@@ -45,7 +45,7 @@ namespace PushNotificationGod.UI
 
             if (rankTitleText != null)
             {
-                rankTitleText.text = GetRankTitle(GameResult.LastScore);
+                rankTitleText.text = GameResultData.RankTitle;
             }
 
             ApplyResultStyle();
@@ -136,31 +136,36 @@ namespace PushNotificationGod.UI
             Text bestLabel = EnsureLabel(parent, "BestScoreLabelText", "最高スコア");
             Text newRecordText = EnsureLabel(parent, "NewRecordText", "新記録！");
             Text rankLabel = EnsureLabel(parent, "RankTitleLabelText", "今回の称号");
-            rankTitleText = EnsureLabel(parent, "RankTitleText", GetRankTitle(GameResult.LastScore));
+            Text processedLabel = EnsureLabel(parent, "ProcessedCountLabelText", "処理数 / ミス");
+            Text processedText = EnsureLabel(parent, "ProcessedCountText", $"{GameResultData.SuccessCount} / {GameResultData.MissCount}");
+            rankTitleText = EnsureLabel(parent, "RankTitleText", GameResultData.RankTitle);
 
             ConfigureText(finalLabel, 34, FontStyle.Bold, new Vector2(0f, 392f), new Vector2(740f, 50f));
             ConfigureText(finalScoreText, 88, FontStyle.Bold, new Vector2(0f, 318f), new Vector2(760f, 94f));
-            ConfigureText(rankLabel, 32, FontStyle.Bold, new Vector2(0f, 190f), new Vector2(740f, 46f));
-            ConfigureText(rankTitleText, 54, FontStyle.Bold, new Vector2(0f, 112f), new Vector2(760f, 78f));
-            ConfigureText(comboLabel, 32, FontStyle.Bold, new Vector2(0f, -20f), new Vector2(740f, 46f));
-            ConfigureText(maxComboText, 64, FontStyle.Bold, new Vector2(0f, -90f), new Vector2(760f, 80f));
-            ConfigureText(bestLabel, 32, FontStyle.Bold, new Vector2(0f, -202f), new Vector2(740f, 46f));
-            ConfigureText(bestScoreText, 66, FontStyle.Bold, new Vector2(0f, -270f), new Vector2(760f, 78f));
-            ConfigureText(newRecordText, 38, FontStyle.Bold, new Vector2(0f, -336f), new Vector2(740f, 50f));
+            ConfigureText(rankLabel, 30, FontStyle.Bold, new Vector2(0f, 188f), new Vector2(740f, 44f));
+            ConfigureText(rankTitleText, 50, FontStyle.Bold, new Vector2(0f, 116f), new Vector2(760f, 76f));
+            ConfigureText(processedLabel, 28, FontStyle.Bold, new Vector2(0f, 16f), new Vector2(740f, 40f));
+            ConfigureText(processedText, 44, FontStyle.Bold, new Vector2(0f, -42f), new Vector2(760f, 62f));
+            ConfigureText(comboLabel, 28, FontStyle.Bold, new Vector2(0f, -118f), new Vector2(740f, 40f));
+            ConfigureText(maxComboText, 56, FontStyle.Bold, new Vector2(0f, -180f), new Vector2(760f, 68f));
+            ConfigureText(bestLabel, 28, FontStyle.Bold, new Vector2(0f, -264f), new Vector2(740f, 40f));
+            ConfigureText(bestScoreText, 56, FontStyle.Bold, new Vector2(0f, -322f), new Vector2(760f, 66f));
+            ConfigureText(newRecordText, 34, FontStyle.Bold, new Vector2(0f, -374f), new Vector2(740f, 44f));
 
             Image finalScoreBackground = EnsureValueBackground(parent, "FinalScoreValueBackground", new Vector2(0f, 318f), new Vector2(650f, 116f));
             Image rankTitleBackground = EnsureValueBackground(parent, "RankTitleValueBackground", new Vector2(0f, 112f), new Vector2(720f, 112f));
-            Image maxComboBackground = EnsureValueBackground(parent, "MaxComboValueBackground", new Vector2(0f, -90f), new Vector2(670f, 98f));
-            Image bestScoreBackground = EnsureValueBackground(parent, "BestScoreValueBackground", new Vector2(0f, -270f), new Vector2(570f, 96f));
+            Image maxComboBackground = EnsureValueBackground(parent, "MaxComboValueBackground", new Vector2(0f, -180f), new Vector2(670f, 86f));
+            Image bestScoreBackground = EnsureValueBackground(parent, "BestScoreValueBackground", new Vector2(0f, -322f), new Vector2(570f, 84f));
 
-            newRecordText.gameObject.SetActive(GameResult.LastWasNewRecord);
+            newRecordText.gameObject.SetActive(GameResultData.WasNewRecord);
             newRecordText.color = new Color(1f, 0.72f, 0.08f, 1f);
             ScoreColorUtility.ApplyReadableEffects(newRecordText);
 
             rankTitleText.color = Color.white;
             ScoreColorUtility.ApplyReadableEffects(rankTitleText);
-            ScoreColorUtility.ApplyScoreVisual(finalScoreText, GameResult.LastScore);
-            ScoreColorUtility.ApplyComboVisual(maxComboText, GameResult.LastMaxCombo);
+            ScoreColorUtility.ApplyReadableEffects(processedText);
+            ScoreColorUtility.ApplyScoreVisual(finalScoreText, GameResultData.FinalScore);
+            ScoreColorUtility.ApplyComboVisual(maxComboText, GameResultData.MaxCombo);
             ScoreColorUtility.ApplyScoreVisual(bestScoreText, LocalSaveManager.BestScore);
             ApplyResultHierarchy(
                 finalScoreBackground,
