@@ -377,8 +377,7 @@ public static class MvpSceneBuilder
         SetSerialized(spawner, "taskManager", taskManager);
         SetSerialized(spawner, "timerManager", timerManager);
         SetSerialized(spawner, "audioManager", audioManager);
-        SetSerializedInt(spawner, "maxVisibleBeforeSpawn", 5);
-        SetSerializedFloat(spawner, "spawnIntervalSeconds", 2.0f);
+        SetSerializedInt(spawner, "maxVisibleBeforeSpawn", 3);
         SetSerialized(ui, "dateText", date);
         SetSerialized(ui, "remainingTimeText", remainingTime);
         SetSerialized(ui, "scoreText", score);

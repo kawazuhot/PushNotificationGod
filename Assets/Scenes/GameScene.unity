@@ -699,8 +699,7 @@ MonoBehaviour:
   initialTaskCount: 2
   minimumVisibleTaskCount: 2
   refillThreshold: 1
-  maxVisibleBeforeSpawn: 5
-  spawnIntervalSeconds: 2
+  maxVisibleBeforeSpawn: 3
 --- !u!114 &720360097
 MonoBehaviour:
   m_ObjectHideFlags: 0

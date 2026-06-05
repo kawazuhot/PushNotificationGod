@@ -14,29 +14,31 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private int initialTaskCount = 2;
         [SerializeField] private int minimumVisibleTaskCount = 2;
         [SerializeField] private int refillThreshold = 1;
-        [SerializeField] private int maxVisibleBeforeSpawn = 5;
-        [SerializeField] private float spawnIntervalSeconds = 2.0f;
+        [SerializeField] private int maxVisibleBeforeSpawn = 3;
 
-        private float spawnTimer;
         private bool running;
-        private bool loggedThirtySecondsOrLess;
+        private bool isSpawning;
+        private int lastLoggedVisibleCount = -1;
 
         public void Begin()
         {
             running = true;
-            spawnTimer = CurrentInterval();
-            loggedThirtySecondsOrLess = false;
-            Debug.Log($"[{BuildInfo.BuildId}] TaskSpawner.Begin interval={CurrentInterval()}, maxVisible={maxVisibleBeforeSpawn}, initial={initialTaskCount}");
+            isSpawning = false;
+            lastLoggedVisibleCount = -1;
+            Debug.Log($"[{BuildInfo.BuildId}] TaskSpawner.Begin initialTaskCount={initialTaskCount}, minimumVisible={minimumVisibleTaskCount}, refillThreshold={refillThreshold}, maxVisible={maxVisibleBeforeSpawn}");
 
             for (int i = 0; i < initialTaskCount; i++)
             {
-                SpawnOne();
+                SpawnOne("initial");
             }
+
+            Debug.Log($"[{BuildInfo.BuildId}] Initial tasks spawned. activeTasks.Count={taskManager.VisibleCount}");
         }
 
         public void Stop()
         {
             running = false;
+            Debug.Log($"[{BuildInfo.BuildId}] TaskSpawner.Stop called. Refill disabled. activeTasks.Count={(taskManager != null ? taskManager.VisibleCount : -1)}");
         }
 
         private void Update()
@@ -46,41 +48,43 @@ namespace PushNotificationGod.Tasks
                 return;
             }
 
-            if (!loggedThirtySecondsOrLess && timerManager != null && timerManager.RemainingSeconds <= 30f)
+            int visibleCount = taskManager != null ? taskManager.VisibleCount : -1;
+            if (visibleCount != lastLoggedVisibleCount)
             {
-                loggedThirtySecondsOrLess = true;
-                Debug.Log($"[{BuildInfo.BuildId}] Remaining time <= 30 reached. interval still fixed={CurrentInterval()}, visible={taskManager.VisibleCount}, remaining={timerManager.RemainingSeconds:F1}");
+                lastLoggedVisibleCount = visibleCount;
+                Debug.Log($"[{BuildInfo.BuildId}] activeTasks.Count changed. activeTasks.Count={visibleCount}");
             }
 
-            if (taskManager.VisibleCount <= refillThreshold)
+            if (visibleCount <= refillThreshold)
             {
-                while (taskManager.VisibleCount < minimumVisibleTaskCount && CanSpawn())
-                {
-                    SpawnOne();
-                }
-            }
-
-            spawnTimer -= Time.deltaTime;
-            if (spawnTimer <= 0f)
-            {
-                if (CanSpawn())
-                {
-                    SpawnOne();
-                }
-
-                spawnTimer = CurrentInterval();
+                TryRefillOne();
             }
         }
 
-        private float CurrentInterval()
+        private void TryRefillOne()
         {
-            return Mathf.Max(0.5f, spawnIntervalSeconds);
+            if (!running)
+            {
+                Debug.Log($"[{BuildInfo.BuildId}] Refill skipped because game is not running.");
+                return;
+            }
+
+            if (isSpawning || !CanSpawn())
+            {
+                return;
+            }
+
+            isSpawning = true;
+            SpawnOne("refill");
+            isSpawning = false;
+            Debug.Log($"[{BuildInfo.BuildId}] Refill spawned exactly one task. activeTasks.Count={taskManager.VisibleCount}");
         }
 
-        private void SpawnOne()
+        private void SpawnOne(string reason)
         {
             if (!CanSpawn())
             {
+                Debug.Log($"[{BuildInfo.BuildId}] Spawn skipped reason={reason}. activeTasks.Count={(taskManager != null ? taskManager.VisibleCount : -1)}, maxVisible={maxVisibleBeforeSpawn}");
                 return;
             }
 
@@ -92,7 +96,7 @@ namespace PushNotificationGod.Tasks
 
             taskManager.Spawn(task);
             float remaining = timerManager != null ? timerManager.RemainingSeconds : -1f;
-            Debug.Log($"[{BuildInfo.BuildId}] Spawn task={task.taskId}, remaining={remaining:F1}, visible={taskManager.VisibleCount}, interval={CurrentInterval()}");
+            Debug.Log($"[{BuildInfo.BuildId}] Spawn task={task.taskId}, reason={reason}, remaining={remaining:F1}, activeTasks.Count={taskManager.VisibleCount}");
             audioManager?.PlayNotificationPop();
         }
 
