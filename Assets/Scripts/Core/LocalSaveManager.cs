@@ -17,16 +17,16 @@ namespace PushNotificationGod.Core
         private const float DefaultBgmVolume = 0.35f;
         private const float DefaultSeVolume = 0.8f;
 
-        public static int BestScore => PlayerPrefs.GetInt(BestScoreKey, 0);
-        public static int LastScore => PlayerPrefs.GetInt(LastScoreKey, 0);
-        public static int LastSuccessCount => PlayerPrefs.GetInt(LastSuccessCountKey, 0);
-        public static int LastMissCount => PlayerPrefs.GetInt(LastMissCountKey, 0);
-        public static int LastMaxCombo => PlayerPrefs.GetInt(LastMaxComboKey, 0);
-        public static string LastRankTitle => PlayerPrefs.GetString(LastRankTitleKey, string.Empty);
-        public static bool LastWasNewRecord => PlayerPrefs.GetInt(LastWasNewRecordKey, 0) == 1;
-        public static string PlayerName => PlayerPrefs.GetString(PlayerNameKey, string.Empty);
-        public static float BgmVolume => PlayerPrefs.GetFloat(BgmVolumeKey, DefaultBgmVolume);
-        public static float SeVolume => PlayerPrefs.GetFloat(SeVolumeKey, DefaultSeVolume);
+        public static int BestScore => SafeGetInt(BestScoreKey, 0);
+        public static int LastScore => SafeGetInt(LastScoreKey, 0);
+        public static int LastSuccessCount => SafeGetInt(LastSuccessCountKey, 0);
+        public static int LastMissCount => SafeGetInt(LastMissCountKey, 0);
+        public static int LastMaxCombo => SafeGetInt(LastMaxComboKey, 0);
+        public static string LastRankTitle => SafeGetString(LastRankTitleKey, string.Empty);
+        public static bool LastWasNewRecord => SafeGetInt(LastWasNewRecordKey, 0) == 1;
+        public static string PlayerName => SafeGetString(PlayerNameKey, string.Empty);
+        public static float BgmVolume => SafeGetFloat(BgmVolumeKey, DefaultBgmVolume);
+        public static float SeVolume => SafeGetFloat(SeVolumeKey, DefaultSeVolume);
 
         public static void SaveBestScore(int score)
         {
@@ -35,8 +35,8 @@ namespace PushNotificationGod.Core
                 return;
             }
 
-            PlayerPrefs.SetInt(BestScoreKey, score);
-            PlayerPrefs.Save();
+            SafeSetInt(BestScoreKey, score);
+            SafeSave();
         }
 
         public static void SaveLastResult(int score, int maxCombo, bool wasNewRecord)
@@ -46,31 +46,118 @@ namespace PushNotificationGod.Core
 
         public static void SaveLastResult(int score, int successCount, int missCount, int maxCombo, string rankTitle, bool wasNewRecord)
         {
-            PlayerPrefs.SetInt(LastScoreKey, Mathf.Max(0, score));
-            PlayerPrefs.SetInt(LastSuccessCountKey, Mathf.Max(0, successCount));
-            PlayerPrefs.SetInt(LastMissCountKey, Mathf.Max(0, missCount));
-            PlayerPrefs.SetInt(LastMaxComboKey, Mathf.Max(0, maxCombo));
-            PlayerPrefs.SetString(LastRankTitleKey, string.IsNullOrWhiteSpace(rankTitle) ? GameResultData.GetRankTitle(score) : rankTitle);
-            PlayerPrefs.SetInt(LastWasNewRecordKey, wasNewRecord ? 1 : 0);
-            PlayerPrefs.Save();
+            SafeSetInt(LastScoreKey, Mathf.Max(0, score));
+            SafeSetInt(LastSuccessCountKey, Mathf.Max(0, successCount));
+            SafeSetInt(LastMissCountKey, Mathf.Max(0, missCount));
+            SafeSetInt(LastMaxComboKey, Mathf.Max(0, maxCombo));
+            SafeSetString(LastRankTitleKey, string.IsNullOrWhiteSpace(rankTitle) ? GameResultData.GetRankTitle(score) : rankTitle);
+            SafeSetInt(LastWasNewRecordKey, wasNewRecord ? 1 : 0);
+            SafeSave();
         }
 
         public static void SavePlayerName(string playerName)
         {
-            PlayerPrefs.SetString(PlayerNameKey, string.IsNullOrWhiteSpace(playerName) ? "なまえ未設定" : playerName.Trim());
-            PlayerPrefs.Save();
+            SafeSetString(PlayerNameKey, string.IsNullOrWhiteSpace(playerName) ? "なまえ未設定" : playerName.Trim());
+            SafeSave();
         }
 
         public static void SaveBgmVolume(float volume)
         {
-            PlayerPrefs.SetFloat(BgmVolumeKey, Mathf.Clamp01(volume));
-            PlayerPrefs.Save();
+            SafeSetFloat(BgmVolumeKey, Mathf.Clamp01(volume));
+            SafeSave();
         }
 
         public static void SaveSeVolume(float volume)
         {
-            PlayerPrefs.SetFloat(SeVolumeKey, Mathf.Clamp01(volume));
-            PlayerPrefs.Save();
+            SafeSetFloat(SeVolumeKey, Mathf.Clamp01(volume));
+            SafeSave();
+        }
+
+        private static int SafeGetInt(string key, int defaultValue)
+        {
+            try
+            {
+                return PlayerPrefs.GetInt(key, defaultValue);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"PlayerPrefs.GetInt failed for {key}. Using default. {ex.GetType().Name}: {ex.Message}");
+                return defaultValue;
+            }
+        }
+
+        private static float SafeGetFloat(string key, float defaultValue)
+        {
+            try
+            {
+                return PlayerPrefs.GetFloat(key, defaultValue);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"PlayerPrefs.GetFloat failed for {key}. Using default. {ex.GetType().Name}: {ex.Message}");
+                return defaultValue;
+            }
+        }
+
+        private static string SafeGetString(string key, string defaultValue)
+        {
+            try
+            {
+                return PlayerPrefs.GetString(key, defaultValue);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"PlayerPrefs.GetString failed for {key}. Using default. {ex.GetType().Name}: {ex.Message}");
+                return defaultValue;
+            }
+        }
+
+        private static void SafeSetInt(string key, int value)
+        {
+            try
+            {
+                PlayerPrefs.SetInt(key, value);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"PlayerPrefs.SetInt failed for {key}. {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+
+        private static void SafeSetFloat(string key, float value)
+        {
+            try
+            {
+                PlayerPrefs.SetFloat(key, value);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"PlayerPrefs.SetFloat failed for {key}. {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+
+        private static void SafeSetString(string key, string value)
+        {
+            try
+            {
+                PlayerPrefs.SetString(key, value);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"PlayerPrefs.SetString failed for {key}. {ex.GetType().Name}: {ex.Message}");
+            }
+        }
+
+        private static void SafeSave()
+        {
+            try
+            {
+                PlayerPrefs.Save();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"PlayerPrefs.Save failed. Continuing without persistent save. {ex.GetType().Name}: {ex.Message}");
+            }
         }
     }
 }

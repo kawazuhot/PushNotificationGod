@@ -58,7 +58,7 @@ namespace PushNotificationGod.UI
             EnsureAudioManager();
             EnsureBuildText();
             Debug.Log($"[{BuildInfo.BuildId}] TitleScene started. Controller={GetType().FullName}, AudioManager={(audioManager != null ? audioManager.name : "null")}");
-            audioManager?.PlayTitleBgm();
+            Debug.Log($"[{BuildInfo.BuildId}] Title BGM disabled for WebGL MVP.");
         }
 
         private void Update()
@@ -71,17 +71,13 @@ namespace PushNotificationGod.UI
             if (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.touchCount > 0)
             {
                 titleBgmUnlocked = true;
-                EnsureAudioManager();
-                Debug.Log($"[{BuildInfo.BuildId}] First title user input detected. Requesting title BGM.");
-                audioManager?.PlayTitleBgm();
+                Debug.Log($"[{BuildInfo.BuildId}] First title user input detected. Title BGM remains disabled.");
             }
         }
 
         public void StartGame()
         {
-            EnsureAudioManager();
-            Debug.Log($"[{BuildInfo.BuildId}] Start button pressed. Requesting title BGM before name input.");
-            audioManager?.PlayTitleBgm();
+            Debug.Log($"[{BuildInfo.BuildId}] Start button pressed. Showing player name input.");
             ShowPlayerNameInput();
         }
 
@@ -100,10 +96,45 @@ namespace PushNotificationGod.UI
 
         public void ConfirmPlayerName()
         {
+            Debug.Log("[NameDialog] Confirm clicked");
             string playerName = playerNameInput != null ? playerNameInput.text : string.Empty;
-            LocalSaveManager.SavePlayerName(string.IsNullOrWhiteSpace(playerName) ? DefaultPlayerName : playerName);
+            string safePlayerName = string.IsNullOrWhiteSpace(playerName) ? DefaultPlayerName : playerName.Trim();
+
+            try
+            {
+                Debug.Log("[NameDialog] Save player name start");
+                LocalSaveManager.SavePlayerName(safePlayerName);
+                Debug.Log("[NameDialog] Save player name success");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[NameDialog] Save player name failed. Continue with default. {ex.GetType().Name}: {ex.Message}");
+            }
+            finally
+            {
+                if (playerNameInput != null)
+                {
+                    playerNameInput.DeactivateInputField();
+                }
+
+                if (playerNamePanel != null)
+                {
+                    Debug.Log("[NameDialog] Close dialog");
+                    playerNamePanel.SetActive(false);
+                }
+            }
+
+            Debug.Log("[NameDialog] Confirm finished");
             Debug.Log($"[{BuildInfo.BuildId}] Player name confirmed. Loading GameScene.");
-            audioManager?.StopTitleBgm();
+            try
+            {
+                audioManager?.StopTitleBgm();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] Stop title BGM failed but continuing. {ex.GetType().Name}: {ex.Message}");
+            }
+
             SceneManager.LoadScene("GameScene");
         }
 
@@ -122,9 +153,7 @@ namespace PushNotificationGod.UI
 
         public void ShowSettings()
         {
-            EnsureAudioManager();
-            Debug.Log($"[{BuildInfo.BuildId}] Settings button pressed. Requesting title BGM.");
-            audioManager?.PlayTitleBgm();
+            Debug.Log($"[{BuildInfo.BuildId}] Settings button pressed.");
             EnsurePanels();
             HideAllPanels();
             if (bgmVolumeSlider != null)

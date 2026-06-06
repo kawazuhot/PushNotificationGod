@@ -80,6 +80,11 @@ namespace PushNotificationGod.Audio
 
         public void PlayTitleBgm()
         {
+            if (titleBgm == null)
+            {
+                return;
+            }
+
             Debug.Log($"[{BuildInfo.BuildId}] Title BGM Play Requested");
             PlayBgm(titleBgm);
         }
@@ -133,7 +138,6 @@ namespace PushNotificationGod.Audio
         {
             if (bgmAudioSource == null || clip == null)
             {
-                Debug.LogWarning($"[{BuildInfo.BuildId}] BGM play skipped. AudioSource null: {bgmAudioSource == null}, Clip null: {clip == null}");
                 return;
             }
 
