@@ -148,6 +148,8 @@ namespace PushNotificationGod.Core
             Debug.Log("[GameOverFlow] 3 Stop spawn");
             taskSpawner.Stop();
             timerManager.StopTimer();
+            audioManager?.StopGameplayBgm();
+            Debug.Log("[GameOverFlow] Gameplay BGM stopped");
             Debug.Log($"[GameEnd BeforeSave] score={scoreManager.Score}, success={successCount}, miss={missCount}, maxCombo={comboManager.MaxCombo}");
             Debug.Log("[GameOverFlow] 4 Save result start");
             GameResultData.Save(scoreManager.Score, successCount, missCount, comboManager.MaxCombo);
