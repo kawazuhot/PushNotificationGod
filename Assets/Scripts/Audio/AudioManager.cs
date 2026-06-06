@@ -79,7 +79,7 @@ namespace PushNotificationGod.Audio
 
         public void StopGameplayBgm()
         {
-            StopBgmIfClip(gameplayBgm);
+            StopAllBgm();
         }
 
         public void StopAllBgm()
@@ -130,19 +130,6 @@ namespace PushNotificationGod.Audio
             bgmAudioSource.volume = bgmVolume;
             bgmAudioSource.Play();
             Debug.Log($"[{BuildInfo.BuildId}] Title/Game BGM Started: {clip.name}, volume={bgmVolume}");
-        }
-
-        private void StopBgmIfClip(AudioClip clip)
-        {
-            if (bgmAudioSource == null)
-            {
-                return;
-            }
-
-            if (clip == null || bgmAudioSource.clip == clip)
-            {
-                bgmAudioSource.Stop();
-            }
         }
 
         private void Play(AudioClip clip, float volume)

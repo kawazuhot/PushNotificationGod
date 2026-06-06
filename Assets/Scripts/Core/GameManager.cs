@@ -18,6 +18,13 @@ namespace PushNotificationGod.Core
             Result
         }
 
+        private enum GameEndReason
+        {
+            HpZero,
+            TimeUp,
+            TaskOverflow
+        }
+
         [SerializeField] private TaskDatabase taskDatabase;
         [SerializeField] private TaskSpawner taskSpawner;
         [SerializeField] private TaskManager taskManager;
@@ -63,8 +70,8 @@ namespace PushNotificationGod.Core
             UIJapaneseFont.ApplyToSceneTexts();
             Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, ResultMode=InScenePanel");
 
-            lifeManager.OnLifeDepleted += EndGame;
-            timerManager.OnTimeUp += EndGame;
+            lifeManager.OnLifeDepleted += () => EndGame(GameEndReason.HpZero);
+            timerManager.OnTimeUp += () => EndGame(GameEndReason.TimeUp);
             taskManager.OnCardSpawned += RegisterCard;
 
             StartCoroutine(StartCountdown());
@@ -74,7 +81,7 @@ namespace PushNotificationGod.Core
         {
             if (gameState == GameState.Playing && !gameEnded && taskManager.IsOverflow(deadlineY, maxVisibleTaskCount))
             {
-                EndGame();
+                EndGame(GameEndReason.TaskOverflow);
             }
         }
 
@@ -134,9 +141,10 @@ namespace PushNotificationGod.Core
             }
         }
 
-        private void EndGame()
+        private void EndGame(GameEndReason reason)
         {
             Debug.Log("[GameOverFlow] 1 GameOver called");
+            Debug.Log($"[EndGame] reason={reason}");
             if (gameEnded)
             {
                 return;
@@ -149,6 +157,7 @@ namespace PushNotificationGod.Core
             taskSpawner.Stop();
             timerManager.StopTimer();
             audioManager?.StopGameplayBgm();
+            Debug.Log("[BGM] Stop called from EndGame");
             Debug.Log("[GameOverFlow] Gameplay BGM stopped");
             Debug.Log($"[GameEnd BeforeSave] score={scoreManager.Score}, success={successCount}, miss={missCount}, maxCombo={comboManager.MaxCombo}");
             Debug.Log("[GameOverFlow] 4 Save result start");
