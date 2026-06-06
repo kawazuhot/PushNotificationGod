@@ -390,6 +390,7 @@ public static class MvpSceneBuilder
         SetSerialized(gameManager, "uiManager", ui);
         SetSerialized(gameManager, "feedbackManager", feedbackManager);
         SetSerialized(gameManager, "audioManager", audioManager);
+        SetSerializedBool(gameManager, "taskOverflowCheckEnabled", false);
         SetSerializedFloat(gameManager, "countdownStepDuration", 1.15f);
         SetSerializedFloat(gameManager, "countdownStartDuration", 0.75f);
 
@@ -859,6 +860,14 @@ public static class MvpSceneBuilder
         SerializedObject serializedObject = new(target);
         SerializedProperty property = serializedObject.FindProperty(propertyName);
         property.intValue = value;
+        serializedObject.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    private static void SetSerializedBool(Object target, string propertyName, bool value)
+    {
+        SerializedObject serializedObject = new(target);
+        SerializedProperty property = serializedObject.FindProperty(propertyName);
+        property.boolValue = value;
         serializedObject.ApplyModifiedPropertiesWithoutUndo();
     }
 

@@ -39,6 +39,7 @@ namespace PushNotificationGod.Core
         [SerializeField] private TaskTagStatsManager tagStatsManager;
         [SerializeField] private int maxVisibleTaskCount = 7;
         [SerializeField] private float deadlineY = 1870f;
+        [SerializeField] private bool taskOverflowCheckEnabled;
         [SerializeField] private Text countdownText;
         [SerializeField] private Text countdownInstructionText;
         [SerializeField] private CanvasGroup countdownCanvasGroup;
@@ -92,7 +93,7 @@ namespace PushNotificationGod.Core
 
         private void Update()
         {
-            if (gameState == GameState.Playing && !gameEnded && taskManager.IsOverflow(deadlineY, maxVisibleTaskCount))
+            if (taskOverflowCheckEnabled && gameState == GameState.Playing && !gameEnded && taskManager.IsOverflow(deadlineY, maxVisibleTaskCount))
             {
                 EndGame(GameEndReason.TaskOverflow);
             }

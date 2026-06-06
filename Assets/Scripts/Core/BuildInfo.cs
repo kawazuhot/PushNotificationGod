@@ -2,6 +2,6 @@ namespace PushNotificationGod.Core
 {
     public static class BuildInfo
     {
-        public const string BuildId = "2026-06-05-1615-stop-bgm-all-end-routes";
+        public const string BuildId = "2026-06-06-0528-fixed-count-no-overflow";
     }
 }

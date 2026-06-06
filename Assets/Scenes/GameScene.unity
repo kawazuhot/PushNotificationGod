@@ -582,6 +582,7 @@ MonoBehaviour:
   audioManager: {fileID: 720360099}
   maxVisibleTaskCount: 7
   deadlineY: 1870
+  taskOverflowCheckEnabled: 0
   countdownText: {fileID: 0}
   countdownInstructionText: {fileID: 0}
   countdownCanvasGroup: {fileID: 0}
