@@ -1,5 +1,6 @@
 using UnityEngine;
 using PushNotificationGod.Titles;
+using PushNotificationGod.Tasks;
 
 namespace PushNotificationGod.Core
 {
@@ -9,71 +10,66 @@ namespace PushNotificationGod.Core
         public static int SuccessCount { get; private set; }
         public static int MissCount { get; private set; }
         public static int MaxCombo { get; private set; }
-        public static string RankTitle { get; private set; } = "普通のタスク人間";
-        public static string RankDescription { get; private set; } = "今日もそれなりに通知をさばきました。";
+        public static string RankTitle { get; private set; } = "通知に飲まれた人";
+        public static string RankDescription { get; private set; } = "気づいたら通知の波に流されていました。";
         public static bool WasNewRecord { get; private set; }
+        public static GameEndReason EndReason { get; private set; } = GameEndReason.Unknown;
+        public static string LastMistakeTaskId { get; private set; } = string.Empty;
+        public static string LastMistakeTaskMessage { get; private set; } = string.Empty;
+        public static string LastMistakeTaskTag { get; private set; } = string.Empty;
+        public static string LastMistakeAction { get; private set; } = string.Empty;
 
-        public static void Save(int finalScore, int successCount, int missCount, int maxCombo, TitleDefinition title = null)
+        public static void Save(
+            int finalScore,
+            int successCount,
+            int missCount,
+            int maxCombo,
+            TitleDefinition title = null,
+            GameEndReason endReason = GameEndReason.Unknown,
+            string lastMistakeTaskId = "",
+            string lastMistakeTaskMessage = "",
+            string lastMistakeTaskTag = "",
+            TaskAction? lastMistakeAction = null)
         {
             FinalScore = Mathf.Max(0, finalScore);
             SuccessCount = Mathf.Max(0, successCount);
             MissCount = Mathf.Max(0, missCount);
             MaxCombo = Mathf.Max(0, maxCombo);
-            RankTitle = string.IsNullOrWhiteSpace(title?.titleName) ? "普通のタスク人間" : title.titleName;
-            RankDescription = string.IsNullOrWhiteSpace(title?.description) ? "今日もそれなりに通知をさばきました。" : title.description;
+            RankTitle = string.IsNullOrWhiteSpace(title?.titleName) ? "通知に飲まれた人" : title.titleName;
+            RankDescription = string.IsNullOrWhiteSpace(title?.description) ? "気づいたら通知の波に流されていました。" : title.description;
             WasNewRecord = false;
+            EndReason = endReason;
+            LastMistakeTaskId = lastMistakeTaskId ?? string.Empty;
+            LastMistakeTaskMessage = lastMistakeTaskMessage ?? string.Empty;
+            LastMistakeTaskTag = lastMistakeTaskTag ?? string.Empty;
+            LastMistakeAction = lastMistakeAction?.ToString() ?? string.Empty;
 
-            Debug.Log($"[SaveResult] FinalScore={FinalScore}, Success={SuccessCount}, Miss={MissCount}, MaxCombo={MaxCombo}, Rank={RankTitle}, Description={RankDescription}");
+            Debug.Log($"[SaveResult] FinalScore={FinalScore}, Success={SuccessCount}, Miss={MissCount}, MaxCombo={MaxCombo}, Rank={RankTitle}, Description={RankDescription}, EndReason={EndReason}, LastMistakeTaskId={LastMistakeTaskId}, LastMistakeTag={LastMistakeTaskTag}, LastMistakeAction={LastMistakeAction}");
         }
 
         public static string GetRankTitle(int score)
         {
-            if (score >= 12000)
+            if (score >= 20000)
             {
-                return "タスクの神様";
+                return "タスク処理の神様";
             }
 
-            if (score >= 9000)
+            if (score >= 10000)
             {
-                return "タスク界の番人";
-            }
-
-            if (score >= 7000)
-            {
-                return "タスク処理マスター";
+                return "通知さばき職人";
             }
 
             if (score >= 5000)
             {
-                return "タップの申し子";
-            }
-
-            if (score >= 4000)
-            {
-                return "既読スナイパー";
-            }
-
-            if (score >= 3000)
-            {
-                return "タスクさばき職人";
+                return "そこそこ既読マン";
             }
 
             if (score >= 2000)
             {
-                return "右スワイプの民";
-            }
-
-            if (score >= 1000)
-            {
-                return "普通の人";
-            }
-
-            if (score >= 500)
-            {
                 return "未読ためがち";
             }
 
-            return "スマホに負けた人";
+            return "通知に飲まれた人";
         }
     }
 }

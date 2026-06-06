@@ -9,6 +9,9 @@ namespace PushNotificationGod.Titles
         public int priority;
         public string conditionType;
         public string targetTag;
+        public string targetAction;
         public int threshold;
+        public int minScore;
+        public int maxScore = -1;
     }
 }

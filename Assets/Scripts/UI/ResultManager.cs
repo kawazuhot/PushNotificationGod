@@ -163,8 +163,8 @@ namespace PushNotificationGod.UI
 
             CreateRuntimeText(root.transform, "RankTitleLabelText", "今回の称号", 30, FontStyle.Bold, new Vector2(0f, 326f), new Vector2(740f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             CreateRuntimePanel(root.transform, "RankTitleValueBackground", new Vector2(0f, 236f), new Vector2(740f, 140f), new Color(0.02f, 0.07f, 0.12f, 0.48f));
-            rankTitleText = CreateRuntimeText(root.transform, "RankTitleText_Runtime", "普通のタスク人間", 46, FontStyle.Bold, new Vector2(0f, 266f), new Vector2(780f, 62f), Color.white, true);
-            rankDescriptionText = CreateRuntimeText(root.transform, "RankDescriptionText_Runtime", "今日もそれなりに通知をさばきました。", 27, FontStyle.Bold, new Vector2(0f, 198f), new Vector2(760f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
+            rankTitleText = CreateRuntimeText(root.transform, "RankTitleText_Runtime", "通知に飲まれた人", 46, FontStyle.Bold, new Vector2(0f, 266f), new Vector2(780f, 62f), Color.white, true);
+            rankDescriptionText = CreateRuntimeText(root.transform, "RankDescriptionText_Runtime", "気づいたら通知の波に流されていました。", 27, FontStyle.Bold, new Vector2(0f, 198f), new Vector2(760f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
 
             CreateRuntimeText(root.transform, "FinalScoreLabelText", "最終スコア", 32, FontStyle.Bold, new Vector2(0f, 104f), new Vector2(740f, 44f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             CreateRuntimePanel(root.transform, "FinalScoreValueBackground", new Vector2(0f, 26f), new Vector2(660f, 112f), new Color(0.02f, 0.07f, 0.12f, 0.52f));

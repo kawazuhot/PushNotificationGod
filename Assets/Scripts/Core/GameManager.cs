@@ -19,13 +19,6 @@ namespace PushNotificationGod.Core
             Result
         }
 
-        private enum GameEndReason
-        {
-            HpZero,
-            TimeUp,
-            TaskOverflow
-        }
-
         [SerializeField] private TaskDatabase taskDatabase;
         [SerializeField] private TaskSpawner taskSpawner;
         [SerializeField] private TaskManager taskManager;
@@ -51,6 +44,10 @@ namespace PushNotificationGod.Core
         private GameState gameState = GameState.WaitingForStart;
         private int successCount;
         private int missCount;
+        private string lastMistakeTaskId = string.Empty;
+        private string lastMistakeTaskMessage = string.Empty;
+        private string lastMistakeTaskTag = string.Empty;
+        private TaskAction? lastMistakeAction;
         private GameObject resultOverlay;
         private readonly TitleJudge titleJudge = new();
         private Coroutine countdownRoutine;
@@ -79,7 +76,7 @@ namespace PushNotificationGod.Core
             UIJapaneseFont.ApplyToSceneTexts();
             Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, ResultMode=InScenePanel");
 
-            lifeManager.OnLifeDepleted += () => EndGame(GameEndReason.HpZero);
+            lifeManager.OnLifeDepleted += () => EndGame(GameEndReason.LifeZero);
             timerManager.OnTimeUp += () => EndGame(GameEndReason.TimeUp);
             taskManager.OnCardSpawned += RegisterCard;
 
@@ -130,6 +127,7 @@ namespace PushNotificationGod.Core
             tagStatsManager?.ResetStats();
             successCount = 0;
             missCount = 0;
+            ClearLastMistake();
             gameEnded = false;
             gameState = GameState.WaitingForStart;
             isCountingDown = false;
@@ -181,6 +179,7 @@ namespace PushNotificationGod.Core
             else
             {
                 missCount++;
+                RecordLastMistake(card.Definition, action);
                 comboManager.RegisterMistake();
                 lifeManager.ApplyMistakePenalty();
                 VibrationManager.PlayLightVibration();
@@ -204,6 +203,23 @@ namespace PushNotificationGod.Core
             }
         }
 
+        private void RecordLastMistake(TaskDefinition task, TaskAction action)
+        {
+            lastMistakeTaskId = task != null ? task.taskId : string.Empty;
+            lastMistakeTaskMessage = task != null ? task.messageText : string.Empty;
+            lastMistakeTaskTag = task != null ? task.tag : string.Empty;
+            lastMistakeAction = action;
+            Debug.Log($"[LastMistake] taskId={lastMistakeTaskId} message={lastMistakeTaskMessage} tag={lastMistakeTaskTag} action={lastMistakeAction}");
+        }
+
+        private void ClearLastMistake()
+        {
+            lastMistakeTaskId = string.Empty;
+            lastMistakeTaskMessage = string.Empty;
+            lastMistakeTaskTag = string.Empty;
+            lastMistakeAction = null;
+        }
+
         private void EndGame(GameEndReason reason)
         {
             Debug.Log("[GameOverFlow] 1 GameOver called");
@@ -225,8 +241,28 @@ namespace PushNotificationGod.Core
             Debug.Log($"[GameEnd BeforeSave] score={scoreManager.Score}, success={successCount}, miss={missCount}, maxCombo={comboManager.MaxCombo}");
             Debug.Log("[GameOverFlow] 4 Save result start");
             tagStatsManager?.LogStats();
-            TitleDefinition resultTitle = titleJudge.JudgeMainTitle(tagStatsManager != null ? tagStatsManager.GetAllStats() : null);
-            GameResultData.Save(scoreManager.Score, successCount, missCount, comboManager.MaxCombo, resultTitle);
+            if (reason == GameEndReason.LifeZero)
+            {
+                Debug.Log($"[LifeZero] lastMistakeTaskId={lastMistakeTaskId} message={lastMistakeTaskMessage} tag={lastMistakeTaskTag} action={lastMistakeAction?.ToString() ?? string.Empty}");
+            }
+
+            TitleDefinition resultTitle = titleJudge.JudgeMainTitle(
+                tagStatsManager != null ? tagStatsManager.GetAllStats() : null,
+                scoreManager.Score,
+                reason,
+                lastMistakeTaskTag,
+                lastMistakeAction);
+            GameResultData.Save(
+                scoreManager.Score,
+                successCount,
+                missCount,
+                comboManager.MaxCombo,
+                resultTitle,
+                reason,
+                lastMistakeTaskId,
+                lastMistakeTaskMessage,
+                lastMistakeTaskTag,
+                lastMistakeAction);
             Debug.Log("[GameOverFlow] 5 Save result done");
             Debug.Log($"[GameEnd AfterSave] FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}, Description={GameResultData.RankDescription}");
             Debug.Log("[GameOverFlow] 6 Hide active tasks start");

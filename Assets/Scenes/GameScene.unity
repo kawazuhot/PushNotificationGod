@@ -659,7 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b8a7ef9320e14f709aba9213fd6dc4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PushNotificationGod.Data.IconDatabase
-  defaultIcon: {fileID: 21300000, guid: c728be7afa3a64f2cb2c19e3c37b8923, type: 3}
+  defaultIcon: {fileID: 0}
   entries:
   - iconId: icon_self
     sprite: {fileID: 21300000, guid: c728be7afa3a64f2cb2c19e3c37b8923, type: 3}
@@ -673,6 +673,14 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 06d4a830074fa4a4da3b438e7d7cc066, type: 3}
   - iconId: icon_video
     sprite: {fileID: 21300000, guid: f36195ffe0a4946c5976207dd717a56b, type: 3}
+  - iconId: icon_game
+    sprite: {fileID: 21300000, guid: 87ee384c9ade045339629b90a5eef4e2, type: 3}
+  - iconId: icon_work
+    sprite: {fileID: 21300000, guid: 44614a3f470094db48af98a716ea0a42, type: 3}
+  - iconId: icon_food
+    sprite: {fileID: 21300000, guid: 0d1e14bbcb1384e9da2d459fb4339811, type: 3}
+  - iconId: icon_news
+    sprite: {fileID: 21300000, guid: 08020a466d3384464a94a663700b9df9, type: 3}
 --- !u!114 &720360099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,7 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d96e953bb3c54067a57520a9d35a00d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PushNotificationGod.Core.LifeManager
-  initialLife: 5
+  initialLife: 3
   lifePenaltyOnMistake: 1
 --- !u!114 &720360104
 MonoBehaviour:
@@ -1328,8 +1336,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40, y: -330}
-  m_SizeDelta: {x: 220, y: 50}
+  m_AnchoredPosition: {x: 40, y: -318}
+  m_SizeDelta: {x: 360, y: 86}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1943234537
 CanvasRenderer:
@@ -1361,18 +1369,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 30
+    m_FontSize: 52
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 64
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LIFE 5
+  m_Text: LIFE 3
 --- !u!1 &1955003554
 GameObject:
   m_ObjectHideFlags: 0

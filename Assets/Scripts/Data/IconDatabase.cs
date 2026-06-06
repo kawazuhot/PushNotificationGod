@@ -16,6 +16,7 @@ namespace PushNotificationGod.Data
         [SerializeField] private List<IconEntry> entries = new();
 
         private Dictionary<string, Sprite> iconMap;
+        private readonly HashSet<string> warnedMissingIconIds = new();
 
         public Sprite GetIcon(string iconId)
         {
@@ -23,6 +24,11 @@ namespace PushNotificationGod.Data
             if (!string.IsNullOrEmpty(iconId) && iconMap.TryGetValue(iconId, out Sprite sprite) && sprite != null)
             {
                 return sprite;
+            }
+
+            if (!string.IsNullOrEmpty(iconId) && warnedMissingIconIds.Add(iconId))
+            {
+                Debug.LogWarning($"[IconManager] Missing iconId: {iconId}. Use default icon.");
             }
 
             return defaultIcon;

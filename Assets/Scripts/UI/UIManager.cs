@@ -30,6 +30,7 @@ namespace PushNotificationGod.UI
         {
             UIJapaneseFont.ApplyToSceneTexts();
             ConfigureBottomScoreLayout();
+            ConfigureLifeTextLayout();
             EnsureScoreVisualComponents();
             UIJapaneseFont.ApplyToSceneTexts();
         }
@@ -70,6 +71,47 @@ namespace PushNotificationGod.UI
             }
 
             // Combo text is animated by FeedbackManager so it can pop and show milestone messages.
+        }
+
+        private void ConfigureLifeTextLayout()
+        {
+            if (lifeText == null)
+            {
+                return;
+            }
+
+            lifeText.fontSize = Mathf.Max(lifeText.fontSize, 52);
+            lifeText.fontStyle = FontStyle.Bold;
+            lifeText.color = Color.white;
+            lifeText.alignment = TextAnchor.UpperLeft;
+            lifeText.horizontalOverflow = HorizontalWrapMode.Overflow;
+            lifeText.verticalOverflow = VerticalWrapMode.Overflow;
+            lifeText.raycastTarget = false;
+
+            RectTransform rect = lifeText.rectTransform;
+            rect.anchorMin = new Vector2(0f, 1f);
+            rect.anchorMax = new Vector2(0f, 1f);
+            rect.pivot = new Vector2(0f, 1f);
+            rect.anchoredPosition = new Vector2(40f, -318f);
+            rect.sizeDelta = new Vector2(360f, 86f);
+
+            Shadow shadow = lifeText.GetComponent<Shadow>();
+            if (shadow == null)
+            {
+                shadow = lifeText.gameObject.AddComponent<Shadow>();
+            }
+
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.62f);
+            shadow.effectDistance = new Vector2(0f, -4f);
+
+            Outline outline = lifeText.GetComponent<Outline>();
+            if (outline == null)
+            {
+                outline = lifeText.gameObject.AddComponent<Outline>();
+            }
+
+            outline.effectColor = new Color(0f, 0f, 0f, 0.34f);
+            outline.effectDistance = new Vector2(2f, -2f);
         }
 
         private static string FormatRemainingTime(float remainingSeconds)

@@ -5,7 +5,7 @@ namespace PushNotificationGod.Core
 {
     public class LifeManager : MonoBehaviour
     {
-        [SerializeField] private int initialLife = 5;
+        [SerializeField] private int initialLife = 3;
         [SerializeField] private int lifePenaltyOnMistake = 1;
 
         private int currentLife;

@@ -294,8 +294,10 @@ public static class MvpSceneBuilder
         remainingTime.gameObject.AddComponent<Shadow>().effectDistance = new Vector2(0f, -5f);
         StretchTop(remainingTime.rectTransform, 124f, 210f, 70f);
 
-        Text life = CreateText("LifeText", safe.transform, "LIFE 5", 30, FontStyle.Bold, TextAnchor.UpperLeft, Color.white);
-        SetTopLeft(life.rectTransform, new Vector2(40f, -330f), new Vector2(220f, 50f));
+        Text life = CreateText("LifeText", safe.transform, "LIFE 3", 52, FontStyle.Bold, TextAnchor.UpperLeft, Color.white);
+        SetTopLeft(life.rectTransform, new Vector2(40f, -318f), new Vector2(360f, 86f));
+        life.gameObject.AddComponent<Shadow>().effectDistance = new Vector2(0f, -4f);
+        life.gameObject.AddComponent<Outline>().effectDistance = new Vector2(2f, -2f);
         GameObject scoreGroup = new("ScoreGroup", typeof(RectTransform));
         scoreGroup.transform.SetParent(safe.transform, false);
         RectTransform scoreGroupRect = scoreGroup.GetComponent<RectTransform>();
@@ -364,6 +366,7 @@ public static class MvpSceneBuilder
         GameManager gameManager = system.AddComponent<GameManager>();
 
         SetSerialized(database, "taskCsv", AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/GameData/tasks.csv"));
+        SetSerializedInt(lifeManager, "initialLife", 3);
         ConfigureAudioManager(audioManager, audioSource, bgmAudioSource);
         ConfigureIconDatabase(iconDatabase);
         SetSerialized(taskManager, "cardParent", taskParent);
@@ -461,10 +464,10 @@ public static class MvpSceneBuilder
         Text rankTitleLabel = CreateText("RankTitleLabelText", safe.transform, "今回の称号", 32, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
         SetCenter(rankTitleLabel.rectTransform, new Vector2(0f, 326f), new Vector2(740f, 46f));
         CreateResultValueBackground(safe.transform, "RankTitleValueBackground", new Vector2(0f, 236f), new Vector2(720f, 140f));
-        Text rankTitle = CreateText("RankTitleText", safe.transform, "普通のタスク人間", 48, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+        Text rankTitle = CreateText("RankTitleText", safe.transform, "通知に飲まれた人", 48, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
         SetCenter(rankTitle.rectTransform, new Vector2(0f, 266f), new Vector2(760f, 70f));
         ScoreColorUtility.ApplyReadableEffects(rankTitle);
-        Text rankDescription = CreateText("RankDescriptionText", safe.transform, "今日もそれなりに通知をさばきました。", 28, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.94f, 0.98f, 1f, 1f));
+        Text rankDescription = CreateText("RankDescriptionText", safe.transform, "気づいたら通知の波に流されていました。", 28, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.94f, 0.98f, 1f, 1f));
         SetCenter(rankDescription.rectTransform, new Vector2(0f, 198f), new Vector2(740f, 56f));
         ScoreColorUtility.ApplyReadableEffects(rankDescription);
         Text finalScoreLabel = CreateText("FinalScoreLabelText", safe.transform, "最終スコア", 34, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
@@ -625,17 +628,17 @@ public static class MvpSceneBuilder
 
     private static void ConfigureIconDatabase(IconDatabase iconDatabase)
     {
-        Sprite defaultIcon = LoadIconSprite("icon_self") ?? CreateDefaultIconSprite();
+        Sprite defaultIcon = CreateDefaultIconSprite();
         SerializedObject serializedObject = new(iconDatabase);
         serializedObject.FindProperty("defaultIcon").objectReferenceValue = defaultIcon;
         SerializedProperty entries = serializedObject.FindProperty("entries");
-        string[] iconIds = { "icon_self", "icon_message", "icon_furima", "icon_sns", "icon_life", "icon_video" };
+        string[] iconIds = { "icon_self", "icon_message", "icon_furima", "icon_sns", "icon_life", "icon_video", "icon_game", "icon_work", "icon_food", "icon_news" };
         entries.arraySize = iconIds.Length;
         for (int i = 0; i < iconIds.Length; i++)
         {
             SerializedProperty entry = entries.GetArrayElementAtIndex(i);
             entry.FindPropertyRelative("iconId").stringValue = iconIds[i];
-            entry.FindPropertyRelative("sprite").objectReferenceValue = LoadIconSprite(iconIds[i]) ?? defaultIcon;
+            entry.FindPropertyRelative("sprite").objectReferenceValue = LoadIconSprite(iconIds[i]);
         }
 
         serializedObject.ApplyModifiedPropertiesWithoutUndo();

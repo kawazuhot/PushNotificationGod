@@ -59,12 +59,8 @@ namespace PushNotificationGod.Tasks
 
             if (iconImage != null)
             {
-                if (iconSprite != null)
-                {
-                    iconImage.sprite = iconSprite;
-                }
-
-                iconImage.color = Color.white;
+                iconImage.sprite = iconSprite;
+                iconImage.color = iconSprite != null ? Color.white : new Color(1f, 1f, 1f, 0.35f);
                 iconImage.preserveAspect = true;
             }
 
