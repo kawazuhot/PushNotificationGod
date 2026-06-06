@@ -589,6 +589,7 @@ MonoBehaviour:
   countdownStepDuration: 1.35
   countdownStartDuration: 0.95
   countdownInitialHoldSeconds: 0.45
+  waitForStartTapOnWebGL: 1
   gameOverResultDelaySeconds: 0.8
 --- !u!114 &720360095
 MonoBehaviour:

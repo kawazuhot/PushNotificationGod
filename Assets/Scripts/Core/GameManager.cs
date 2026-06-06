@@ -46,6 +46,7 @@ namespace PushNotificationGod.Core
         [SerializeField] private float countdownStepDuration = 1.35f;
         [SerializeField] private float countdownStartDuration = 0.95f;
         [SerializeField] private float countdownInitialHoldSeconds = 0.45f;
+        [SerializeField] private bool waitForStartTapOnWebGL = true;
         [SerializeField] private Button restartButton;
 
         private bool gameEnded;
@@ -279,9 +280,16 @@ namespace PushNotificationGod.Core
                 StopCoroutine(countdownRoutine);
             }
 
-            EnsureCountdownView();
-            ShowCountdownLabelImmediately("3");
-            countdownRoutine = StartCoroutine(StartCountdown());
+            if (ShouldWaitForStartTap())
+            {
+                countdownRoutine = StartCoroutine(WaitForStartTapThenCountdown());
+            }
+            else
+            {
+                EnsureCountdownView();
+                ShowCountdownLabelImmediately("3");
+                countdownRoutine = StartCoroutine(StartCountdown());
+            }
         }
 
         private void CreateResultPanel(Transform parent)
@@ -440,9 +448,39 @@ namespace PushNotificationGod.Core
             countdownRoutine = null;
         }
 
+        private System.Collections.IEnumerator WaitForStartTapThenCountdown()
+        {
+            gameState = GameState.WaitingForStart;
+            EnsureCountdownView();
+            ShowCountdownLabelImmediately("タップで開始", 84);
+            if (countdownInstructionText != null)
+            {
+                countdownInstructionText.text = "準備ができたら画面をタップ\nそのあとカウントダウンが始まります";
+            }
+
+            Debug.Log($"[{BuildInfo.BuildId}] Waiting for WebGL start tap before countdown.");
+            for (int i = 0; i < 8; i++)
+            {
+                yield return null;
+            }
+
+            while (!HasStartInput())
+            {
+                yield return null;
+            }
+
+            Debug.Log($"[{BuildInfo.BuildId}] WebGL start tap received. Countdown will start.");
+            if (countdownInstructionText != null)
+            {
+                countdownInstructionText.text = "⭕ 必要なものは【タップ！】\n❌ いらないものは【右スワイプ！】";
+            }
+
+            yield return StartCountdown();
+        }
+
         private System.Collections.IEnumerator PlayCountdownStep(string label, float duration)
         {
-            ShowCountdownLabelImmediately(label);
+            ShowCountdownLabelImmediately(label, label == "START!" ? 160 : 190);
             Debug.Log($"[{BuildInfo.BuildId}] Countdown label={label}, duration={duration:F2}");
             if (countdownText == null)
             {
@@ -474,7 +512,7 @@ namespace PushNotificationGod.Core
             }
         }
 
-        private void ShowCountdownLabelImmediately(string label)
+        private void ShowCountdownLabelImmediately(string label, int fontSize = 190)
         {
             EnsureCountdownView();
             if (countdownCanvasGroup != null)
@@ -487,8 +525,23 @@ namespace PushNotificationGod.Core
             if (countdownText != null)
             {
                 countdownText.text = label;
+                countdownText.fontSize = fontSize;
                 countdownText.transform.localScale = Vector3.one;
             }
+        }
+
+        private bool ShouldWaitForStartTap()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            return waitForStartTapOnWebGL;
+#else
+            return false;
+#endif
+        }
+
+        private static bool HasStartInput()
+        {
+            return UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.touchCount > 0;
         }
 
         private System.Collections.IEnumerator HoldCountdownLabel(string label, float seconds)

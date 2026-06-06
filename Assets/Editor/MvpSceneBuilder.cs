@@ -394,6 +394,7 @@ public static class MvpSceneBuilder
         SetSerializedFloat(gameManager, "countdownStepDuration", 1.35f);
         SetSerializedFloat(gameManager, "countdownStartDuration", 0.95f);
         SetSerializedFloat(gameManager, "countdownInitialHoldSeconds", 0.45f);
+        SetSerializedBool(gameManager, "waitForStartTapOnWebGL", true);
 
         EditorSceneManager.SaveScene(scene, $"{SceneDir}/GameScene.unity");
     }
