@@ -399,10 +399,17 @@ namespace PushNotificationGod.Core
         {
             gameState = GameState.Countdown;
             Debug.Log($"[{BuildInfo.BuildId}] Countdown started.");
+            EnsureCountdownView();
             if (countdownCanvasGroup != null)
             {
                 countdownCanvasGroup.gameObject.SetActive(true);
                 countdownCanvasGroup.alpha = 1f;
+                countdownCanvasGroup.transform.SetAsLastSibling();
+                Debug.Log($"[{BuildInfo.BuildId}] Countdown overlay visible. object={countdownCanvasGroup.gameObject.name}, active={countdownCanvasGroup.gameObject.activeInHierarchy}");
+            }
+            else
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] Countdown overlay is missing. Countdown will still delay gameplay.");
             }
 
             yield return null;
@@ -478,14 +485,16 @@ namespace PushNotificationGod.Core
                 return;
             }
 
-            RectTransform parent = uiManager.FeedbackParent;
+            RectTransform parent = GetOverlayParent();
             if (parent == null)
             {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] Countdown parent not found.");
                 return;
             }
 
             GameObject overlay = new("CountdownOverlay", typeof(RectTransform), typeof(CanvasGroup));
             overlay.transform.SetParent(parent, false);
+            overlay.transform.SetAsLastSibling();
             RectTransform overlayRect = overlay.GetComponent<RectTransform>();
             overlayRect.anchorMin = Vector2.zero;
             overlayRect.anchorMax = Vector2.one;
@@ -550,6 +559,17 @@ namespace PushNotificationGod.Core
             instructionRect.offsetMin = new Vector2(24f, 18f);
             instructionRect.offsetMax = new Vector2(-24f, -18f);
             overlay.SetActive(false);
+        }
+
+        private RectTransform GetOverlayParent()
+        {
+            if (uiManager != null && uiManager.FeedbackParent != null)
+            {
+                return uiManager.FeedbackParent;
+            }
+
+            Canvas canvas = FindAnyObjectByType<Canvas>();
+            return canvas != null ? canvas.transform as RectTransform : null;
         }
 
         private void EnsureRestartButton()
