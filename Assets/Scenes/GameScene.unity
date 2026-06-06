@@ -586,10 +586,8 @@ MonoBehaviour:
   countdownText: {fileID: 0}
   countdownInstructionText: {fileID: 0}
   countdownCanvasGroup: {fileID: 0}
-  countdownStepDuration: 1.35
-  countdownStartDuration: 0.95
-  countdownInitialHoldSeconds: 0.45
-  waitForStartTapOnWebGL: 1
+  countdownStepDuration: 1
+  countdownStartDuration: 0.8
   gameOverResultDelaySeconds: 0.8
 --- !u!114 &720360095
 MonoBehaviour:

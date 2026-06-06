@@ -43,10 +43,8 @@ namespace PushNotificationGod.Core
         [SerializeField] private Text countdownText;
         [SerializeField] private Text countdownInstructionText;
         [SerializeField] private CanvasGroup countdownCanvasGroup;
-        [SerializeField] private float countdownStepDuration = 1.35f;
-        [SerializeField] private float countdownStartDuration = 0.95f;
-        [SerializeField] private float countdownInitialHoldSeconds = 0.45f;
-        [SerializeField] private bool waitForStartTapOnWebGL = true;
+        [SerializeField] private float countdownStepDuration = 1f;
+        [SerializeField] private float countdownStartDuration = 0.8f;
         [SerializeField] private Button restartButton;
 
         private bool gameEnded;
@@ -62,18 +60,11 @@ namespace PushNotificationGod.Core
         {
             UIJapaneseFont.ApplyToSceneTexts();
             taskDatabase.Load();
-            scoreManager.ResetScore();
-            lifeManager.ResetLife();
-            comboManager.ResetCombo();
-            successCount = 0;
-            missCount = 0;
             if (tagStatsManager == null)
             {
                 tagStatsManager = gameObject.AddComponent<TaskTagStatsManager>();
             }
 
-            tagStatsManager.ResetStats();
-            timerManager.PrepareTimer();
             uiManager.Bind(scoreManager, lifeManager, comboManager, timerManager);
             if (feedbackManager == null)
             {
@@ -90,7 +81,8 @@ namespace PushNotificationGod.Core
             timerManager.OnTimeUp += () => EndGame(GameEndReason.TimeUp);
             taskManager.OnCardSpawned += RegisterCard;
 
-            BeginCountdown();
+            ResetGameState();
+            StartCountdown();
         }
 
         private void Update()
@@ -111,6 +103,13 @@ namespace PushNotificationGod.Core
             Debug.Log($"[{BuildInfo.BuildId}] Restart button pressed.");
             StopAllCoroutines();
             countdownRoutine = null;
+            ResetGameState();
+            StartCountdown();
+        }
+
+        private void ResetGameState()
+        {
+            Time.timeScale = 1f;
             taskSpawner.Stop();
             timerManager.StopTimer();
             audioManager?.StopGameplayBgm();
@@ -147,8 +146,6 @@ namespace PushNotificationGod.Core
                 countdownCanvasGroup.alpha = 0f;
                 countdownCanvasGroup.gameObject.SetActive(false);
             }
-
-            BeginCountdown();
         }
 
         private void HandleTaskAction(TaskCard card, TaskAction action)
@@ -273,23 +270,18 @@ namespace PushNotificationGod.Core
             Debug.Log("[GameOverFlow] 10 ResultController.Show done");
         }
 
-        private void BeginCountdown()
+        private void StartCountdown()
         {
             if (countdownRoutine != null)
             {
                 StopCoroutine(countdownRoutine);
             }
 
-            if (ShouldWaitForStartTap())
-            {
-                countdownRoutine = StartCoroutine(WaitForStartTapThenCountdown());
-            }
-            else
-            {
-                EnsureCountdownView();
-                ShowCountdownLabelImmediately("3");
-                countdownRoutine = StartCoroutine(StartCountdown());
-            }
+            gameState = GameState.Countdown;
+            taskSpawner.Stop();
+            timerManager.StopTimer();
+            EnsureCountdownView();
+            countdownRoutine = StartCoroutine(CountdownRoutine());
         }
 
         private void CreateResultPanel(Transform parent)
@@ -406,34 +398,30 @@ namespace PushNotificationGod.Core
             return button;
         }
 
-        private System.Collections.IEnumerator StartCountdown()
+        private System.Collections.IEnumerator CountdownRoutine()
         {
+            Time.timeScale = 1f;
             gameState = GameState.Countdown;
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown started.");
+            Debug.Log($"[{BuildInfo.BuildId}] CountdownRoutine started.");
             EnsureCountdownView();
-            ShowCountdownLabelImmediately("3");
             if (countdownCanvasGroup == null)
             {
                 Debug.LogWarning($"[{BuildInfo.BuildId}] Countdown overlay is missing. Countdown will still delay gameplay.");
             }
 
-            yield return HoldCountdownLabel("3", countdownInitialHoldSeconds);
-
-            string[] labels = { "2", "1", "START!" };
+            string[] labels = { "3", "2", "1" };
             for (int i = 0; i < labels.Length; i++)
             {
-                if (labels[i] == "START!")
-                {
-                    audioManager?.PlayCountdownStart();
-                    audioManager?.PlayGameplayBgm();
-                }
-                else
-                {
-                    audioManager?.PlayCountdownTick();
-                }
-
-                yield return PlayCountdownStep(labels[i], labels[i] == "START!" ? countdownStartDuration : countdownStepDuration);
+                audioManager?.PlayCountdownTick();
+                ShowCountdownLabelImmediately(labels[i], 190);
+                Debug.Log($"[{BuildInfo.BuildId}] Countdown label={labels[i]}, duration={countdownStepDuration:F2}");
+                yield return new WaitForSecondsRealtime(countdownStepDuration);
             }
+
+            audioManager?.PlayCountdownStart();
+            ShowCountdownLabelImmediately("START!", 160);
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown label=START!, duration={countdownStartDuration:F2}");
+            yield return new WaitForSecondsRealtime(countdownStartDuration);
 
             if (countdownCanvasGroup != null)
             {
@@ -441,75 +429,23 @@ namespace PushNotificationGod.Core
                 countdownCanvasGroup.gameObject.SetActive(false);
             }
 
+            countdownRoutine = null;
+            StartGameplay();
+        }
+
+        private void StartGameplay()
+        {
+            if (gameEnded)
+            {
+                Debug.Log($"[{BuildInfo.BuildId}] StartGameplay skipped because game already ended.");
+                return;
+            }
+
             gameState = GameState.Playing;
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown finished. Gameplay starting.");
+            Debug.Log($"[{BuildInfo.BuildId}] StartGameplay called. Timer, tasks and BGM start now.");
             timerManager.StartTimer();
             taskSpawner.Begin();
-            countdownRoutine = null;
-        }
-
-        private System.Collections.IEnumerator WaitForStartTapThenCountdown()
-        {
-            gameState = GameState.WaitingForStart;
-            EnsureCountdownView();
-            ShowCountdownLabelImmediately("タップで開始", 84);
-            if (countdownInstructionText != null)
-            {
-                countdownInstructionText.text = "準備ができたら画面をタップ\nそのあとカウントダウンが始まります";
-            }
-
-            Debug.Log($"[{BuildInfo.BuildId}] Waiting for WebGL start tap before countdown.");
-            for (int i = 0; i < 8; i++)
-            {
-                yield return null;
-            }
-
-            while (!HasStartInput())
-            {
-                yield return null;
-            }
-
-            Debug.Log($"[{BuildInfo.BuildId}] WebGL start tap received. Countdown will start.");
-            if (countdownInstructionText != null)
-            {
-                countdownInstructionText.text = "⭕ 必要なものは【タップ！】\n❌ いらないものは【右スワイプ！】";
-            }
-
-            yield return StartCountdown();
-        }
-
-        private System.Collections.IEnumerator PlayCountdownStep(string label, float duration)
-        {
-            ShowCountdownLabelImmediately(label, label == "START!" ? 160 : 190);
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown label={label}, duration={duration:F2}");
-            if (countdownText == null)
-            {
-                yield return HoldCountdownLabel(label, duration);
-                yield break;
-            }
-
-            float elapsed = 0f;
-            while (elapsed < duration)
-            {
-                elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.033f);
-                float t = Mathf.Clamp01(elapsed / duration);
-                float pop = t < 0.28f
-                    ? Mathf.Lerp(0.65f, 1.18f, t / 0.28f)
-                    : Mathf.Lerp(1.18f, 1f, (t - 0.28f) / 0.72f);
-                countdownText.transform.localScale = Vector3.one * pop;
-                if (countdownCanvasGroup != null)
-                {
-                    countdownCanvasGroup.alpha = Mathf.Lerp(1f, 0.82f, t);
-                }
-
-                yield return null;
-            }
-
-            countdownText.transform.localScale = Vector3.one;
-            if (countdownCanvasGroup != null)
-            {
-                countdownCanvasGroup.alpha = 1f;
-            }
+            audioManager?.PlayGameplayBgm();
         }
 
         private void ShowCountdownLabelImmediately(string label, int fontSize = 190)
@@ -527,31 +463,6 @@ namespace PushNotificationGod.Core
                 countdownText.text = label;
                 countdownText.fontSize = fontSize;
                 countdownText.transform.localScale = Vector3.one;
-            }
-        }
-
-        private bool ShouldWaitForStartTap()
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            return waitForStartTapOnWebGL;
-#else
-            return false;
-#endif
-        }
-
-        private static bool HasStartInput()
-        {
-            return UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.touchCount > 0;
-        }
-
-        private System.Collections.IEnumerator HoldCountdownLabel(string label, float seconds)
-        {
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown hold label={label}, seconds={seconds:F2}");
-            float elapsed = 0f;
-            while (elapsed < seconds)
-            {
-                elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.033f);
-                yield return null;
             }
         }
 

@@ -391,10 +391,8 @@ public static class MvpSceneBuilder
         SetSerialized(gameManager, "feedbackManager", feedbackManager);
         SetSerialized(gameManager, "audioManager", audioManager);
         SetSerializedBool(gameManager, "taskOverflowCheckEnabled", false);
-        SetSerializedFloat(gameManager, "countdownStepDuration", 1.35f);
-        SetSerializedFloat(gameManager, "countdownStartDuration", 0.95f);
-        SetSerializedFloat(gameManager, "countdownInitialHoldSeconds", 0.45f);
-        SetSerializedBool(gameManager, "waitForStartTapOnWebGL", true);
+        SetSerializedFloat(gameManager, "countdownStepDuration", 1f);
+        SetSerializedFloat(gameManager, "countdownStartDuration", 0.8f);
 
         EditorSceneManager.SaveScene(scene, $"{SceneDir}/GameScene.unity");
     }
