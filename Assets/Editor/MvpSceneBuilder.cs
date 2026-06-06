@@ -155,7 +155,11 @@ public static class MvpSceneBuilder
         SetSerialized(taskCard, "appNameText", appName);
         SetSerialized(taskCard, "timeText", time);
         SetSerialized(taskCard, "messageText", message);
+        SetSerializedFloat(taskCard, "tapDisappearDuration", 0.15f);
         SetSerialized(taskCard, "inputHandler", root.GetComponent<SwipeInputHandler>());
+        SwipeInputHandler swipeInputHandler = root.GetComponent<SwipeInputHandler>();
+        SetSerializedFloat(swipeInputHandler, "swipeFlyOutDuration", 0.15f);
+        SetSerializedFloat(swipeInputHandler, "swipeReturnDuration", 0.12f);
 
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, CardPrefabPath);
         Object.DestroyImmediate(root);
@@ -365,11 +369,14 @@ public static class MvpSceneBuilder
         SetSerialized(taskManager, "cardParent", taskParent);
         SetSerialized(taskManager, "taskCardPrefab", cardPrefab.GetComponent<TaskCard>());
         SetSerialized(taskManager, "iconDatabase", iconDatabase);
+        SetSerializedFloat(taskManager, "slotMoveDuration", 0.14f);
+        SetSerializedFloat(taskManager, "popDuration", 0.14f);
         SetSerialized(spawner, "taskDatabase", database);
         SetSerialized(spawner, "taskManager", taskManager);
         SetSerialized(spawner, "timerManager", timerManager);
         SetSerialized(spawner, "audioManager", audioManager);
         SetSerializedInt(spawner, "maxVisibleBeforeSpawn", 4);
+        SetSerializedFloat(spawner, "refillDelay", 0f);
         SetSerialized(ui, "dateText", date);
         SetSerialized(ui, "remainingTimeText", remainingTime);
         SetSerialized(ui, "scoreText", score);

@@ -14,7 +14,7 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private float stackBottomPadding;
         [SerializeField] private float taskSpacing = 16f;
         [SerializeField] private float taskCardHeight = 220f;
-        [SerializeField] private float layoutLerpSpeed = 12f;
+        [SerializeField] private float slotMoveDuration = 0.14f;
         [SerializeField] private float spawnOffsetY = -120f;
         [SerializeField] private float popDuration = 0.18f;
 
@@ -25,6 +25,7 @@ namespace PushNotificationGod.Tasks
         public IReadOnlyList<TaskCard> VisibleCards => visibleCards;
         public int VisibleCount => visibleCards.Count;
         public event Action<TaskCard> OnCardSpawned;
+        public event Action OnCardRemoved;
 
         public TaskCard Spawn(TaskDefinition definition)
         {
@@ -61,6 +62,7 @@ namespace PushNotificationGod.Tasks
             }
 
             ReorderSiblings();
+            OnCardRemoved?.Invoke();
         }
 
         public void RemoveTopMost()
@@ -147,7 +149,8 @@ namespace PushNotificationGod.Tasks
                 }
 
                 Vector2 target = GetSlotPosition(i);
-                card.RectTransform.anchoredPosition = Vector2.Lerp(card.RectTransform.anchoredPosition, target, Time.deltaTime * layoutLerpSpeed);
+                float moveSpeed = slotMoveDuration <= 0f ? 1000f : 4f / slotMoveDuration;
+                card.RectTransform.anchoredPosition = Vector2.Lerp(card.RectTransform.anchoredPosition, target, Time.deltaTime * moveSpeed);
                 card.CacheBasePosition();
             }
         }

@@ -13,9 +13,11 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private AudioManager audioManager;
         [SerializeField] private int initialTaskCount = 2;
         [SerializeField] private int maxVisibleBeforeSpawn = 4;
+        [SerializeField] private float refillDelay;
 
         private bool running;
         private bool isSpawning;
+        private Coroutine refillRoutine;
         private int lastLoggedVisibleCount = -1;
         private int lastLoggedTargetTaskCount = -1;
 
@@ -23,6 +25,18 @@ namespace PushNotificationGod.Tasks
         {
             running = true;
             isSpawning = false;
+            if (refillRoutine != null)
+            {
+                StopCoroutine(refillRoutine);
+                refillRoutine = null;
+            }
+
+            if (taskManager != null)
+            {
+                taskManager.OnCardRemoved -= HandleCardRemoved;
+                taskManager.OnCardRemoved += HandleCardRemoved;
+            }
+
             lastLoggedVisibleCount = -1;
             lastLoggedTargetTaskCount = -1;
             Debug.Log($"[{BuildInfo.BuildId}] TaskSpawner.Begin fixed-count mode. initialTaskCount={initialTaskCount}, maxVisible={maxVisibleBeforeSpawn}");
@@ -34,7 +48,47 @@ namespace PushNotificationGod.Tasks
         public void Stop()
         {
             running = false;
+            if (refillRoutine != null)
+            {
+                StopCoroutine(refillRoutine);
+                refillRoutine = null;
+            }
+
+            if (taskManager != null)
+            {
+                taskManager.OnCardRemoved -= HandleCardRemoved;
+            }
+
             Debug.Log($"[{BuildInfo.BuildId}] TaskSpawner.Stop called. Refill disabled. activeTasks.Count={(taskManager != null ? taskManager.VisibleCount : -1)}");
+        }
+
+        private void HandleCardRemoved()
+        {
+            if (!running)
+            {
+                return;
+            }
+
+            if (refillRoutine != null)
+            {
+                StopCoroutine(refillRoutine);
+                refillRoutine = null;
+            }
+
+            if (refillDelay <= 0f)
+            {
+                RefillNow("post-remove-refill");
+                return;
+            }
+
+            refillRoutine = StartCoroutine(RefillAfterDelay());
+        }
+
+        private System.Collections.IEnumerator RefillAfterDelay()
+        {
+            yield return new WaitForSeconds(refillDelay);
+            refillRoutine = null;
+            RefillNow("post-remove-refill-delayed");
         }
 
         private void Update()
@@ -59,6 +113,13 @@ namespace PushNotificationGod.Tasks
             }
 
             AdjustToTargetCount(targetTaskCount, "fixed-count-adjust");
+        }
+
+        private void RefillNow(string reason)
+        {
+            int targetTaskCount = GetCurrentTargetTaskCount();
+            Debug.Log($"[{BuildInfo.BuildId}] RefillNow reason={reason}, target={targetTaskCount}, activeTasks.Count={(taskManager != null ? taskManager.VisibleCount : -1)}");
+            AdjustToTargetCount(targetTaskCount, reason);
         }
 
         private void AdjustToTargetCount(int targetCount, string reason)

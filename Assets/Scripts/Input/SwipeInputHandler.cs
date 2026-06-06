@@ -10,8 +10,8 @@ namespace PushNotificationGod.Input
         [SerializeField] private float swipeRightThreshold = 220f;
         [SerializeField] private float maxTiltDegrees = 8f;
         [SerializeField] private float minDragAlpha = 0.65f;
-        [SerializeField] private float flyOutSpeed = 1800f;
-        [SerializeField] private float returnSpeed = 12f;
+        [SerializeField] private float swipeFlyOutDuration = 0.15f;
+        [SerializeField] private float swipeReturnDuration = 0.12f;
 
         private RectTransform rectTransform;
         private CanvasGroup canvasGroup;
@@ -103,13 +103,21 @@ namespace PushNotificationGod.Input
 
         private System.Collections.IEnumerator ReturnToBase()
         {
-            while (Vector2.Distance(rectTransform.anchoredPosition, baseAnchoredPosition) > 1f)
+            Vector2 startPosition = rectTransform.anchoredPosition;
+            Quaternion startRotation = rectTransform.localRotation;
+            float startAlpha = canvasGroup != null ? canvasGroup.alpha : 1f;
+            float duration = Mathf.Max(0.01f, swipeReturnDuration);
+            float elapsed = 0f;
+            while (elapsed < duration)
             {
-                rectTransform.anchoredPosition = Vector2.Lerp(rectTransform.anchoredPosition, baseAnchoredPosition, Time.deltaTime * returnSpeed);
-                rectTransform.localRotation = Quaternion.Slerp(rectTransform.localRotation, Quaternion.identity, Time.deltaTime * returnSpeed);
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float eased = 1f - Mathf.Pow(1f - t, 3f);
+                rectTransform.anchoredPosition = Vector2.Lerp(startPosition, baseAnchoredPosition, eased);
+                rectTransform.localRotation = Quaternion.Slerp(startRotation, Quaternion.identity, eased);
                 if (canvasGroup != null)
                 {
-                    canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 1f, Time.deltaTime * returnSpeed);
+                    canvasGroup.alpha = Mathf.Lerp(startAlpha, 1f, eased);
                 }
 
                 yield return null;
@@ -125,16 +133,30 @@ namespace PushNotificationGod.Input
 
         private System.Collections.IEnumerator FlyOut(Action onDone)
         {
-            while (rectTransform.anchoredPosition.x < 1300f)
+            Vector2 startPosition = rectTransform.anchoredPosition;
+            Vector2 endPosition = new(Mathf.Max(startPosition.x + 900f, 1400f), startPosition.y);
+            float startAlpha = canvasGroup != null ? canvasGroup.alpha : 1f;
+            float duration = Mathf.Max(0.01f, swipeFlyOutDuration);
+            float elapsed = 0f;
+            while (elapsed < duration)
             {
-                rectTransform.anchoredPosition += Vector2.right * flyOutSpeed * Time.deltaTime;
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float eased = 1f - Mathf.Pow(1f - t, 3f);
+                rectTransform.anchoredPosition = Vector2.Lerp(startPosition, endPosition, eased);
                 rectTransform.localRotation = Quaternion.Euler(0f, 0f, -maxTiltDegrees);
                 if (canvasGroup != null)
                 {
-                    canvasGroup.alpha = Mathf.Max(0f, canvasGroup.alpha - Time.deltaTime * 3f);
+                    canvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, eased);
                 }
 
                 yield return null;
+            }
+
+            rectTransform.anchoredPosition = endPosition;
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = 0f;
             }
 
             onDone?.Invoke();

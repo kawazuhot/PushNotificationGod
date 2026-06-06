@@ -189,8 +189,8 @@ MonoBehaviour:
   swipeRightThreshold: 220
   maxTiltDegrees: 8
   minDragAlpha: 0.65
-  flyOutSpeed: 1800
-  returnSpeed: 12
+  swipeFlyOutDuration: 0.15
+  swipeReturnDuration: 0.12
 --- !u!114 &3004900740853384446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   tapFlashColor: {r: 1, g: 1, b: 1, a: 1}
   tapPopScale: 1.06
   tapDismissScale: 0.9
-  tapDismissDuration: 0.22
+  tapDisappearDuration: 0.15
   inputHandler: {fileID: 751275891273616386}
 --- !u!1 &5093267471628072499
 GameObject:

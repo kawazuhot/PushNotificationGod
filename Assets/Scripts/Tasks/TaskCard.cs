@@ -19,7 +19,7 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private Color tapFlashColor = new(1f, 1f, 1f, 1f);
         [SerializeField] private float tapPopScale = 1.06f;
         [SerializeField] private float tapDismissScale = 0.9f;
-        [SerializeField] private float tapDismissDuration = 0.22f;
+        [SerializeField] private float tapDisappearDuration = 0.15f;
         [SerializeField] private SwipeInputHandler inputHandler;
 
         private TaskDefinition definition;
@@ -177,8 +177,9 @@ namespace PushNotificationGod.Tasks
             Vector3 startScale = Vector3.one;
             Vector3 popScale = Vector3.one * tapPopScale;
             Vector3 endScale = Vector3.one * tapDismissScale;
-            float popDuration = Mathf.Min(0.08f, tapDismissDuration * 0.4f);
-            float fadeDuration = Mathf.Max(0.01f, tapDismissDuration - popDuration);
+            float totalDuration = Mathf.Max(0.01f, tapDisappearDuration);
+            float popDuration = Mathf.Min(0.045f, totalDuration * 0.35f);
+            float fadeDuration = Mathf.Max(0.01f, totalDuration - popDuration);
 
             float elapsed = 0f;
             while (elapsed < popDuration)

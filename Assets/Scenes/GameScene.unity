@@ -624,6 +624,7 @@ MonoBehaviour:
   audioManager: {fileID: 720360099}
   initialTaskCount: 2
   maxVisibleBeforeSpawn: 4
+  refillDelay: 0
 --- !u!114 &720360097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,9 +644,9 @@ MonoBehaviour:
   stackBottomPadding: 0
   taskSpacing: 16
   taskCardHeight: 220
-  layoutLerpSpeed: 12
+  slotMoveDuration: 0.14
   spawnOffsetY: -120
-  popDuration: 0.18
+  popDuration: 0.14
 --- !u!114 &720360098
 MonoBehaviour:
   m_ObjectHideFlags: 0
