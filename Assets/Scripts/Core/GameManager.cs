@@ -398,11 +398,14 @@ namespace PushNotificationGod.Core
         private System.Collections.IEnumerator StartCountdown()
         {
             gameState = GameState.Countdown;
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown started.");
             if (countdownCanvasGroup != null)
             {
                 countdownCanvasGroup.gameObject.SetActive(true);
                 countdownCanvasGroup.alpha = 1f;
             }
+
+            yield return null;
 
             string[] labels = { "3", "2", "1", "START!" };
             for (int i = 0; i < labels.Length; i++)
@@ -427,6 +430,7 @@ namespace PushNotificationGod.Core
             }
 
             gameState = GameState.Playing;
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown finished. Gameplay starting.");
             timerManager.StartTimer();
             taskSpawner.Begin();
             countdownRoutine = null;
@@ -441,10 +445,11 @@ namespace PushNotificationGod.Core
             }
 
             countdownText.text = label;
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown label={label}, duration={duration:F2}");
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.05f);
                 float t = Mathf.Clamp01(elapsed / duration);
                 float pop = t < 0.28f
                     ? Mathf.Lerp(0.65f, 1.18f, t / 0.28f)
