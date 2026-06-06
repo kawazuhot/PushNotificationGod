@@ -654,7 +654,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PushNotificationGod.UI.ResultManager
   finalScoreText: {fileID: 1943234538}
   maxComboText: {fileID: 714777896}
-  bestScoreText: {fileID: 1202611883}
   retryButton: {fileID: 1562461059}
   titleButton: {fileID: 716072904}
   audioManager: {fileID: 720360097}

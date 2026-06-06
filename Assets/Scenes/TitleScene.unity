@@ -636,7 +636,6 @@ MonoBehaviour:
   howToButtonLabelSprite: {fileID: 21300000, guid: 9287d4d4c566434bbd3484b5651f699c, type: 3}
   settingsButtonLabelSprite: {fileID: 21300000, guid: a035573afe654fc39f5ddaf42d487298, type: 3}
   audioManager: {fileID: 0}
-  titleBgmClip: {fileID: 8300000, guid: f0068befeb0f84a088f04c1ab3979574, type: 3}
   bgmVolumeSlider: {fileID: 0}
   seVolumeSlider: {fileID: 0}
 --- !u!4 &475193790

@@ -14,17 +14,5 @@ namespace PushNotificationGod.Core
             LastWasNewRecord = GameResultData.WasNewRecord;
         }
 
-        public static void RestoreFromSaveIfEmpty()
-        {
-            GameResultData.RestoreFromSaveIfEmpty();
-            if (LastScore > 0 || LastMaxCombo > 0)
-            {
-                return;
-            }
-
-            LastScore = GameResultData.FinalScore;
-            LastMaxCombo = GameResultData.MaxCombo;
-            LastWasNewRecord = GameResultData.WasNewRecord;
-        }
     }
 }

@@ -20,7 +20,6 @@ namespace PushNotificationGod.Audio
         [SerializeField] private AudioClip resultSe;
         [SerializeField] private AudioClip countdownTickSe;
         [SerializeField] private AudioClip countdownStartSe;
-        [SerializeField] private AudioClip titleBgm;
         [SerializeField] private AudioClip gameplayBgm;
 
         [SerializeField] private float notificationPopVolume = 0.6f;
@@ -52,8 +51,8 @@ namespace PushNotificationGod.Audio
                 bgmAudioSource = gameObject.AddComponent<AudioSource>();
             }
 
-            bgmVolume = LocalSaveManager.BgmVolume;
-            seVolume = LocalSaveManager.SeVolume;
+            bgmVolume = 0.35f;
+            seVolume = 0.8f;
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.loop = true;
             bgmAudioSource.volume = bgmVolume;
@@ -72,27 +71,6 @@ namespace PushNotificationGod.Audio
         public void PlayResult() => Play(resultSe, resultVolume);
         public void PlayCountdownTick() => Play(countdownTickSe, countdownTickVolume);
         public void PlayCountdownStart() => Play(countdownStartSe, countdownStartVolume);
-
-        public void SetTitleBgmClip(AudioClip clip)
-        {
-            titleBgm = clip;
-        }
-
-        public void PlayTitleBgm()
-        {
-            if (titleBgm == null)
-            {
-                return;
-            }
-
-            Debug.Log($"[{BuildInfo.BuildId}] Title BGM Play Requested");
-            PlayBgm(titleBgm);
-        }
-
-        public void StopTitleBgm()
-        {
-            StopBgmIfClip(titleBgm);
-        }
 
         public void PlayGameplayBgm()
         {
@@ -117,7 +95,6 @@ namespace PushNotificationGod.Audio
         public void SetBgmVolume(float volume)
         {
             bgmVolume = Mathf.Clamp01(volume);
-            LocalSaveManager.SaveBgmVolume(bgmVolume);
             if (bgmAudioSource != null)
             {
                 bgmAudioSource.volume = bgmVolume;
@@ -127,7 +104,6 @@ namespace PushNotificationGod.Audio
         public void SetSeVolume(float volume)
         {
             seVolume = Mathf.Clamp01(volume);
-            LocalSaveManager.SaveSeVolume(seVolume);
         }
 
         public void PlaySpawn() => PlayNotificationPop();

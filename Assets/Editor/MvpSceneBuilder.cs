@@ -275,7 +275,6 @@ public static class MvpSceneBuilder
         SetSerialized(controller, "rankingButtonLabelSprite", LoadUiSprite(RankingButtonLabelPath, true));
         SetSerialized(controller, "howToButtonLabelSprite", LoadUiSprite(HowToButtonLabelPath, true));
         SetSerialized(controller, "settingsButtonLabelSprite", LoadUiSprite(SettingsButtonLabelPath, true));
-        SetSerialized(controller, "titleBgmClip", LoadBgmClip("bgm_title.mp3"));
 
         EditorSceneManager.SaveScene(scene, $"{SceneDir}/TitleScene.unity");
     }
@@ -471,17 +470,6 @@ public static class MvpSceneBuilder
         Text maxCombo = CreateText("MaxComboText", safe.transform, "0 COMBO", 72, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
         SetCenter(maxCombo.rectTransform, new Vector2(0f, -90f), new Vector2(760f, 80f));
         ScoreColorUtility.ApplyReadableEffects(maxCombo);
-        Text bestScoreLabel = CreateText("BestScoreLabelText", safe.transform, "最高スコア", 34, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
-        SetCenter(bestScoreLabel.rectTransform, new Vector2(0f, -202f), new Vector2(740f, 46f));
-        CreateResultValueBackground(safe.transform, "BestScoreValueBackground", new Vector2(0f, -270f), new Vector2(570f, 96f));
-        Text bestScore = CreateText("BestScoreText", safe.transform, "0", 74, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-        SetCenter(bestScore.rectTransform, new Vector2(0f, -270f), new Vector2(760f, 78f));
-        ScoreColorUtility.ApplyReadableEffects(bestScore);
-        Text newRecord = CreateText("NewRecordText", safe.transform, "新記録！", 40, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(1f, 0.72f, 0.08f));
-        SetCenter(newRecord.rectTransform, new Vector2(0f, -336f), new Vector2(740f, 50f));
-        newRecord.gameObject.SetActive(false);
-        ScoreColorUtility.ApplyReadableEffects(newRecord);
-
         Button retry = CreateButton("RetryButton", safe.transform, "もう一度", new Vector2(0f, -470f), new Vector2(560f, 96f));
         UnityEventTools.AddPersistentListener(retry.onClick, result.OnRetryButton);
         Button title = CreateButton("BackToTitleButton", safe.transform, "タイトルへ戻る", new Vector2(0f, -586f), new Vector2(560f, 96f));
@@ -489,7 +477,6 @@ public static class MvpSceneBuilder
 
         SetSerialized(result, "finalScoreText", finalScore);
         SetSerialized(result, "maxComboText", maxCombo);
-        SetSerialized(result, "bestScoreText", bestScore);
         SetSerialized(result, "rankTitleText", rankTitle);
         SetSerialized(result, "retryButton", retry);
         SetSerialized(result, "titleButton", title);
@@ -665,7 +652,6 @@ public static class MvpSceneBuilder
         SetSerialized(audioManager, "resultSe", LoadSeClip("se_result.mp3"));
         SetSerialized(audioManager, "countdownTickSe", LoadSeClip("se_countdown_tick.mp3"));
         SetSerialized(audioManager, "countdownStartSe", LoadSeClip("se_countdown_start.mp3"));
-        SetSerialized(audioManager, "titleBgm", LoadBgmClip("bgm_title.mp3"));
         SetSerialized(audioManager, "gameplayBgm", LoadBgmClip("bgm_gameplay.mp3"));
         SetSerializedFloat(audioManager, "notificationPopVolume", 0.6f);
         SetSerializedFloat(audioManager, "correctVolume", 0.7f);
@@ -853,6 +839,12 @@ public static class MvpSceneBuilder
     {
         SerializedObject serializedObject = new(target);
         SerializedProperty property = serializedObject.FindProperty(propertyName);
+        if (property == null)
+        {
+            Debug.LogWarning($"Serialized property not found: {target.name}.{propertyName}");
+            return;
+        }
+
         property.objectReferenceValue = value;
         serializedObject.ApplyModifiedPropertiesWithoutUndo();
     }

@@ -28,13 +28,11 @@ namespace PushNotificationGod.UI
         [SerializeField] private Sprite howToButtonLabelSprite;
         [SerializeField] private Sprite settingsButtonLabelSprite;
         [SerializeField] private AudioManager audioManager;
-        [SerializeField] private AudioClip titleBgmClip;
         [SerializeField] private Slider bgmVolumeSlider;
         [SerializeField] private Slider seVolumeSlider;
 
         private Transform uiRoot;
         private Font uiFont;
-        private bool titleBgmUnlocked;
 
         private void Start()
         {
@@ -55,23 +53,15 @@ namespace PushNotificationGod.UI
             }
             ForceHideModalPanels();
             UIJapaneseFont.ApplyToSceneTexts();
-            EnsureAudioManager();
             EnsureBuildText();
-            Debug.Log($"[{BuildInfo.BuildId}] TitleScene started. Controller={GetType().FullName}, AudioManager={(audioManager != null ? audioManager.name : "null")}");
-            Debug.Log($"[{BuildInfo.BuildId}] Title BGM disabled for WebGL MVP.");
+            Debug.Log($"[{BuildInfo.BuildId}] TitleScene started. Title BGM disabled for WebGL MVP.");
         }
 
         private void Update()
         {
-            if (titleBgmUnlocked)
-            {
-                return;
-            }
-
             if (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.touchCount > 0)
             {
-                titleBgmUnlocked = true;
-                Debug.Log($"[{BuildInfo.BuildId}] First title user input detected. Title BGM remains disabled.");
+                Debug.Log($"[{BuildInfo.BuildId}] First title user input detected.");
             }
         }
 
@@ -126,15 +116,6 @@ namespace PushNotificationGod.UI
 
             Debug.Log("[NameDialog] Confirm finished");
             Debug.Log($"[{BuildInfo.BuildId}] Player name confirmed. Loading GameScene.");
-            try
-            {
-                audioManager?.StopTitleBgm();
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning($"[{BuildInfo.BuildId}] Stop title BGM failed but continuing. {ex.GetType().Name}: {ex.Message}");
-            }
-
             SceneManager.LoadScene("GameScene");
         }
 
@@ -487,15 +468,11 @@ namespace PushNotificationGod.UI
         private void OnBgmVolumeChanged(float value)
         {
             LocalSaveManager.SaveBgmVolume(value);
-            EnsureAudioManager();
-            audioManager?.SetBgmVolume(value);
         }
 
         private void OnSeVolumeChanged(float value)
         {
             LocalSaveManager.SaveSeVolume(value);
-            EnsureAudioManager();
-            audioManager?.SetSeVolume(value);
         }
 
         private void EnsureAudioManager()
@@ -504,14 +481,6 @@ namespace PushNotificationGod.UI
             {
                 audioManager = FindAnyObjectByType<AudioManager>();
             }
-
-            if (audioManager == null)
-            {
-                GameObject audioObject = new("TitleAudioManager", typeof(AudioSource), typeof(AudioManager));
-                audioManager = audioObject.GetComponent<AudioManager>();
-            }
-
-            audioManager.SetTitleBgmClip(titleBgmClip);
         }
 
         private GameObject CreateHowToImagePanel()

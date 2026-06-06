@@ -18,29 +18,9 @@ namespace PushNotificationGod.Core
             MissCount = Mathf.Max(0, missCount);
             MaxCombo = Mathf.Max(0, maxCombo);
             RankTitle = GetRankTitle(FinalScore);
-            WasNewRecord = FinalScore > LocalSaveManager.BestScore;
-
-            LocalSaveManager.SaveLastResult(FinalScore, SuccessCount, MissCount, MaxCombo, RankTitle, WasNewRecord);
-            LocalSaveManager.SaveBestScore(FinalScore);
+            WasNewRecord = false;
 
             Debug.Log($"[SaveResult] FinalScore={FinalScore}, Success={SuccessCount}, Miss={MissCount}, MaxCombo={MaxCombo}, Rank={RankTitle}");
-        }
-
-        public static void RestoreFromSaveIfEmpty()
-        {
-            if (FinalScore > 0 || SuccessCount > 0 || MissCount > 0 || MaxCombo > 0)
-            {
-                return;
-            }
-
-            FinalScore = LocalSaveManager.LastScore;
-            SuccessCount = LocalSaveManager.LastSuccessCount;
-            MissCount = LocalSaveManager.LastMissCount;
-            MaxCombo = LocalSaveManager.LastMaxCombo;
-            RankTitle = string.IsNullOrWhiteSpace(LocalSaveManager.LastRankTitle)
-                ? GetRankTitle(FinalScore)
-                : LocalSaveManager.LastRankTitle;
-            WasNewRecord = LocalSaveManager.LastWasNewRecord;
         }
 
         public static string GetRankTitle(int score)
