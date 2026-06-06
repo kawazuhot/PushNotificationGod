@@ -54,6 +54,8 @@ namespace PushNotificationGod.Core
         private GameObject resultOverlay;
         private readonly TitleJudge titleJudge = new();
         private Coroutine countdownRoutine;
+        private bool isCountingDown;
+        private int countdownRunId;
         private Sprite restartButtonSprite;
 
         private void Start()
@@ -103,6 +105,7 @@ namespace PushNotificationGod.Core
             Debug.Log($"[{BuildInfo.BuildId}] Restart button pressed.");
             StopAllCoroutines();
             countdownRoutine = null;
+            isCountingDown = false;
             ResetGameState();
             StartCountdown();
         }
@@ -129,6 +132,7 @@ namespace PushNotificationGod.Core
             missCount = 0;
             gameEnded = false;
             gameState = GameState.WaitingForStart;
+            isCountingDown = false;
             timerManager.PrepareTimer();
             if (uiManager.ScoreText != null)
             {
@@ -272,11 +276,15 @@ namespace PushNotificationGod.Core
 
         private void StartCountdown()
         {
+            Debug.Log($"[{BuildInfo.BuildId}] StartCountdown requested at {Time.realtimeSinceStartup:F3}. existingCoroutine={(countdownRoutine != null)}, isCountingDown={isCountingDown}, state={gameState}");
             if (countdownRoutine != null)
             {
+                Debug.Log($"[{BuildInfo.BuildId}] Existing CountdownRoutine stopped before starting a new one. previousRunId={countdownRunId}");
                 StopCoroutine(countdownRoutine);
+                countdownRoutine = null;
             }
 
+            isCountingDown = false;
             gameState = GameState.Countdown;
             taskSpawner.Stop();
             timerManager.StopTimer();
@@ -401,27 +409,35 @@ namespace PushNotificationGod.Core
         private System.Collections.IEnumerator CountdownRoutine()
         {
             Time.timeScale = 1f;
+            isCountingDown = true;
+            int runId = ++countdownRunId;
             gameState = GameState.Countdown;
-            Debug.Log($"[{BuildInfo.BuildId}] CountdownRoutine started.");
+            Debug.Log($"[{BuildInfo.BuildId}] CountdownRoutine started. runId={runId}, step={countdownStepDuration:F2}, start={countdownStartDuration:F2}, realtime={Time.realtimeSinceStartup:F3}");
             EnsureCountdownView();
             if (countdownCanvasGroup == null)
             {
                 Debug.LogWarning($"[{BuildInfo.BuildId}] Countdown overlay is missing. Countdown will still delay gameplay.");
             }
 
-            string[] labels = { "3", "2", "1" };
-            for (int i = 0; i < labels.Length; i++)
-            {
-                audioManager?.PlayCountdownTick();
-                ShowCountdownLabelImmediately(labels[i], 190);
-                Debug.Log($"[{BuildInfo.BuildId}] Countdown label={labels[i]}, duration={countdownStepDuration:F2}");
-                yield return new WaitForSecondsRealtime(countdownStepDuration);
-            }
+            audioManager?.PlayCountdownTick();
+            ShowCountdownLabelImmediately("3", 190);
+            Debug.Log($"[Countdown] 3 at {Time.realtimeSinceStartup:F3} runId={runId}");
+            yield return new WaitForSecondsRealtime(1f);
+
+            audioManager?.PlayCountdownTick();
+            ShowCountdownLabelImmediately("2", 190);
+            Debug.Log($"[Countdown] 2 at {Time.realtimeSinceStartup:F3} runId={runId}");
+            yield return new WaitForSecondsRealtime(1f);
+
+            audioManager?.PlayCountdownTick();
+            ShowCountdownLabelImmediately("1", 190);
+            Debug.Log($"[Countdown] 1 at {Time.realtimeSinceStartup:F3} runId={runId}");
+            yield return new WaitForSecondsRealtime(1f);
 
             audioManager?.PlayCountdownStart();
             ShowCountdownLabelImmediately("START!", 160);
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown label=START!, duration={countdownStartDuration:F2}");
-            yield return new WaitForSecondsRealtime(countdownStartDuration);
+            Debug.Log($"[Countdown] START at {Time.realtimeSinceStartup:F3} runId={runId}");
+            yield return new WaitForSecondsRealtime(0.8f);
 
             if (countdownCanvasGroup != null)
             {
@@ -430,14 +446,23 @@ namespace PushNotificationGod.Core
             }
 
             countdownRoutine = null;
+            isCountingDown = false;
+            Debug.Log($"[Countdown] StartGameplay at {Time.realtimeSinceStartup:F3} runId={runId}");
             StartGameplay();
         }
 
         private void StartGameplay()
         {
+            Debug.Log($"[{BuildInfo.BuildId}] StartGameplay requested at {Time.realtimeSinceStartup:F3}. isCountingDown={isCountingDown}, state={gameState}, gameEnded={gameEnded}");
             if (gameEnded)
             {
                 Debug.Log($"[{BuildInfo.BuildId}] StartGameplay skipped because game already ended.");
+                return;
+            }
+
+            if (isCountingDown)
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] StartGameplay blocked because countdown is still running.");
                 return;
             }
 
