@@ -43,8 +43,9 @@ namespace PushNotificationGod.Core
         [SerializeField] private Text countdownText;
         [SerializeField] private Text countdownInstructionText;
         [SerializeField] private CanvasGroup countdownCanvasGroup;
-        [SerializeField] private float countdownStepDuration = 1.15f;
-        [SerializeField] private float countdownStartDuration = 0.75f;
+        [SerializeField] private float countdownStepDuration = 1.35f;
+        [SerializeField] private float countdownStartDuration = 0.95f;
+        [SerializeField] private float countdownInitialHoldSeconds = 0.45f;
         [SerializeField] private Button restartButton;
 
         private bool gameEnded;
@@ -278,6 +279,8 @@ namespace PushNotificationGod.Core
                 StopCoroutine(countdownRoutine);
             }
 
+            EnsureCountdownView();
+            ShowCountdownLabelImmediately("3");
             countdownRoutine = StartCoroutine(StartCountdown());
         }
 
@@ -400,24 +403,18 @@ namespace PushNotificationGod.Core
             gameState = GameState.Countdown;
             Debug.Log($"[{BuildInfo.BuildId}] Countdown started.");
             EnsureCountdownView();
-            if (countdownCanvasGroup != null)
-            {
-                countdownCanvasGroup.gameObject.SetActive(true);
-                countdownCanvasGroup.alpha = 1f;
-                countdownCanvasGroup.transform.SetAsLastSibling();
-                Debug.Log($"[{BuildInfo.BuildId}] Countdown overlay visible. object={countdownCanvasGroup.gameObject.name}, active={countdownCanvasGroup.gameObject.activeInHierarchy}");
-            }
-            else
+            ShowCountdownLabelImmediately("3");
+            if (countdownCanvasGroup == null)
             {
                 Debug.LogWarning($"[{BuildInfo.BuildId}] Countdown overlay is missing. Countdown will still delay gameplay.");
             }
 
-            yield return null;
+            yield return HoldCountdownLabel("3", countdownInitialHoldSeconds);
 
-            string[] labels = { "3", "2", "1", "START!" };
+            string[] labels = { "2", "1", "START!" };
             for (int i = 0; i < labels.Length; i++)
             {
-                if (i == labels.Length - 1)
+                if (labels[i] == "START!")
                 {
                     audioManager?.PlayCountdownStart();
                     audioManager?.PlayGameplayBgm();
@@ -427,7 +424,7 @@ namespace PushNotificationGod.Core
                     audioManager?.PlayCountdownTick();
                 }
 
-                yield return PlayCountdownStep(labels[i], i == labels.Length - 1 ? countdownStartDuration : countdownStepDuration);
+                yield return PlayCountdownStep(labels[i], labels[i] == "START!" ? countdownStartDuration : countdownStepDuration);
             }
 
             if (countdownCanvasGroup != null)
@@ -445,18 +442,18 @@ namespace PushNotificationGod.Core
 
         private System.Collections.IEnumerator PlayCountdownStep(string label, float duration)
         {
+            ShowCountdownLabelImmediately(label);
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown label={label}, duration={duration:F2}");
             if (countdownText == null)
             {
-                yield return new WaitForSeconds(duration);
+                yield return HoldCountdownLabel(label, duration);
                 yield break;
             }
 
-            countdownText.text = label;
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown label={label}, duration={duration:F2}");
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.05f);
+                elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.033f);
                 float t = Mathf.Clamp01(elapsed / duration);
                 float pop = t < 0.28f
                     ? Mathf.Lerp(0.65f, 1.18f, t / 0.28f)
@@ -474,6 +471,34 @@ namespace PushNotificationGod.Core
             if (countdownCanvasGroup != null)
             {
                 countdownCanvasGroup.alpha = 1f;
+            }
+        }
+
+        private void ShowCountdownLabelImmediately(string label)
+        {
+            EnsureCountdownView();
+            if (countdownCanvasGroup != null)
+            {
+                countdownCanvasGroup.gameObject.SetActive(true);
+                countdownCanvasGroup.alpha = 1f;
+                countdownCanvasGroup.transform.SetAsLastSibling();
+            }
+
+            if (countdownText != null)
+            {
+                countdownText.text = label;
+                countdownText.transform.localScale = Vector3.one;
+            }
+        }
+
+        private System.Collections.IEnumerator HoldCountdownLabel(string label, float seconds)
+        {
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown hold label={label}, seconds={seconds:F2}");
+            float elapsed = 0f;
+            while (elapsed < seconds)
+            {
+                elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.033f);
+                yield return null;
             }
         }
 
