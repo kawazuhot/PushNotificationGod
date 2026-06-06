@@ -20,6 +20,7 @@ namespace PushNotificationGod.Tasks
 
         private readonly List<TaskCard> visibleCards = new();
         private readonly List<Vector2> slotPositions = new();
+        private bool gameOverCleanup;
 
         public IReadOnlyList<TaskCard> VisibleCards => visibleCards;
         public int VisibleCount => visibleCards.Count;
@@ -46,8 +47,35 @@ namespace PushNotificationGod.Tasks
         public void Remove(TaskCard card)
         {
             visibleCards.Remove(card);
-            Destroy(card.gameObject);
+            if (card != null)
+            {
+                if (gameOverCleanup)
+                {
+                    card.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Destroy(card.gameObject);
+                }
+            }
+
             ReorderSiblings();
+        }
+
+        public void HideAllForGameOver()
+        {
+            gameOverCleanup = true;
+            StopAllCoroutines();
+            for (int i = 0; i < visibleCards.Count; i++)
+            {
+                TaskCard card = visibleCards[i];
+                if (card != null)
+                {
+                    card.HideForGameOver();
+                }
+            }
+
+            visibleCards.Clear();
         }
 
         public bool IsOverflow(float deadlineY, int maxVisibleTaskCount)

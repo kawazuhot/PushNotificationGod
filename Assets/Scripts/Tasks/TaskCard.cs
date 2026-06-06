@@ -141,6 +141,19 @@ namespace PushNotificationGod.Tasks
             StartCoroutine(TapDismiss(onDone));
         }
 
+        public void HideForGameOver()
+        {
+            handled = true;
+            OnAction = null;
+            StopAllCoroutines();
+            if (inputHandler != null)
+            {
+                inputHandler.StopAllCoroutines();
+            }
+
+            gameObject.SetActive(false);
+        }
+
         private void Submit(TaskAction action)
         {
             if (handled)

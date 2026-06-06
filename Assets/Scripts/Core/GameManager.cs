@@ -35,12 +35,12 @@ namespace PushNotificationGod.Core
         [SerializeField] private CanvasGroup countdownCanvasGroup;
         [SerializeField] private float countdownStepDuration = 1.15f;
         [SerializeField] private float countdownStartDuration = 0.75f;
-        [SerializeField] private float gameOverResultDelaySeconds = 0.8f;
 
         private bool gameEnded;
         private GameState gameState = GameState.WaitingForStart;
         private int successCount;
         private int missCount;
+        private GameObject resultOverlay;
 
         private void Start()
         {
@@ -61,7 +61,7 @@ namespace PushNotificationGod.Core
             feedbackManager.Configure(uiManager.FeedbackParent, uiManager.ScoreText, uiManager.ComboText, audioManager);
             EnsureCountdownView();
             UIJapaneseFont.ApplyToSceneTexts();
-            Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, ResultScene target=ResultScene");
+            Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, ResultMode=InScenePanel");
 
             lifeManager.OnLifeDepleted += EndGame;
             timerManager.OnTimeUp += EndGame;
@@ -118,6 +118,12 @@ namespace PushNotificationGod.Core
                 feedbackManager?.PlayMistakeFeedback();
             }
 
+            if (gameEnded || gameState != GameState.Playing)
+            {
+                Debug.Log("[GameOverFlow] Dismiss skipped because game already ended.");
+                return;
+            }
+
             if (action == TaskAction.Tap)
             {
                 card.PlayTapDismiss(() => taskManager.Remove(card));
@@ -130,6 +136,7 @@ namespace PushNotificationGod.Core
 
         private void EndGame()
         {
+            Debug.Log("[GameOverFlow] 1 GameOver called");
             if (gameEnded)
             {
                 return;
@@ -137,22 +144,171 @@ namespace PushNotificationGod.Core
 
             gameEnded = true;
             gameState = GameState.Result;
+            Debug.Log("[GameOverFlow] 2 isPlaying false");
+            Debug.Log("[GameOverFlow] 3 Stop spawn");
             taskSpawner.Stop();
             timerManager.StopTimer();
             Debug.Log($"[GameEnd BeforeSave] score={scoreManager.Score}, success={successCount}, miss={missCount}, maxCombo={comboManager.MaxCombo}");
+            Debug.Log("[GameOverFlow] 4 Save result start");
             GameResultData.Save(scoreManager.Score, successCount, missCount, comboManager.MaxCombo);
+            Debug.Log("[GameOverFlow] 5 Save result done");
             Debug.Log($"[GameEnd AfterSave] FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}");
-            StartCoroutine(EndGameRoutine());
+            Debug.Log("[GameOverFlow] 6 Hide active tasks start");
+            taskManager.HideAllForGameOver();
+            Debug.Log("[GameOverFlow] 7 Hide active tasks done");
+            Debug.Log("[GameOverFlow] 8 Show result panel start");
+            ShowInSceneResultPanel();
         }
 
-        private System.Collections.IEnumerator EndGameRoutine()
+        private void ShowInSceneResultPanel()
         {
-            audioManager?.StopGameplayBgm();
-            audioManager?.PlayGameOver();
-            yield return new WaitForSecondsRealtime(gameOverResultDelaySeconds);
+            Debug.Log("[GameOverFlow] 9 ResultController.Show start");
+            RectTransform parent = uiManager != null ? uiManager.FeedbackParent : null;
+            if (parent == null)
+            {
+                Canvas canvas = FindAnyObjectByType<Canvas>();
+                parent = canvas != null ? (RectTransform)canvas.transform : null;
+            }
 
-            Debug.Log($"[{BuildInfo.BuildId}] Loading ResultScene with FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}");
-            SceneManager.LoadScene("ResultScene");
+            if (parent == null)
+            {
+                Debug.LogWarning("[GameOverFlow] Result parent not found. Cannot show result panel.");
+                return;
+            }
+
+            if (resultOverlay != null)
+            {
+                resultOverlay.SetActive(false);
+            }
+
+            resultOverlay = new GameObject("InSceneResultOverlay", typeof(RectTransform), typeof(Image));
+            resultOverlay.transform.SetParent(parent, false);
+            resultOverlay.transform.SetAsLastSibling();
+            RectTransform overlayRect = resultOverlay.GetComponent<RectTransform>();
+            overlayRect.anchorMin = Vector2.zero;
+            overlayRect.anchorMax = Vector2.one;
+            overlayRect.offsetMin = Vector2.zero;
+            overlayRect.offsetMax = Vector2.zero;
+            Image overlayImage = resultOverlay.GetComponent<Image>();
+            overlayImage.color = new Color(0f, 0f, 0f, 0.58f);
+            overlayImage.raycastTarget = true;
+
+            CreateResultPanel(resultOverlay.transform);
+            Debug.Log($"[ResultText Applied] scoreText={GameResultData.FinalScore}, successText={GameResultData.SuccessCount}, missText={GameResultData.MissCount}, maxComboText={GameResultData.MaxCombo} COMBO, rankText={GameResultData.RankTitle}");
+            Debug.Log("[GameOverFlow] 10 ResultController.Show done");
+        }
+
+        private void CreateResultPanel(Transform parent)
+        {
+            GameObject panel = new("MvpResultPanel", typeof(RectTransform), typeof(Image), typeof(Shadow));
+            panel.transform.SetParent(parent, false);
+            RectTransform panelRect = panel.GetComponent<RectTransform>();
+            panelRect.anchorMin = new Vector2(0.5f, 0.5f);
+            panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+            panelRect.pivot = new Vector2(0.5f, 0.5f);
+            panelRect.anchoredPosition = Vector2.zero;
+            panelRect.sizeDelta = new Vector2(850f, 1280f);
+            Image panelImage = panel.GetComponent<Image>();
+            panelImage.color = new Color(0.94f, 0.99f, 1f, 0.94f);
+            panelImage.raycastTarget = true;
+            Shadow panelShadow = panel.GetComponent<Shadow>();
+            panelShadow.effectColor = new Color(0f, 0f, 0f, 0.32f);
+            panelShadow.effectDistance = new Vector2(0f, -8f);
+
+            CreateResultText(panel.transform, "ResultHeadingText", "通知さばき完了！", 54, FontStyle.Bold, new Vector2(0f, 500f), new Vector2(760f, 82f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateResultText(panel.transform, "FinalScoreLabelText", "最終スコア", 30, FontStyle.Bold, new Vector2(0f, 380f), new Vector2(720f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, 314f), new Vector2(650f, 96f));
+            CreateResultText(panel.transform, "FinalScoreText", GameResultData.FinalScore.ToString(), 78, FontStyle.Bold, new Vector2(0f, 314f), new Vector2(740f, 88f), Color.white, true);
+
+            CreateResultText(panel.transform, "RankLabelText", "今回の称号", 28, FontStyle.Bold, new Vector2(0f, 182f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, 116f), new Vector2(720f, 90f));
+            CreateResultText(panel.transform, "RankText", GameResultData.RankTitle, 46, FontStyle.Bold, new Vector2(0f, 116f), new Vector2(760f, 78f), Color.white, true);
+
+            CreateResultText(panel.transform, "SuccessLabelText", "処理数", 27, FontStyle.Bold, new Vector2(-190f, 10f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateResultText(panel.transform, "MissLabelText", "ミス", 27, FontStyle.Bold, new Vector2(190f, 10f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(-190f, -54f), new Vector2(280f, 74f));
+            CreateValueBand(panel.transform, new Vector2(190f, -54f), new Vector2(280f, 74f));
+            CreateResultText(panel.transform, "SuccessText", GameResultData.SuccessCount.ToString(), 46, FontStyle.Bold, new Vector2(-190f, -54f), new Vector2(320f, 68f), Color.white, true);
+            CreateResultText(panel.transform, "MissText", GameResultData.MissCount.ToString(), 46, FontStyle.Bold, new Vector2(190f, -54f), new Vector2(320f, 68f), Color.white, true);
+
+            CreateResultText(panel.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -148f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, -212f), new Vector2(640f, 82f));
+            CreateResultText(panel.transform, "MaxComboText", $"{GameResultData.MaxCombo} COMBO", 52, FontStyle.Bold, new Vector2(0f, -212f), new Vector2(740f, 72f), Color.white, true);
+
+            CreateResultButton(panel.transform, "RetryButton", "もう一度", new Vector2(0f, -390f), new Vector2(560f, 88f), () => SceneManager.LoadScene("GameScene"));
+            CreateResultButton(panel.transform, "TitleButton", "タイトルへ戻る", new Vector2(0f, -500f), new Vector2(560f, 88f), () => SceneManager.LoadScene("TitleScene"));
+        }
+
+        private Image CreateValueBand(Transform parent, Vector2 anchoredPosition, Vector2 size)
+        {
+            GameObject band = new("ValueBand", typeof(RectTransform), typeof(Image));
+            band.transform.SetParent(parent, false);
+            RectTransform rect = band.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = size;
+            Image image = band.GetComponent<Image>();
+            image.color = new Color(0.02f, 0.07f, 0.12f, 0.48f);
+            image.raycastTarget = false;
+            return image;
+        }
+
+        private Text CreateResultText(Transform parent, string objectName, string value, int fontSize, FontStyle style, Vector2 anchoredPosition, Vector2 size, Color color, bool readable)
+        {
+            GameObject textObject = new(objectName, typeof(RectTransform), typeof(Text));
+            textObject.transform.SetParent(parent, false);
+            Text text = textObject.GetComponent<Text>();
+            text.font = UIJapaneseFont.Get();
+            text.text = value;
+            text.fontSize = fontSize;
+            text.fontStyle = style;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = color;
+            text.raycastTarget = false;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text.verticalOverflow = VerticalWrapMode.Overflow;
+            RectTransform rect = text.rectTransform;
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = size;
+
+            if (readable)
+            {
+                Shadow shadow = textObject.AddComponent<Shadow>();
+                shadow.effectColor = new Color(0f, 0f, 0f, 0.58f);
+                shadow.effectDistance = new Vector2(0f, -4f);
+                Outline outline = textObject.AddComponent<Outline>();
+                outline.effectColor = new Color(0f, 0f, 0f, 0.32f);
+                outline.effectDistance = new Vector2(2f, -2f);
+            }
+
+            text.transform.SetAsLastSibling();
+            return text;
+        }
+
+        private Button CreateResultButton(Transform parent, string objectName, string label, Vector2 anchoredPosition, Vector2 size, UnityEngine.Events.UnityAction action)
+        {
+            GameObject buttonObject = new(objectName, typeof(RectTransform), typeof(Image), typeof(Button), typeof(Shadow));
+            buttonObject.transform.SetParent(parent, false);
+            RectTransform rect = buttonObject.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = size;
+            Image image = buttonObject.GetComponent<Image>();
+            image.color = new Color(0.92f, 0.98f, 1f, 0.9f);
+            Shadow shadow = buttonObject.GetComponent<Shadow>();
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.24f);
+            shadow.effectDistance = new Vector2(0f, -4f);
+            Button button = buttonObject.GetComponent<Button>();
+            button.onClick.AddListener(action);
+            CreateResultText(buttonObject.transform, "Label", label, 32, FontStyle.Bold, Vector2.zero, size, new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            return button;
         }
 
         private System.Collections.IEnumerator StartCountdown()
