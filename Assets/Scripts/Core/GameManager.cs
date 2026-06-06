@@ -309,29 +309,30 @@ namespace PushNotificationGod.Core
             panelShadow.effectColor = new Color(0f, 0f, 0f, 0.32f);
             panelShadow.effectDistance = new Vector2(0f, -8f);
 
-            CreateResultText(panel.transform, "ResultHeadingText", "通知斬り完了！", 54, FontStyle.Bold, new Vector2(0f, 500f), new Vector2(760f, 82f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateResultText(panel.transform, "FinalScoreLabelText", "最終スコア", 30, FontStyle.Bold, new Vector2(0f, 380f), new Vector2(720f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(0f, 314f), new Vector2(650f, 96f));
-            CreateResultText(panel.transform, "FinalScoreText", GameResultData.FinalScore.ToString(), 78, FontStyle.Bold, new Vector2(0f, 314f), new Vector2(740f, 88f), Color.white, true);
+            CreateResultButton(panel.transform, "RetryButton", "もう一度", new Vector2(-188f, 520f), new Vector2(340f, 78f), () => SceneManager.LoadScene("GameScene"));
+            CreateResultButton(panel.transform, "TitleButton", "タイトルへ", new Vector2(188f, 520f), new Vector2(340f, 78f), () => SceneManager.LoadScene("TitleScene"));
 
-            CreateResultText(panel.transform, "RankLabelText", "今回の称号", 28, FontStyle.Bold, new Vector2(0f, 190f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(0f, 104f), new Vector2(720f, 134f));
-            CreateResultText(panel.transform, "RankText", GameResultData.RankTitle, 44, FontStyle.Bold, new Vector2(0f, 134f), new Vector2(760f, 62f), Color.white, true);
-            CreateResultText(panel.transform, "RankDescriptionText", GameResultData.RankDescription, 27, FontStyle.Bold, new Vector2(0f, 72f), new Vector2(740f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
+            CreateResultText(panel.transform, "ResultHeadingText", "通知斬り完了！", 54, FontStyle.Bold, new Vector2(0f, 420f), new Vector2(760f, 82f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
 
-            CreateResultText(panel.transform, "SuccessLabelText", "処理数", 27, FontStyle.Bold, new Vector2(-190f, -18f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateResultText(panel.transform, "MissLabelText", "ミス", 27, FontStyle.Bold, new Vector2(190f, -18f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(-190f, -82f), new Vector2(280f, 74f));
-            CreateValueBand(panel.transform, new Vector2(190f, -82f), new Vector2(280f, 74f));
-            CreateResultText(panel.transform, "SuccessText", GameResultData.SuccessCount.ToString(), 46, FontStyle.Bold, new Vector2(-190f, -82f), new Vector2(320f, 68f), Color.white, true);
-            CreateResultText(panel.transform, "MissText", GameResultData.MissCount.ToString(), 46, FontStyle.Bold, new Vector2(190f, -82f), new Vector2(320f, 68f), Color.white, true);
+            CreateResultText(panel.transform, "RankLabelText", "今回の称号", 28, FontStyle.Bold, new Vector2(0f, 302f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, 216f), new Vector2(720f, 134f));
+            CreateResultText(panel.transform, "RankText", GameResultData.RankTitle, 44, FontStyle.Bold, new Vector2(0f, 246f), new Vector2(760f, 62f), Color.white, true);
+            CreateResultText(panel.transform, "RankDescriptionText", GameResultData.RankDescription, 27, FontStyle.Bold, new Vector2(0f, 184f), new Vector2(740f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
 
-            CreateResultText(panel.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -176f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(0f, -240f), new Vector2(640f, 82f));
-            CreateResultText(panel.transform, "MaxComboText", $"{GameResultData.MaxCombo} COMBO", 52, FontStyle.Bold, new Vector2(0f, -240f), new Vector2(740f, 72f), Color.white, true);
+            CreateResultText(panel.transform, "FinalScoreLabelText", "最終スコア", 30, FontStyle.Bold, new Vector2(0f, 82f), new Vector2(720f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, 16f), new Vector2(650f, 96f));
+            CreateResultText(panel.transform, "FinalScoreText", GameResultData.FinalScore.ToString(), 78, FontStyle.Bold, new Vector2(0f, 16f), new Vector2(740f, 88f), Color.white, true);
 
-            CreateResultButton(panel.transform, "RetryButton", "もう一度", new Vector2(0f, -390f), new Vector2(560f, 88f), () => SceneManager.LoadScene("GameScene"));
-            CreateResultButton(panel.transform, "TitleButton", "タイトルへ戻る", new Vector2(0f, -500f), new Vector2(560f, 88f), () => SceneManager.LoadScene("TitleScene"));
+            CreateResultText(panel.transform, "SuccessLabelText", "処理数", 27, FontStyle.Bold, new Vector2(-190f, -118f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateResultText(panel.transform, "MissLabelText", "ミス", 27, FontStyle.Bold, new Vector2(190f, -118f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(-190f, -182f), new Vector2(280f, 74f));
+            CreateValueBand(panel.transform, new Vector2(190f, -182f), new Vector2(280f, 74f));
+            CreateResultText(panel.transform, "SuccessText", GameResultData.SuccessCount.ToString(), 46, FontStyle.Bold, new Vector2(-190f, -182f), new Vector2(320f, 68f), Color.white, true);
+            CreateResultText(panel.transform, "MissText", GameResultData.MissCount.ToString(), 46, FontStyle.Bold, new Vector2(190f, -182f), new Vector2(320f, 68f), Color.white, true);
+
+            CreateResultText(panel.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -276f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, -340f), new Vector2(640f, 82f));
+            CreateResultText(panel.transform, "MaxComboText", $"{GameResultData.MaxCombo} COMBO", 52, FontStyle.Bold, new Vector2(0f, -340f), new Vector2(740f, 72f), Color.white, true);
         }
 
         private Image CreateValueBand(Transform parent, Vector2 anchoredPosition, Vector2 size)

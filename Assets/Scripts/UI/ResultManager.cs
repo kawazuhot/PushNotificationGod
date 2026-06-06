@@ -156,30 +156,30 @@ namespace PushNotificationGod.UI
             Image panel = CreateRuntimePanel(root.transform, "ResultPanelBackground", new Vector2(0f, 0f), new Vector2(860f, 1420f), new Color(0.94f, 0.99f, 1f, 0.92f));
             panel.transform.SetAsFirstSibling();
 
-            CreateRuntimeText(root.transform, "HeadingText", "通知斬り完了！", 56, FontStyle.Bold, new Vector2(0f, 510f), new Vector2(780f, 90f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            retryButton = CreateRuntimeButton(root.transform, "RetryButton_Runtime", "もう一度", new Vector2(-188f, 548f), new Vector2(340f, 82f), OnRetryButton);
+            titleButton = CreateRuntimeButton(root.transform, "BackToTitleButton_Runtime", "タイトルへ", new Vector2(188f, 548f), new Vector2(340f, 82f), OnTitleButton);
 
-            CreateRuntimeText(root.transform, "FinalScoreLabelText", "最終スコア", 32, FontStyle.Bold, new Vector2(0f, 394f), new Vector2(740f, 44f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateRuntimePanel(root.transform, "FinalScoreValueBackground", new Vector2(0f, 316f), new Vector2(660f, 112f), new Color(0.02f, 0.07f, 0.12f, 0.52f));
-            finalScoreText = CreateRuntimeText(root.transform, "FinalScoreText_Runtime", "0", 88, FontStyle.Bold, new Vector2(0f, 316f), new Vector2(760f, 96f), Color.white, true);
+            CreateRuntimeText(root.transform, "HeadingText", "通知斬り完了！", 56, FontStyle.Bold, new Vector2(0f, 448f), new Vector2(780f, 90f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
 
-            CreateRuntimeText(root.transform, "RankTitleLabelText", "今回の称号", 30, FontStyle.Bold, new Vector2(0f, 202f), new Vector2(740f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateRuntimePanel(root.transform, "RankTitleValueBackground", new Vector2(0f, 112f), new Vector2(740f, 140f), new Color(0.02f, 0.07f, 0.12f, 0.48f));
-            rankTitleText = CreateRuntimeText(root.transform, "RankTitleText_Runtime", "普通のタスク人間", 46, FontStyle.Bold, new Vector2(0f, 142f), new Vector2(780f, 62f), Color.white, true);
-            rankDescriptionText = CreateRuntimeText(root.transform, "RankDescriptionText_Runtime", "今日もそれなりに通知をさばきました。", 27, FontStyle.Bold, new Vector2(0f, 74f), new Vector2(760f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
+            CreateRuntimeText(root.transform, "RankTitleLabelText", "今回の称号", 30, FontStyle.Bold, new Vector2(0f, 326f), new Vector2(740f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateRuntimePanel(root.transform, "RankTitleValueBackground", new Vector2(0f, 236f), new Vector2(740f, 140f), new Color(0.02f, 0.07f, 0.12f, 0.48f));
+            rankTitleText = CreateRuntimeText(root.transform, "RankTitleText_Runtime", "普通のタスク人間", 46, FontStyle.Bold, new Vector2(0f, 266f), new Vector2(780f, 62f), Color.white, true);
+            rankDescriptionText = CreateRuntimeText(root.transform, "RankDescriptionText_Runtime", "今日もそれなりに通知をさばきました。", 27, FontStyle.Bold, new Vector2(0f, 198f), new Vector2(760f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
 
-            CreateRuntimeText(root.transform, "SuccessLabelText", "処理数", 28, FontStyle.Bold, new Vector2(-190f, -12f), new Vector2(320f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateRuntimeText(root.transform, "MissLabelText", "ミス", 28, FontStyle.Bold, new Vector2(190f, -12f), new Vector2(320f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateRuntimePanel(root.transform, "SuccessValueBackground", new Vector2(-190f, -76f), new Vector2(290f, 78f), new Color(0.02f, 0.07f, 0.12f, 0.44f));
-            CreateRuntimePanel(root.transform, "MissValueBackground", new Vector2(190f, -76f), new Vector2(290f, 78f), new Color(0.02f, 0.07f, 0.12f, 0.44f));
-            successText = CreateRuntimeText(root.transform, "SuccessText_Runtime", "0", 48, FontStyle.Bold, new Vector2(-190f, -76f), new Vector2(320f, 70f), Color.white, true);
-            missText = CreateRuntimeText(root.transform, "MissText_Runtime", "0", 48, FontStyle.Bold, new Vector2(190f, -76f), new Vector2(320f, 70f), Color.white, true);
+            CreateRuntimeText(root.transform, "FinalScoreLabelText", "最終スコア", 32, FontStyle.Bold, new Vector2(0f, 104f), new Vector2(740f, 44f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateRuntimePanel(root.transform, "FinalScoreValueBackground", new Vector2(0f, 26f), new Vector2(660f, 112f), new Color(0.02f, 0.07f, 0.12f, 0.52f));
+            finalScoreText = CreateRuntimeText(root.transform, "FinalScoreText_Runtime", "0", 88, FontStyle.Bold, new Vector2(0f, 26f), new Vector2(760f, 96f), Color.white, true);
 
-            CreateRuntimeText(root.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -166f), new Vector2(740f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateRuntimePanel(root.transform, "MaxComboValueBackground", new Vector2(0f, -228f), new Vector2(650f, 84f), new Color(0.02f, 0.07f, 0.12f, 0.48f));
-            maxComboText = CreateRuntimeText(root.transform, "MaxComboText_Runtime", "0 COMBO", 54, FontStyle.Bold, new Vector2(0f, -228f), new Vector2(760f, 72f), Color.white, true);
+            CreateRuntimeText(root.transform, "SuccessLabelText", "処理数", 28, FontStyle.Bold, new Vector2(-190f, -124f), new Vector2(320f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateRuntimeText(root.transform, "MissLabelText", "ミス", 28, FontStyle.Bold, new Vector2(190f, -124f), new Vector2(320f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateRuntimePanel(root.transform, "SuccessValueBackground", new Vector2(-190f, -188f), new Vector2(290f, 78f), new Color(0.02f, 0.07f, 0.12f, 0.44f));
+            CreateRuntimePanel(root.transform, "MissValueBackground", new Vector2(190f, -188f), new Vector2(290f, 78f), new Color(0.02f, 0.07f, 0.12f, 0.44f));
+            successText = CreateRuntimeText(root.transform, "SuccessText_Runtime", "0", 48, FontStyle.Bold, new Vector2(-190f, -188f), new Vector2(320f, 70f), Color.white, true);
+            missText = CreateRuntimeText(root.transform, "MissText_Runtime", "0", 48, FontStyle.Bold, new Vector2(190f, -188f), new Vector2(320f, 70f), Color.white, true);
 
-            retryButton = CreateRuntimeButton(root.transform, "RetryButton_Runtime", "もう一度", new Vector2(0f, -460f), new Vector2(560f, 92f), OnRetryButton);
-            titleButton = CreateRuntimeButton(root.transform, "BackToTitleButton_Runtime", "タイトルへ戻る", new Vector2(0f, -572f), new Vector2(560f, 92f), OnTitleButton);
+            CreateRuntimeText(root.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -278f), new Vector2(740f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateRuntimePanel(root.transform, "MaxComboValueBackground", new Vector2(0f, -340f), new Vector2(650f, 84f), new Color(0.02f, 0.07f, 0.12f, 0.48f));
+            maxComboText = CreateRuntimeText(root.transform, "MaxComboText_Runtime", "0 COMBO", 54, FontStyle.Bold, new Vector2(0f, -340f), new Vector2(760f, 72f), Color.white, true);
         }
 
         private Image CreateRuntimePanel(Transform parent, string objectName, Vector2 anchoredPosition, Vector2 size, Color color)
