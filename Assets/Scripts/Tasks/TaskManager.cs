@@ -28,6 +28,7 @@ namespace PushNotificationGod.Tasks
 
         public TaskCard Spawn(TaskDefinition definition)
         {
+            gameOverCleanup = false;
             TaskCard card = Instantiate(taskCardPrefab, cardParent);
             NormalizeCardRect(card.RectTransform);
             Sprite iconSprite = iconDatabase != null ? iconDatabase.GetIcon(definition.iconId) : null;
@@ -62,6 +63,25 @@ namespace PushNotificationGod.Tasks
             ReorderSiblings();
         }
 
+        public void RemoveTopMost()
+        {
+            if (visibleCards.Count == 0)
+            {
+                return;
+            }
+
+            int topIndex = visibleCards.Count - 1;
+            TaskCard card = visibleCards[topIndex];
+            visibleCards.RemoveAt(topIndex);
+            if (card != null)
+            {
+                card.HideForGameOver();
+                Destroy(card.gameObject);
+            }
+
+            ReorderSiblings();
+        }
+
         public void HideAllForGameOver()
         {
             gameOverCleanup = true;
@@ -73,6 +93,25 @@ namespace PushNotificationGod.Tasks
                 {
                     card.HideForGameOver();
                 }
+            }
+
+            visibleCards.Clear();
+        }
+
+        public void ClearAllForRestart()
+        {
+            gameOverCleanup = false;
+            StopAllCoroutines();
+            for (int i = 0; i < visibleCards.Count; i++)
+            {
+                TaskCard card = visibleCards[i];
+                if (card == null)
+                {
+                    continue;
+                }
+
+                card.HideForGameOver();
+                Destroy(card.gameObject);
             }
 
             visibleCards.Clear();

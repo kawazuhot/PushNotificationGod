@@ -13,5 +13,6 @@ namespace PushNotificationGod.Data
         public int baseScore;
         public string backgroundStyleId;
         public int spawnWeight;
+        public string tag;
     }
 }

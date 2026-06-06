@@ -43,7 +43,7 @@ namespace PushNotificationGod.Data
                     continue;
                 }
 
-                tasks.Add(new TaskDefinition
+                TaskDefinition task = new()
                 {
                     taskId = columns[0],
                     appName = columns[1],
@@ -52,8 +52,15 @@ namespace PushNotificationGod.Data
                     correctAction = action,
                     baseScore = ParseInt(columns[5], 100),
                     backgroundStyleId = columns[6],
-                    spawnWeight = Mathf.Max(0, ParseInt(columns[7], 100))
-                });
+                    spawnWeight = Mathf.Max(0, ParseInt(columns[7], 100)),
+                    tag = columns.Length >= 9 ? columns[8].Trim() : string.Empty
+                };
+
+                tasks.Add(task);
+                if (!string.IsNullOrEmpty(task.tag))
+                {
+                    Debug.Log($"[TaskLoad] {task.taskId} tag={task.tag}");
+                }
             }
 
             Debug.Log($"TaskDatabase: loaded {tasks.Count} tasks.");

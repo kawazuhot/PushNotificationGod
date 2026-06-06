@@ -315,13 +315,6 @@ public static class MvpSceneBuilder
         StretchTop(combo.rectTransform, 380f, 60f, 160f);
         combo.gameObject.AddComponent<Shadow>().effectDistance = new Vector2(0f, -3f);
 
-        Image dangerLine = CreateImage("TaskOverflowDangerLine", safe.transform, new Color(1f, 0.18f, 0.22f, 0.55f));
-        dangerLine.rectTransform.anchorMin = new Vector2(0.08f, 1f);
-        dangerLine.rectTransform.anchorMax = new Vector2(0.92f, 1f);
-        dangerLine.rectTransform.pivot = new Vector2(0.5f, 0.5f);
-        dangerLine.rectTransform.anchoredPosition = new Vector2(0f, -50f);
-        dangerLine.rectTransform.sizeDelta = new Vector2(0f, 4f);
-
         GameObject taskParentObject = new("TaskCardArea", typeof(RectTransform));
         taskParentObject.transform.SetParent(safe.transform, false);
         RectTransform taskParent = taskParentObject.GetComponent<RectTransform>();
@@ -376,7 +369,7 @@ public static class MvpSceneBuilder
         SetSerialized(spawner, "taskManager", taskManager);
         SetSerialized(spawner, "timerManager", timerManager);
         SetSerialized(spawner, "audioManager", audioManager);
-        SetSerializedInt(spawner, "maxVisibleBeforeSpawn", 3);
+        SetSerializedInt(spawner, "maxVisibleBeforeSpawn", 4);
         SetSerialized(ui, "dateText", date);
         SetSerialized(ui, "remainingTimeText", remainingTime);
         SetSerialized(ui, "scoreText", score);
@@ -450,7 +443,7 @@ public static class MvpSceneBuilder
         resultPanelShadow.effectColor = new Color(0f, 0f, 0f, 0.28f);
         resultPanelShadow.effectDistance = new Vector2(0f, -8f);
 
-        Text heading = CreateText("Heading", safe.transform, "通知さばき完了！", 56, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
+        Text heading = CreateText("Heading", safe.transform, "通知斬り完了！", 56, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
         SetCenter(heading.rectTransform, new Vector2(0f, 500f), new Vector2(760f, 92f));
         Text finalScoreLabel = CreateText("FinalScoreLabelText", safe.transform, "最終スコア", 34, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
         SetCenter(finalScoreLabel.rectTransform, new Vector2(0f, 392f), new Vector2(740f, 50f));
@@ -459,11 +452,14 @@ public static class MvpSceneBuilder
         SetCenter(finalScore.rectTransform, new Vector2(0f, 318f), new Vector2(760f, 94f));
         ScoreColorUtility.ApplyReadableEffects(finalScore);
         Text rankTitleLabel = CreateText("RankTitleLabelText", safe.transform, "今回の称号", 32, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
-        SetCenter(rankTitleLabel.rectTransform, new Vector2(0f, 190f), new Vector2(740f, 46f));
-        CreateResultValueBackground(safe.transform, "RankTitleValueBackground", new Vector2(0f, 112f), new Vector2(720f, 112f));
-        Text rankTitle = CreateText("RankTitleText", safe.transform, "スマホに負けた人", 54, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-        SetCenter(rankTitle.rectTransform, new Vector2(0f, 112f), new Vector2(760f, 78f));
+        SetCenter(rankTitleLabel.rectTransform, new Vector2(0f, 202f), new Vector2(740f, 46f));
+        CreateResultValueBackground(safe.transform, "RankTitleValueBackground", new Vector2(0f, 112f), new Vector2(720f, 140f));
+        Text rankTitle = CreateText("RankTitleText", safe.transform, "普通のタスク人間", 48, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+        SetCenter(rankTitle.rectTransform, new Vector2(0f, 142f), new Vector2(760f, 70f));
         ScoreColorUtility.ApplyReadableEffects(rankTitle);
+        Text rankDescription = CreateText("RankDescriptionText", safe.transform, "今日もそれなりに通知をさばきました。", 28, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.94f, 0.98f, 1f, 1f));
+        SetCenter(rankDescription.rectTransform, new Vector2(0f, 74f), new Vector2(740f, 56f));
+        ScoreColorUtility.ApplyReadableEffects(rankDescription);
         Text maxComboLabel = CreateText("MaxComboLabelText", safe.transform, "最大コンボ", 34, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.04f, 0.08f, 0.12f));
         SetCenter(maxComboLabel.rectTransform, new Vector2(0f, -20f), new Vector2(740f, 46f));
         CreateResultValueBackground(safe.transform, "MaxComboValueBackground", new Vector2(0f, -90f), new Vector2(670f, 98f));
@@ -478,6 +474,7 @@ public static class MvpSceneBuilder
         SetSerialized(result, "finalScoreText", finalScore);
         SetSerialized(result, "maxComboText", maxCombo);
         SetSerialized(result, "rankTitleText", rankTitle);
+        SetSerialized(result, "rankDescriptionText", rankDescription);
         SetSerialized(result, "retryButton", retry);
         SetSerialized(result, "titleButton", title);
         SetSerialized(result, "audioManager", audioManager);

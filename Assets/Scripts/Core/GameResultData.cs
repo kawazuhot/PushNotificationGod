@@ -1,4 +1,5 @@
 using UnityEngine;
+using PushNotificationGod.Titles;
 
 namespace PushNotificationGod.Core
 {
@@ -8,19 +9,21 @@ namespace PushNotificationGod.Core
         public static int SuccessCount { get; private set; }
         public static int MissCount { get; private set; }
         public static int MaxCombo { get; private set; }
-        public static string RankTitle { get; private set; } = "スマホに負けた人";
+        public static string RankTitle { get; private set; } = "普通のタスク人間";
+        public static string RankDescription { get; private set; } = "今日もそれなりに通知をさばきました。";
         public static bool WasNewRecord { get; private set; }
 
-        public static void Save(int finalScore, int successCount, int missCount, int maxCombo)
+        public static void Save(int finalScore, int successCount, int missCount, int maxCombo, TitleDefinition title = null)
         {
             FinalScore = Mathf.Max(0, finalScore);
             SuccessCount = Mathf.Max(0, successCount);
             MissCount = Mathf.Max(0, missCount);
             MaxCombo = Mathf.Max(0, maxCombo);
-            RankTitle = GetRankTitle(FinalScore);
+            RankTitle = string.IsNullOrWhiteSpace(title?.titleName) ? "普通のタスク人間" : title.titleName;
+            RankDescription = string.IsNullOrWhiteSpace(title?.description) ? "今日もそれなりに通知をさばきました。" : title.description;
             WasNewRecord = false;
 
-            Debug.Log($"[SaveResult] FinalScore={FinalScore}, Success={SuccessCount}, Miss={MissCount}, MaxCombo={MaxCombo}, Rank={RankTitle}");
+            Debug.Log($"[SaveResult] FinalScore={FinalScore}, Success={SuccessCount}, Miss={MissCount}, MaxCombo={MaxCombo}, Rank={RankTitle}, Description={RankDescription}");
         }
 
         public static string GetRankTitle(int score)
