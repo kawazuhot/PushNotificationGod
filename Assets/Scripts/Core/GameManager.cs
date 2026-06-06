@@ -96,6 +96,7 @@ namespace PushNotificationGod.Core
                 successCount++;
                 float multiplier = comboManager.RegisterCorrect();
                 int gainedScore = scoreManager.AddScore(card.Definition.baseScore, multiplier);
+                Debug.Log($"[ScoreAdd] currentScore={scoreManager.Score}, success={successCount}, miss={missCount}, combo={comboManager.CurrentCombo}, maxCombo={comboManager.MaxCombo}");
                 if (action == TaskAction.Tap)
                 {
                     audioManager?.PlayTapCorrect();
@@ -138,8 +139,9 @@ namespace PushNotificationGod.Core
             gameState = GameState.Result;
             taskSpawner.Stop();
             timerManager.StopTimer();
-            Debug.Log($"[GameEnd] score={scoreManager.Score}, success={successCount}, miss={missCount}, maxCombo={comboManager.MaxCombo}");
+            Debug.Log($"[GameEnd BeforeSave] score={scoreManager.Score}, success={successCount}, miss={missCount}, maxCombo={comboManager.MaxCombo}");
             GameResultData.Save(scoreManager.Score, successCount, missCount, comboManager.MaxCombo);
+            Debug.Log($"[GameEnd AfterSave] FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}");
             StartCoroutine(EndGameRoutine());
         }
 

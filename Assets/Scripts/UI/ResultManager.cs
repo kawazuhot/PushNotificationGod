@@ -21,7 +21,7 @@ namespace PushNotificationGod.UI
         {
             UIJapaneseFont.ApplyToSceneTexts();
             GameResultData.RestoreFromSaveIfEmpty();
-            Debug.Log($"[ResultView] FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}");
+            Debug.Log($"[ResultController Show] FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}");
             BindButtons();
             if (audioManager == null)
             {
@@ -47,6 +47,8 @@ namespace PushNotificationGod.UI
             {
                 rankTitleText.text = GameResultData.RankTitle;
             }
+
+            Debug.Log($"[ResultText Applied] scoreText={(finalScoreText != null ? finalScoreText.text : "null")}, successText={GameResultData.SuccessCount}, missText={GameResultData.MissCount}, maxComboText={(maxComboText != null ? maxComboText.text : "null")}");
 
             ApplyResultStyle();
             UIJapaneseFont.ApplyToSceneTexts();
