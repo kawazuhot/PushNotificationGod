@@ -16,6 +16,7 @@ namespace PushNotificationGod.Audio
         [SerializeField] private AudioClip combo5Se;
         [SerializeField] private AudioClip combo10Se;
         [SerializeField] private AudioClip combo20Se;
+        [SerializeField] private AudioClip combo30Se;
         [SerializeField] private AudioClip gameOverSe;
         [SerializeField] private AudioClip resultSe;
         [SerializeField] private AudioClip countdownTickSe;
@@ -67,6 +68,16 @@ namespace PushNotificationGod.Audio
         public void PlayCombo5() => Play(combo5Se, comboVolume);
         public void PlayCombo10() => Play(combo10Se, comboVolume);
         public void PlayCombo20() => Play(combo20Se, comboVolume);
+        public void PlayCombo30()
+        {
+            if (combo30Se == null)
+            {
+                Debug.LogWarning("[AudioManager] combo30Se is not assigned. Skipping 30 combo SE.");
+                return;
+            }
+
+            Play(combo30Se, comboVolume);
+        }
         public void PlayGameOver() => Play(gameOverSe, gameOverVolume);
         public void PlayResult() => Play(resultSe, resultVolume);
         public void PlayCountdownTick() => Play(countdownTickSe, countdownTickVolume);

@@ -14,6 +14,7 @@ namespace PushNotificationGod.UI
         [SerializeField] private AudioManager audioManager;
 
         private Coroutine scorePopRoutine;
+        private Font feedbackFont;
 
         public void Configure(RectTransform parent, Text scoreText, Text comboText, AudioManager manager)
         {
@@ -25,6 +26,11 @@ namespace PushNotificationGod.UI
             if (scoreGroup == null && scoreText != null)
             {
                 scoreGroup = scoreText.transform.parent as RectTransform;
+            }
+
+            if (feedbackFont == null && scoreText != null)
+            {
+                feedbackFont = scoreText.font;
             }
 
             if (feedbackRoot == null && parent != null)
@@ -59,7 +65,9 @@ namespace PushNotificationGod.UI
 
         public void PlayCorrectFeedback(TaskCard card, TaskAction action, int gainedScore, int combo, float multiplier)
         {
-            PlayScoreGainFeedback(card, gainedScore);
+            Vector3 feedbackPosition = card != null ? card.GetStableScoreWorldPosition() : Vector3.zero;
+            ShowFloatingScore(gainedScore, feedbackPosition);
+            ShowFloatingCombo(combo, feedbackPosition);
             PopScoreGroup();
             PlayComboFeedback(combo, multiplier);
         }
@@ -101,6 +109,10 @@ namespace PushNotificationGod.UI
             {
                 audioManager?.PlayCombo10();
             }
+            else if (combo == 30)
+            {
+                audioManager?.PlayCombo30();
+            }
             else if (combo >= 20 && combo % 20 == 0)
             {
                 audioManager?.PlayCombo20();
@@ -109,6 +121,38 @@ namespace PushNotificationGod.UI
             {
                 audioManager?.PlayCombo();
             }
+        }
+
+        private void ShowFloatingCombo(int combo, Vector3 basePosition)
+        {
+            if (combo < 5 || feedbackRoot == null)
+            {
+                return;
+            }
+
+            GameObject comboObject = new("FloatingComboText", typeof(RectTransform), typeof(Text), typeof(CanvasGroup), typeof(Shadow), typeof(Outline), typeof(FloatingComboText));
+            comboObject.transform.SetParent(feedbackRoot, false);
+
+            RectTransform rect = comboObject.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(520f, 96f);
+            rect.anchoredPosition = (Vector2)feedbackRoot.InverseTransformPoint(basePosition) + new Vector2(0f, -72f);
+
+            Text text = comboObject.GetComponent<Text>();
+            text.font = feedbackFont;
+            text.raycastTarget = false;
+
+            Shadow shadow = comboObject.GetComponent<Shadow>();
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.62f);
+            shadow.effectDistance = new Vector2(0f, -5f);
+
+            Outline outline = comboObject.GetComponent<Outline>();
+            outline.effectColor = new Color(0f, 0f, 0f, 0.42f);
+            outline.effectDistance = new Vector2(3f, -3f);
+
+            comboObject.GetComponent<FloatingComboText>().Play(combo);
         }
 
         public void PlayMistakeFeedback()

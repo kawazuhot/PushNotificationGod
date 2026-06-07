@@ -39,6 +39,7 @@ namespace PushNotificationGod.Core
         [SerializeField] private float countdownStepDuration = 1f;
         [SerializeField] private float countdownStartDuration = 0.8f;
         [SerializeField] private Button restartButton;
+        [SerializeField] private LastSecondsWarningController lastSecondsWarningController;
 
         private bool gameEnded;
         private GameState gameState = GameState.WaitingForStart;
@@ -73,6 +74,7 @@ namespace PushNotificationGod.Core
             feedbackManager.Configure(uiManager.FeedbackParent, uiManager.ScoreText, uiManager.ComboText, audioManager);
             EnsureCountdownView();
             EnsureRestartButton();
+            EnsureLastSecondsWarningView();
             UIJapaneseFont.ApplyToSceneTexts();
             Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, ResultMode=InScenePanel");
 
@@ -86,6 +88,8 @@ namespace PushNotificationGod.Core
 
         private void Update()
         {
+            UpdateLastSecondsWarning();
+
             if (taskOverflowCheckEnabled && gameState == GameState.Playing && !gameEnded && taskManager.IsOverflow(deadlineY, maxVisibleTaskCount))
             {
                 EndGame(GameEndReason.TaskOverflow);
@@ -113,6 +117,7 @@ namespace PushNotificationGod.Core
             taskSpawner.Stop();
             timerManager.StopTimer();
             audioManager?.StopGameplayBgm();
+            lastSecondsWarningController?.StopWarning();
             taskManager.ClearAllForRestart();
             taskDatabase.Load();
 
@@ -235,6 +240,7 @@ namespace PushNotificationGod.Core
             Debug.Log("[GameOverFlow] 3 Stop spawn");
             taskSpawner.Stop();
             timerManager.StopTimer();
+            lastSecondsWarningController?.StopWarning();
             audioManager?.StopGameplayBgm();
             Debug.Log("[BGM] Stop called from EndGame");
             Debug.Log("[GameOverFlow] Gameplay BGM stopped");
@@ -324,6 +330,7 @@ namespace PushNotificationGod.Core
             gameState = GameState.Countdown;
             taskSpawner.Stop();
             timerManager.StopTimer();
+            lastSecondsWarningController?.StopWarning();
             EnsureCountdownView();
             countdownRoutine = StartCoroutine(CountdownRoutine());
         }
@@ -349,26 +356,35 @@ namespace PushNotificationGod.Core
             CreateResultButton(panel.transform, "TitleButton", "タイトルへ", new Vector2(188f, 520f), new Vector2(340f, 78f), () => SceneManager.LoadScene("TitleScene"));
 
             CreateResultText(panel.transform, "ResultHeadingText", "通知斬り完了！", 54, FontStyle.Bold, new Vector2(0f, 420f), new Vector2(760f, 82f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateResultText(panel.transform, "PlayerNameText", GetDisplayPlayerName(), 50, FontStyle.Bold, new Vector2(0f, 348f), new Vector2(780f, 74f), new Color(0.04f, 0.08f, 0.12f, 0.95f), false);
 
-            CreateResultText(panel.transform, "RankLabelText", "今回の称号", 28, FontStyle.Bold, new Vector2(0f, 302f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(0f, 216f), new Vector2(720f, 134f));
-            CreateResultText(panel.transform, "RankText", GameResultData.RankTitle, 44, FontStyle.Bold, new Vector2(0f, 246f), new Vector2(760f, 62f), Color.white, true);
-            CreateResultText(panel.transform, "RankDescriptionText", GameResultData.RankDescription, 27, FontStyle.Bold, new Vector2(0f, 184f), new Vector2(740f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
+            CreateResultText(panel.transform, "RankLabelText", "今回の称号", 28, FontStyle.Bold, new Vector2(0f, 254f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, 168f), new Vector2(720f, 134f));
+            CreateResultText(panel.transform, "RankText", GameResultData.RankTitle, 44, FontStyle.Bold, new Vector2(0f, 198f), new Vector2(760f, 62f), Color.white, true);
+            CreateResultText(panel.transform, "RankDescriptionText", GameResultData.RankDescription, 27, FontStyle.Bold, new Vector2(0f, 136f), new Vector2(740f, 54f), new Color(0.94f, 0.98f, 1f, 1f), true);
 
-            CreateResultText(panel.transform, "FinalScoreLabelText", "最終スコア", 30, FontStyle.Bold, new Vector2(0f, 82f), new Vector2(720f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(0f, 16f), new Vector2(650f, 96f));
-            CreateResultText(panel.transform, "FinalScoreText", GameResultData.FinalScore.ToString(), 78, FontStyle.Bold, new Vector2(0f, 16f), new Vector2(740f, 88f), Color.white, true);
+            CreateResultText(panel.transform, "FinalScoreLabelText", "最終スコア", 30, FontStyle.Bold, new Vector2(0f, 34f), new Vector2(720f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, -32f), new Vector2(650f, 96f));
+            Text finalScoreText = CreateResultText(panel.transform, "FinalScoreText", GameResultData.FinalScore.ToString(), 78, FontStyle.Bold, new Vector2(0f, -32f), new Vector2(740f, 88f), Color.white, true);
+            ScoreColorUtility.ApplyScoreVisual(finalScoreText, GameResultData.FinalScore);
 
-            CreateResultText(panel.transform, "SuccessLabelText", "処理数", 27, FontStyle.Bold, new Vector2(-190f, -118f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateResultText(panel.transform, "MissLabelText", "ミス", 27, FontStyle.Bold, new Vector2(190f, -118f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(-190f, -182f), new Vector2(280f, 74f));
-            CreateValueBand(panel.transform, new Vector2(190f, -182f), new Vector2(280f, 74f));
-            CreateResultText(panel.transform, "SuccessText", GameResultData.SuccessCount.ToString(), 46, FontStyle.Bold, new Vector2(-190f, -182f), new Vector2(320f, 68f), Color.white, true);
-            CreateResultText(panel.transform, "MissText", GameResultData.MissCount.ToString(), 46, FontStyle.Bold, new Vector2(190f, -182f), new Vector2(320f, 68f), Color.white, true);
+            CreateResultText(panel.transform, "SuccessLabelText", "処理数", 27, FontStyle.Bold, new Vector2(-190f, -156f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateResultText(panel.transform, "MissLabelText", "ミス", 27, FontStyle.Bold, new Vector2(190f, -156f), new Vector2(320f, 38f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(-190f, -220f), new Vector2(280f, 74f));
+            CreateValueBand(panel.transform, new Vector2(190f, -220f), new Vector2(280f, 74f));
+            CreateResultText(panel.transform, "SuccessText", GameResultData.SuccessCount.ToString(), 46, FontStyle.Bold, new Vector2(-190f, -220f), new Vector2(320f, 68f), Color.white, true);
+            CreateResultText(panel.transform, "MissText", GameResultData.MissCount.ToString(), 46, FontStyle.Bold, new Vector2(190f, -220f), new Vector2(320f, 68f), Color.white, true);
 
-            CreateResultText(panel.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -276f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
-            CreateValueBand(panel.transform, new Vector2(0f, -340f), new Vector2(640f, 82f));
-            CreateResultText(panel.transform, "MaxComboText", $"{GameResultData.MaxCombo} COMBO", 52, FontStyle.Bold, new Vector2(0f, -340f), new Vector2(740f, 72f), Color.white, true);
+            CreateResultText(panel.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -314f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
+            CreateValueBand(panel.transform, new Vector2(0f, -378f), new Vector2(640f, 82f));
+            Text maxComboText = CreateResultText(panel.transform, "MaxComboText", $"{GameResultData.MaxCombo} COMBO", 52, FontStyle.Bold, new Vector2(0f, -378f), new Vector2(740f, 72f), Color.white, true);
+            ScoreColorUtility.ApplyComboVisual(maxComboText, GameResultData.MaxCombo);
+        }
+
+        private static string GetDisplayPlayerName()
+        {
+            string playerName = LocalSaveManager.PlayerName;
+            return string.IsNullOrWhiteSpace(playerName) ? "ななしの通知人" : playerName.Trim();
         }
 
         private Image CreateValueBand(Transform parent, Vector2 anchoredPosition, Vector2 size)
@@ -505,9 +521,68 @@ namespace PushNotificationGod.Core
 
             gameState = GameState.Playing;
             Debug.Log($"[{BuildInfo.BuildId}] StartGameplay called. Timer, tasks and BGM start now.");
+            lastSecondsWarningController?.StopWarning();
             timerManager.StartTimer();
             taskSpawner.Begin();
             audioManager?.PlayGameplayBgm();
+        }
+
+        private void UpdateLastSecondsWarning()
+        {
+            if (lastSecondsWarningController == null)
+            {
+                return;
+            }
+
+            if (gameState == GameState.Playing && !gameEnded && timerManager != null && timerManager.RemainingSeconds <= 10f)
+            {
+                lastSecondsWarningController.StartWarning();
+            }
+            else
+            {
+                lastSecondsWarningController.StopWarning();
+            }
+        }
+
+        private void EnsureLastSecondsWarningView()
+        {
+            if (lastSecondsWarningController != null)
+            {
+                lastSecondsWarningController.StopWarning();
+                return;
+            }
+
+            Transform safeParent = uiManager != null ? uiManager.FeedbackParent : null;
+            if (safeParent == null)
+            {
+                Canvas canvas = FindAnyObjectByType<Canvas>();
+                safeParent = canvas != null && canvas.transform.Find("SafeArea") != null
+                    ? canvas.transform.Find("SafeArea")
+                    : canvas != null ? canvas.transform : null;
+            }
+
+            if (safeParent == null)
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] Last seconds warning parent not found.");
+                return;
+            }
+
+            GameObject overlayObject = new("LastSecondsWarningOverlay", typeof(RectTransform), typeof(Image), typeof(LastSecondsWarningController));
+            overlayObject.transform.SetParent(safeParent, false);
+            overlayObject.transform.SetAsFirstSibling();
+
+            RectTransform rect = overlayObject.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            Image overlayImage = overlayObject.GetComponent<Image>();
+            overlayImage.color = new Color(1f, 0f, 0f, 0f);
+            overlayImage.raycastTarget = false;
+
+            lastSecondsWarningController = overlayObject.GetComponent<LastSecondsWarningController>();
+            lastSecondsWarningController.Configure(overlayImage);
         }
 
         private void ShowCountdownLabelImmediately(string label, int fontSize = 190)

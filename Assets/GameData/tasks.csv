@@ -92,3 +92,7 @@ task_food_009,フード,icon_food,深夜にラーメンを食べる,SwipeRight,1
 task_food_010,フード,icon_food,寝る前にアイスを食べる,SwipeRight,100,normal,100,diet
 task_food_011,フード,icon_food,カロリーは見なかったことにする,SwipeRight,100,normal,100,diet
 task_food_012,フード,icon_food,サラダ味だから実質野菜,SwipeRight,100,normal,100,diet
+task_message_029,メッセージ,icon_message,恋人 ほんとに大事な話,Tap,300,gold,30,lover
+task_self_013,自分,icon_self,昨日の自分に勝つ,Tap,300,gold,30,lazy
+task_work_005,仕事,icon_work,締め切りは今日です,Tap,300,gold,30,work
+task_life_014,生活,icon_life,コンロの火を確認する,Tap,300,gold,30,life

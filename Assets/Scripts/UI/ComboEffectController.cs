@@ -8,11 +8,14 @@ namespace PushNotificationGod.UI
         [SerializeField] private Text comboText;
         [SerializeField] private Image screenFlashImage;
         [SerializeField] private Image edgeFlashImage;
-        [SerializeField] private float comboPopDuration = 0.18f;
+        [SerializeField] private float popDuration = 0.15f;
+        [SerializeField] private float holdDuration = 0.25f;
+        [SerializeField] private float fadeDuration = 0.25f;
 
         private Coroutine comboRoutine;
         private Coroutine flashRoutine;
         private Coroutine edgeRoutine;
+        private CanvasGroup comboGroup;
 
         public void Configure(Text targetComboText, Image targetScreenFlashImage, Image targetEdgeFlashImage)
         {
@@ -28,22 +31,14 @@ namespace PushNotificationGod.UI
                 return;
             }
 
-            if (combo < 2)
+            EnsureComboGroup();
+            comboText.text = "";
+            comboGroup.alpha = 0f;
+
+            if (combo < 5)
             {
-                comboText.text = "";
                 return;
             }
-
-            comboText.text = ComboMessage(combo, multiplier);
-            comboText.fontSize = combo >= 20 ? 54 : combo >= 10 ? 50 : combo >= 5 ? 44 : 36;
-            comboText.color = combo >= 5 ? new Color(1f, 0.9f, 0.28f, 1f) : new Color(1f, 0.86f, 0.36f, 1f);
-
-            if (comboRoutine != null)
-            {
-                StopCoroutine(comboRoutine);
-            }
-
-            comboRoutine = StartCoroutine(PopCombo(combo >= 20 ? 1.28f : combo >= 10 ? 1.22f : combo >= 5 ? 1.18f : 1.15f));
 
             if (combo == 10)
             {
@@ -67,44 +62,35 @@ namespace PushNotificationGod.UI
                 comboText.text = "";
                 comboText.rectTransform.localScale = Vector3.one;
             }
+
+            EnsureComboGroup();
+            comboGroup.alpha = 0f;
         }
 
-        private string ComboMessage(int combo, float multiplier)
+        private void EnsureComboGroup()
         {
-            if (combo >= 20)
+            if (comboGroup != null || comboText == null)
             {
-                return $"{combo} COMBO!!! x2.0";
+                return;
             }
 
-            if (combo >= 10)
+            comboGroup = comboText.GetComponent<CanvasGroup>();
+            if (comboGroup == null)
             {
-                return $"{combo} COMBO!! x1.5";
+                comboGroup = comboText.gameObject.AddComponent<CanvasGroup>();
             }
-
-            if (combo >= 5)
-            {
-                return $"{combo} COMBO!";
-            }
-
-            return $"{combo} COMBO";
         }
 
-        private System.Collections.IEnumerator PopCombo(float peakScale)
+        private static float EaseOut(float t)
         {
-            RectTransform rect = comboText.rectTransform;
-            float elapsed = 0f;
-            while (elapsed < comboPopDuration)
-            {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / comboPopDuration);
-                float scale = t < 0.5f
-                    ? Mathf.Lerp(1f, peakScale, t / 0.5f)
-                    : Mathf.Lerp(peakScale, 1f, (t - 0.5f) / 0.5f);
-                rect.localScale = Vector3.one * scale;
-                yield return null;
-            }
+            return 1f - Mathf.Pow(1f - t, 3f);
+        }
 
-            rect.localScale = Vector3.one;
+        private static float EaseOutBack(float t)
+        {
+            const float c1 = 1.70158f;
+            const float c3 = c1 + 1f;
+            return 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
         }
 
         private void PlayScreenFlash(Color color, float duration)

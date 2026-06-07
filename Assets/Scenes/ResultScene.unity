@@ -777,6 +777,7 @@ MonoBehaviour:
   combo5Se: {fileID: 8300000, guid: bea838dd704644ad288165276da27ad5, type: 3}
   combo10Se: {fileID: 8300000, guid: 69e56777dcb774d8291da116ab37e43b, type: 3}
   combo20Se: {fileID: 8300000, guid: 6106d9bd23a58456caa21b9545dbd60d, type: 3}
+  combo30Se: {fileID: 8300000, guid: 5c4b5b7e372cd45b492b9a263f3ff3c9, type: 3}
   gameOverSe: {fileID: 8300000, guid: f172e014b6f9c4fa68824999e16a8053, type: 3}
   resultSe: {fileID: 8300000, guid: 88dfbd6b728cc444cb30248986b6943e, type: 3}
   countdownTickSe: {fileID: 8300000, guid: b84d4d73d487d4c2299fe782eb83a40d, type: 3}

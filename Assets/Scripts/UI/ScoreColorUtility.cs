@@ -7,7 +7,7 @@ namespace PushNotificationGod.UI
     {
         public static int GetScoreTier(int score)
         {
-            if (score >= 10000)
+            if (score >= 15000)
             {
                 return 5;
             }
@@ -32,27 +32,27 @@ namespace PushNotificationGod.UI
 
         public static int GetComboTier(int combo)
         {
-            if (combo >= 50)
+            if (combo >= 100)
             {
                 return 5;
             }
 
-            if (combo >= 40)
-            {
-                return 4;
-            }
-
-            if (combo >= 30)
+            if (combo >= 31)
             {
                 return 3;
             }
 
-            if (combo >= 20)
+            if (combo >= 21)
             {
                 return 2;
             }
 
-            return combo >= 10 ? 1 : 0;
+            if (combo >= 11)
+            {
+                return 1;
+            }
+
+            return 0;
         }
 
         public static void ApplyScoreVisual(Text text, int score)
@@ -76,7 +76,7 @@ namespace PushNotificationGod.UI
 
             int tier = GetComboTier(combo);
             ApplyReadableEffects(text);
-            ApplyTierVisual(text, tier);
+            ApplyComboTierVisual(text, tier);
         }
 
         public static void ApplyReadableEffects(Text text)
@@ -123,6 +123,34 @@ namespace PushNotificationGod.UI
                     gradient.SetGradient(new Color(0.82f, 1f, 0.28f), new Color(0.02f, 0.74f, 0.18f));
                     break;
                 case 4:
+                    gradient.SetGradient(new Color(1f, 0.58f, 0.08f), new Color(1f, 0.05f, 0.04f));
+                    break;
+                case 5:
+                    gradient.SetRainbow();
+                    break;
+            }
+        }
+
+        private static void ApplyComboTierVisual(Text text, int tier)
+        {
+            ScoreGradientEffect gradient = text.GetComponent<ScoreGradientEffect>();
+            if (gradient == null)
+            {
+                gradient = text.gameObject.AddComponent<ScoreGradientEffect>();
+            }
+
+            text.color = Color.white;
+            gradient.enabled = tier > 0;
+
+            switch (tier)
+            {
+                case 1:
+                    gradient.SetGradient(new Color(1f, 0.98f, 0.36f), new Color(1f, 0.62f, 0.02f));
+                    break;
+                case 2:
+                    gradient.SetGradient(new Color(0.82f, 1f, 0.28f), new Color(0.02f, 0.74f, 0.18f));
+                    break;
+                case 3:
                     gradient.SetGradient(new Color(1f, 0.58f, 0.08f), new Color(1f, 0.05f, 0.04f));
                     break;
                 case 5:
