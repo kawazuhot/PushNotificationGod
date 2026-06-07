@@ -65,6 +65,11 @@ namespace PushNotificationGod.Core
                 tagStatsManager = gameObject.AddComponent<TaskTagStatsManager>();
             }
 
+            if (audioManager == null)
+            {
+                audioManager = FindAnyObjectByType<AudioManager>();
+            }
+
             uiManager.Bind(scoreManager, lifeManager, comboManager, timerManager);
             if (feedbackManager == null)
             {
@@ -76,7 +81,8 @@ namespace PushNotificationGod.Core
             EnsureRestartButton();
             EnsureLastSecondsWarningView();
             UIJapaneseFont.ApplyToSceneTexts();
-            Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, ResultMode=InScenePanel");
+            Debug.Log($"[{BuildInfo.BuildId}] GameScene started. GameManager={name}, TaskSpawner={taskSpawner?.name}, AudioManager={(audioManager != null ? audioManager.name : "NULL")}, ResultMode=InScenePanel");
+            audioManager?.LogGameSceneAudioStatus();
 
             lifeManager.OnLifeDepleted += () => EndGame(GameEndReason.LifeZero);
             timerManager.OnTimeUp += () => EndGame(GameEndReason.TimeUp);
@@ -89,10 +95,6 @@ namespace PushNotificationGod.Core
         private void Update()
         {
             UpdateLastSecondsWarning();
-            if (gameState == GameState.Playing && !gameEnded)
-            {
-                audioManager?.RetryGameplayBgmIfNeeded();
-            }
 
             if (taskOverflowCheckEnabled && gameState == GameState.Playing && !gameEnded && taskManager.IsOverflow(deadlineY, maxVisibleTaskCount))
             {

@@ -111,11 +111,11 @@
     const buildUrl = "Build";
     const cacheBust = Date.now().toString();
     const withCacheBust = (url) => `${url}?v=${cacheBust}`;
-    const loaderUrl = withCacheBust(buildUrl + "/WebGL.loader.js");
+    const loaderUrl = withCacheBust(buildUrl + "/WebGL_Test.loader.js");
     const config = {
-      dataUrl: withCacheBust(buildUrl + "/WebGL.data.unityweb"),
-      frameworkUrl: withCacheBust(buildUrl + "/WebGL.framework.js.unityweb"),
-      codeUrl: withCacheBust(buildUrl + "/WebGL.wasm.unityweb"),
+      dataUrl: withCacheBust(buildUrl + "/WebGL_Test.data"),
+      frameworkUrl: withCacheBust(buildUrl + "/WebGL_Test.framework.js"),
+      codeUrl: withCacheBust(buildUrl + "/WebGL_Test.wasm"),
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "PushNotificationGod",

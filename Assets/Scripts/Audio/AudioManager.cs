@@ -22,8 +22,6 @@ namespace PushNotificationGod.Audio
         [SerializeField] private AudioClip countdownTickSe;
         [SerializeField] private AudioClip countdownStartSe;
         [SerializeField] private AudioClip gameplayBgm;
-        [SerializeField] private bool useGeneratedCountdownTick = true;
-        [SerializeField] private bool useTickClipAsCountdownStart = true;
 
         [SerializeField] private float notificationPopVolume = 0.6f;
         [SerializeField] private float correctVolume = 0.7f;
@@ -41,7 +39,6 @@ namespace PushNotificationGod.Audio
 
         private AudioClip lastClip;
         private float lastClipTime = -999f;
-        private bool gameplayBgmRequested;
 
         private void Awake()
         {
@@ -50,10 +47,16 @@ namespace PushNotificationGod.Audio
                 audioSource = GetComponent<AudioSource>();
             }
 
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+
             if (audioSource != null)
             {
                 audioSource.playOnAwake = false;
                 audioSource.spatialBlend = 0f;
+                audioSource.loop = false;
             }
 
             if (bgmAudioSource == null)
@@ -61,12 +64,12 @@ namespace PushNotificationGod.Audio
                 bgmAudioSource = gameObject.AddComponent<AudioSource>();
             }
 
-            bgmVolume = 0.35f;
-            seVolume = 0.8f;
+            LoadVolumes();
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.loop = true;
             bgmAudioSource.volume = bgmVolume;
             bgmAudioSource.spatialBlend = 0f;
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] seVolume={seVolume:F2} bgmVolume={bgmVolume:F2}");
         }
 
         public void PlayNotificationPop() => Play(notificationPopSe, notificationPopVolume);
@@ -92,31 +95,20 @@ namespace PushNotificationGod.Audio
         public void PlayResult() => Play(resultSe, resultVolume);
         public void PlayCountdownTick()
         {
-            if (useGeneratedCountdownTick)
-            {
-                AudioClip fallbackTick = scorePopSe != null ? scorePopSe : countdownTickSe;
-                Debug.Log($"[{BuildInfo.BuildId}] Countdown TICK SE requested. clip={(fallbackTick != null ? fallbackTick.name : "null")}");
-                Play(fallbackTick, countdownTickVolume);
-                return;
-            }
-
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown TICK SE requested. clip={(countdownTickSe != null ? countdownTickSe.name : "null")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownTick clip={(countdownTickSe != null ? countdownTickSe.name : "NULL")}");
             Play(countdownTickSe, countdownTickVolume);
         }
 
         public void PlayCountdownStart()
         {
-            AudioClip clip = useTickClipAsCountdownStart && countdownTickSe != null
-                ? countdownTickSe
-                : countdownStartSe;
-            Debug.Log($"[{BuildInfo.BuildId}] Countdown START SE requested. clip={(clip != null ? clip.name : "null")}");
-            Play(clip, countdownStartVolume);
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownStart clip={(countdownStartSe != null ? countdownStartSe.name : "NULL")}");
+            Play(countdownStartSe, countdownStartVolume);
         }
 
         public void PlayGameplayBgm()
         {
-            gameplayBgmRequested = true;
-            Debug.Log($"[{BuildInfo.BuildId}] Gameplay BGM requested. sourceNull={bgmAudioSource == null}, clip={(gameplayBgm != null ? gameplayBgm.name : "null")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayGameplayBgm clip={(gameplayBgm != null ? gameplayBgm.name : "NULL")}");
+            StopAllBgm();
             PlayBgm(gameplayBgm);
         }
 
@@ -132,19 +124,7 @@ namespace PushNotificationGod.Audio
                 return;
             }
 
-            gameplayBgmRequested = false;
             bgmAudioSource.Stop();
-        }
-
-        public void RetryGameplayBgmIfNeeded()
-        {
-            if (!gameplayBgmRequested || bgmAudioSource == null || gameplayBgm == null || bgmAudioSource.isPlaying)
-            {
-                return;
-            }
-
-            Debug.Log($"[{BuildInfo.BuildId}] Gameplay BGM retry requested.");
-            PlayBgm(gameplayBgm);
         }
 
         public void SetBgmVolume(float volume)
@@ -164,6 +144,15 @@ namespace PushNotificationGod.Audio
         public void PlaySpawn() => PlayNotificationPop();
         public void PlayCorrect() => PlayTapCorrect();
         public void PlayMistake() => PlayMiss();
+
+        public void LogGameSceneAudioStatus()
+        {
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] countdownTickClip={(countdownTickSe != null ? "OK" : "NULL")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] countdownStartClip={(countdownStartSe != null ? "OK" : "NULL")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] gameplayBgmClip={(gameplayBgm != null ? "OK" : "NULL")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] seSource={(audioSource != null ? "OK" : "NULL")} bgmSource={(bgmAudioSource != null ? "OK" : "NULL")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] seVolume={seVolume:F2} bgmVolume={bgmVolume:F2}");
+        }
 
         private void PlayBgm(AudioClip clip)
         {
@@ -185,7 +174,7 @@ namespace PushNotificationGod.Audio
             bgmAudioSource.loop = true;
             bgmAudioSource.volume = bgmVolume;
             bgmAudioSource.Play();
-            Debug.Log($"[{BuildInfo.BuildId}] Title/Game BGM Started: {clip.name}, volume={bgmVolume}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] Gameplay BGM started: {clip.name}, volume={bgmVolume:F2}");
         }
 
         private void Play(AudioClip clip, float volume)
@@ -204,7 +193,30 @@ namespace PushNotificationGod.Audio
             lastClip = clip;
             lastClipTime = now;
             audioSource.PlayOneShot(clip, Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume));
-            RetryGameplayBgmIfNeeded();
+        }
+
+        private void LoadVolumes()
+        {
+            bgmVolume = LoadVolume("bgm_volume", 0.35f);
+            seVolume = LoadVolume("se_volume", 0.8f);
+        }
+
+        private static float LoadVolume(string key, float fallback)
+        {
+            if (!PlayerPrefs.HasKey(key))
+            {
+                return fallback;
+            }
+
+            float value = PlayerPrefs.GetFloat(key, fallback);
+            if (value <= 0.001f)
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [Audio] {key} was {value:F2}. Reset to {fallback:F2} for MVP playback.");
+                PlayerPrefs.SetFloat(key, fallback);
+                return fallback;
+            }
+
+            return Mathf.Clamp01(value);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace PushNotificationGod.Editor
     public static class WebGLBuildScript
     {
         private const string DefaultOutputPath = "Builds/WebGL";
+        private const string TestOutputPath = "Builds/WebGL_Test";
         private const string GitHubPagesOutputPath = "docs";
 
         private static readonly string[] ScenePaths =
@@ -21,18 +22,32 @@ namespace PushNotificationGod.Editor
         [MenuItem("Tools/Push Notification God/Build WebGL")]
         public static void BuildWebGL()
         {
-            BuildWebGL(DefaultOutputPath);
+            BuildWebGL(DefaultOutputPath, true);
+        }
+
+        [MenuItem("Tools/Push Notification God/Build WebGL Test")]
+        public static void BuildWebGLTest()
+        {
+            BuildWebGL(TestOutputPath, false);
         }
 
         public static void BuildWebGLFromCommandLine()
         {
-            BuildWebGL(GetCommandLineOutputPath());
+            BuildWebGL(GetCommandLineOutputPath(), true);
         }
 
-        private static void BuildWebGL(string outputPath)
+        public static void BuildWebGLTestFromCommandLine()
+        {
+            BuildWebGL(GetCommandLineOutputPath(TestOutputPath), false);
+        }
+
+        private static void BuildWebGL(string outputPath, bool copyToDocs)
         {
             Debug.Log($"Build ID: {PushNotificationGod.Core.BuildInfo.BuildId}");
-            CleanGitHubPagesOutput();
+            if (copyToDocs)
+            {
+                CleanGitHubPagesOutput();
+            }
 
             if (Directory.Exists(outputPath))
             {
@@ -50,6 +65,8 @@ namespace PushNotificationGod.Editor
             PlayerSettings.defaultScreenWidth = 1080;
             PlayerSettings.defaultScreenHeight = 1920;
             PlayerSettings.WebGL.template = "PROJECT:FixedAspect";
+            PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Disabled;
+            PlayerSettings.WebGL.decompressionFallback = false;
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
 
             BuildReport report = BuildPipeline.BuildPlayer(ScenePaths, outputPath, BuildTarget.WebGL, BuildOptions.None);
@@ -59,7 +76,10 @@ namespace PushNotificationGod.Editor
             }
 
             Debug.Log($"WebGL build succeeded: {outputPath}");
-            CopyBuildToGitHubPagesDocs(outputPath);
+            if (copyToDocs)
+            {
+                CopyBuildToGitHubPagesDocs(outputPath);
+            }
         }
 
         private static void CleanGitHubPagesOutput()
@@ -144,7 +164,7 @@ namespace PushNotificationGod.Editor
             }
         }
 
-        private static string GetCommandLineOutputPath()
+        private static string GetCommandLineOutputPath(string fallback = DefaultOutputPath)
         {
             string[] args = Environment.GetCommandLineArgs();
             for (int i = 0; i < args.Length - 1; i++)
@@ -155,7 +175,7 @@ namespace PushNotificationGod.Editor
                 }
             }
 
-            return DefaultOutputPath;
+            return fallback;
         }
     }
 }
