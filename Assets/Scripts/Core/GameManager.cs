@@ -486,6 +486,11 @@ namespace PushNotificationGod.Core
                 Debug.LogWarning($"[{BuildInfo.BuildId}] Countdown overlay is missing. Countdown will still delay gameplay.");
             }
 
+            if (audioManager != null)
+            {
+                yield return audioManager.WaitForCountdownAudioReady(1.5f);
+            }
+
             audioManager?.PlayCountdownTick();
             ShowCountdownLabelImmediately("3", 190);
             Debug.Log($"[Countdown] 3 at {Time.realtimeSinceStartup:F3} runId={runId}");

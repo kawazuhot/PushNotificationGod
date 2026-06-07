@@ -68,6 +68,7 @@ namespace PushNotificationGod.Audio
             }
 
             LoadExplicitAudioClips();
+            PreloadSeClips();
             LoadVolumes();
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.loop = true;
@@ -222,6 +223,68 @@ namespace PushNotificationGod.Audio
             }
         }
 
+        public System.Collections.IEnumerator WaitForCountdownAudioReady(float maxWaitSeconds)
+        {
+            AudioClip tick = CountdownTickClip;
+            AudioClip start = CountdownStartClip;
+            RequestAudioDataLoad(tick);
+            RequestAudioDataLoad(start);
+
+            float startTime = Time.realtimeSinceStartup;
+            while (Time.realtimeSinceStartup - startTime < maxWaitSeconds)
+            {
+                bool tickReady = tick == null || tick.loadState == AudioDataLoadState.Loaded;
+                bool startReady = start == null || start.loadState == AudioDataLoadState.Loaded;
+                if (tickReady && startReady)
+                {
+                    break;
+                }
+
+                yield return new WaitForSecondsRealtime(0.05f);
+            }
+
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioPreload] countdown ready tick={LoadStateName(tick)} start={LoadStateName(start)} waited={(Time.realtimeSinceStartup - startTime):F2}s");
+        }
+
+        private void PreloadSeClips()
+        {
+            PreloadClip(notificationPopSe);
+            PreloadClip(tapCorrectSe);
+            PreloadClip(swipeCorrectSe);
+            PreloadClip(missSe);
+            PreloadClip(scorePopSe);
+            PreloadClip(comboSe);
+            PreloadClip(combo5Se);
+            PreloadClip(combo10Se);
+            PreloadClip(combo20Se);
+            PreloadClip(combo30Se);
+            PreloadClip(gameOverSe);
+            PreloadClip(resultSe);
+            PreloadClip(CountdownTickClip);
+            PreloadClip(CountdownStartClip);
+        }
+
+        private void PreloadClip(AudioClip clip)
+        {
+            if (clip == null)
+            {
+                return;
+            }
+
+            bool requested = RequestAudioDataLoad(clip);
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioPreload] clip={clip.name} state={clip.loadState} requested={requested}");
+        }
+
+        private static bool RequestAudioDataLoad(AudioClip clip)
+        {
+            if (clip == null || clip.loadState == AudioDataLoadState.Loaded || clip.loadState == AudioDataLoadState.Loading)
+            {
+                return false;
+            }
+
+            return clip.LoadAudioData();
+        }
+
         private AudioClip LoadSeOrKeep(string resourceName, AudioClip current)
         {
             AudioClip clip = Resources.Load<AudioClip>($"Audio/SE/{resourceName}");
@@ -270,9 +333,43 @@ namespace PushNotificationGod.Audio
                 return;
             }
 
+            if (clip.loadState != AudioDataLoadState.Loaded)
+            {
+                RequestAudioDataLoad(clip);
+                Debug.Log($"[{BuildInfo.BuildId}] [Audio] Delayed SE until loaded. clip={clip.name} state={clip.loadState}");
+                StartCoroutine(PlayWhenLoaded(clip, volume, 1f));
+                return;
+            }
+
             lastClip = clip;
             lastClipTime = now;
             audioSource.PlayOneShot(clip, Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume));
+        }
+
+        private System.Collections.IEnumerator PlayWhenLoaded(AudioClip clip, float volume, float maxWaitSeconds)
+        {
+            float startTime = Time.realtimeSinceStartup;
+            while (clip != null && clip.loadState != AudioDataLoadState.Loaded && Time.realtimeSinceStartup - startTime < maxWaitSeconds)
+            {
+                yield return new WaitForSecondsRealtime(0.05f);
+            }
+
+            if (audioSource == null || clip == null || clip.loadState != AudioDataLoadState.Loaded)
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [Audio] Delayed SE skipped. clip={ClipName(clip)} state={LoadStateName(clip)}");
+                yield break;
+            }
+
+            float now = Time.unscaledTime;
+            if (clip == lastClip && now - lastClipTime < sameClipCooldownSeconds)
+            {
+                yield break;
+            }
+
+            lastClip = clip;
+            lastClipTime = now;
+            audioSource.PlayOneShot(clip, Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume));
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] Delayed SE played. clip={clip.name} waited={(Time.realtimeSinceStartup - startTime):F2}s");
         }
 
         private void LoadVolumes()
@@ -302,6 +399,11 @@ namespace PushNotificationGod.Audio
         private static string ClipName(AudioClip clip)
         {
             return clip != null ? clip.name : "NULL";
+        }
+
+        private static string LoadStateName(AudioClip clip)
+        {
+            return clip != null ? clip.loadState.ToString() : "NULL";
         }
     }
 }
