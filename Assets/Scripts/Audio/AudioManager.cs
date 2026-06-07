@@ -273,13 +273,8 @@ namespace PushNotificationGod.Audio
         private void EnsureSeSourcePool()
         {
             seSources.Clear();
-            if (audioSource != null)
-            {
-                seSources.Add(audioSource);
-            }
-
-            int targetCount = Mathf.Max(1, seSourcePoolSize);
-            for (int i = seSources.Count; i < targetCount; i++)
+            int targetCount = Mathf.Max(8, seSourcePoolSize);
+            for (int i = 0; i < targetCount; i++)
             {
                 AudioSource source = gameObject.AddComponent<AudioSource>();
                 source.playOnAwake = false;
@@ -289,7 +284,7 @@ namespace PushNotificationGod.Audio
                 seSources.Add(source);
             }
 
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] SE source pool ready. count={seSources.Count}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] SE source pool ready. count={seSources.Count}, serializedPoolSize={seSourcePoolSize}");
         }
 
         private void PreloadClip(AudioClip clip)
