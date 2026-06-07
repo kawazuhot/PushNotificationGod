@@ -67,7 +67,7 @@ namespace PushNotificationGod.Audio
                 bgmAudioSource = gameObject.AddComponent<AudioSource>();
             }
 
-            LoadExplicitGameSceneAudioClips();
+            LoadExplicitAudioClips();
             LoadVolumes();
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.loop = true;
@@ -175,8 +175,21 @@ namespace PushNotificationGod.Audio
         private AudioClip CountdownStartClip => countdownStartClipOverride != null ? countdownStartClipOverride : countdownStartSe;
         private AudioClip GameplayBgmClip => gameplayBgmClipOverride != null ? gameplayBgmClipOverride : gameplayBgm;
 
-        private void LoadExplicitGameSceneAudioClips()
+        private void LoadExplicitAudioClips()
         {
+            notificationPopSe = LoadSeOrKeep("se_notification_pop", notificationPopSe);
+            tapCorrectSe = LoadSeOrKeep("se_tap_correct", tapCorrectSe);
+            swipeCorrectSe = LoadSeOrKeep("se_swipe_correct", swipeCorrectSe);
+            missSe = LoadSeOrKeep("se_miss", missSe);
+            scorePopSe = LoadSeOrKeep("se_score_pop", scorePopSe);
+            comboSe = LoadSeOrKeep("se_combo", comboSe);
+            combo5Se = LoadSeOrKeep("se_combo_5", combo5Se);
+            combo10Se = LoadSeOrKeep("se_combo_10", combo10Se);
+            combo20Se = LoadSeOrKeep("se_combo_20", combo20Se);
+            combo30Se = LoadSeOrKeep("se_combo_30", combo30Se);
+            gameOverSe = LoadSeOrKeep("se_game_over", gameOverSe);
+            resultSe = LoadSeOrKeep("se_result", resultSe);
+
             AudioClip tick = Resources.Load<AudioClip>("Audio/SE/se_countdown_tick");
             AudioClip start = Resources.Load<AudioClip>("Audio/SE/se_countdown_start");
             AudioClip bgm = Resources.Load<AudioClip>("Audio/BGM/bgm_gameplay");
@@ -207,6 +220,18 @@ namespace PushNotificationGod.Audio
             {
                 Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] Resources gameplay BGM missing: Audio/BGM/bgm_gameplay");
             }
+        }
+
+        private AudioClip LoadSeOrKeep(string resourceName, AudioClip current)
+        {
+            AudioClip clip = Resources.Load<AudioClip>($"Audio/SE/{resourceName}");
+            if (clip != null)
+            {
+                return clip;
+            }
+
+            Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] Resources SE missing: Audio/SE/{resourceName}. Keeping scene reference={ClipName(current)}");
+            return current;
         }
 
         private void PlayBgm(AudioClip clip)
