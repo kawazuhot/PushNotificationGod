@@ -29,6 +29,8 @@ namespace PushNotificationGod.UI
                 audioManager = FindAnyObjectByType<AudioManager>();
             }
 
+            audioManager?.StopGameplayBgm();
+            Debug.Log($"[{BuildInfo.BuildId}] [BGM] Stop called from ResultManager.Start.");
             BuildRuntimeResultView();
             ApplyResultTexts();
 
@@ -83,6 +85,7 @@ namespace PushNotificationGod.UI
         {
             Debug.Log($"[{BuildInfo.BuildId}] Retry button pressed. Loading GameScene.");
             Time.timeScale = 1f;
+            audioManager?.StopGameplayBgm();
             SceneManager.LoadScene("GameScene");
         }
 
@@ -90,6 +93,7 @@ namespace PushNotificationGod.UI
         {
             Debug.Log($"[{BuildInfo.BuildId}] Title button pressed. Loading TitleScene.");
             Time.timeScale = 1f;
+            audioManager?.StopGameplayBgm();
             SceneManager.LoadScene("TitleScene");
         }
 

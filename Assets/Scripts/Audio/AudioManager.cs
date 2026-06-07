@@ -101,8 +101,7 @@ namespace PushNotificationGod.Audio
 
         public void PlayCountdownStart()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownStart clip={(countdownStartSe != null ? countdownStartSe.name : "NULL")}");
-            Play(countdownStartSe, countdownStartVolume);
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownStart skipped. START sound disabled.");
         }
 
         public void PlayGameplayBgm()

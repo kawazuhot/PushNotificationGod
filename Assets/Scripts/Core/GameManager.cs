@@ -358,8 +358,8 @@ namespace PushNotificationGod.Core
             panelShadow.effectColor = new Color(0f, 0f, 0f, 0.32f);
             panelShadow.effectDistance = new Vector2(0f, -8f);
 
-            CreateResultButton(panel.transform, "RetryButton", "もう一度", new Vector2(-188f, 520f), new Vector2(340f, 78f), () => SceneManager.LoadScene("GameScene"));
-            CreateResultButton(panel.transform, "TitleButton", "タイトルへ", new Vector2(188f, 520f), new Vector2(340f, 78f), () => SceneManager.LoadScene("TitleScene"));
+            CreateResultButton(panel.transform, "RetryButton", "もう一度", new Vector2(-188f, 520f), new Vector2(340f, 78f), () => LoadSceneAfterStoppingBgm("GameScene"));
+            CreateResultButton(panel.transform, "TitleButton", "タイトルへ", new Vector2(188f, 520f), new Vector2(340f, 78f), () => LoadSceneAfterStoppingBgm("TitleScene"));
 
             CreateResultText(panel.transform, "ResultHeadingText", "通知斬り完了！", 54, FontStyle.Bold, new Vector2(0f, 420f), new Vector2(760f, 82f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             CreateResultText(panel.transform, "PlayerNameText", GetDisplayPlayerName(), 50, FontStyle.Bold, new Vector2(0f, 348f), new Vector2(780f, 74f), new Color(0.04f, 0.08f, 0.12f, 0.95f), false);
@@ -465,6 +465,14 @@ namespace PushNotificationGod.Core
             return button;
         }
 
+        private void LoadSceneAfterStoppingBgm(string sceneName)
+        {
+            Time.timeScale = 1f;
+            audioManager?.StopGameplayBgm();
+            Debug.Log($"[{BuildInfo.BuildId}] [BGM] Stop called before loading {sceneName}.");
+            SceneManager.LoadScene(sceneName);
+        }
+
         private System.Collections.IEnumerator CountdownRoutine()
         {
             Time.timeScale = 1f;
@@ -493,8 +501,8 @@ namespace PushNotificationGod.Core
             Debug.Log($"[Countdown] 1 at {Time.realtimeSinceStartup:F3} runId={runId}");
             yield return new WaitForSecondsRealtime(1f);
 
-            audioManager?.PlayCountdownStart();
             ShowCountdownLabelImmediately("START!", 160);
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] START sound disabled");
             Debug.Log($"[Countdown] START at {Time.realtimeSinceStartup:F3} runId={runId}");
             yield return new WaitForSecondsRealtime(0.8f);
 
