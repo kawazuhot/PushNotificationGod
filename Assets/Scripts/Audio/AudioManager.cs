@@ -409,13 +409,15 @@ namespace PushNotificationGod.Audio
                 return;
             }
 
-            float finalVolume = Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume);
+            float clipVolume = volume <= 0.001f ? 0.8f : Mathf.Clamp01(volume);
+            float masterVolume = seVolume <= 0.001f ? 0.8f : Mathf.Clamp01(seVolume);
+            float finalVolume = Mathf.Clamp01(clipVolume * masterVolume);
             source.Stop();
             source.clip = clip;
             source.volume = finalVolume;
             source.loop = false;
             source.Play();
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlaySE mode={mode} clip={clip.name} state={clip.loadState} volume={finalVolume:F2} sourceIndex={sourceIndex} isPlaying={source.isPlaying}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlaySE mode={mode} clip={clip.name} state={clip.loadState} clipVolume={clipVolume:F2} seVolume={masterVolume:F2} volume={finalVolume:F2} sourceIndex={sourceIndex} isPlaying={source.isPlaying}");
         }
 
         private AudioSource GetNextSeSource(out int sourceIndex)
@@ -439,8 +441,10 @@ namespace PushNotificationGod.Audio
 
         private void LoadVolumes()
         {
-            bgmVolume = LoadVolume("bgm_volume", 0.35f);
-            seVolume = LoadVolume("se_volume", 0.8f);
+            // MVP WebGL builds should not inherit stale browser PlayerPrefs volume values.
+            bgmVolume = 0.35f;
+            seVolume = 0.8f;
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] Using fixed MVP volumes. bgmVolume={bgmVolume:F2}, seVolume={seVolume:F2}");
         }
 
         private static float LoadVolume(string key, float fallback)
