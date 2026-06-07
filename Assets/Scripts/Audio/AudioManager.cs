@@ -22,6 +22,7 @@ namespace PushNotificationGod.Audio
         [SerializeField] private AudioClip countdownTickSe;
         [SerializeField] private AudioClip countdownStartSe;
         [SerializeField] private AudioClip gameplayBgm;
+        [SerializeField] private bool useGeneratedCountdownTick = true;
 
         [SerializeField] private float notificationPopVolume = 0.6f;
         [SerializeField] private float correctVolume = 0.7f;
@@ -39,6 +40,7 @@ namespace PushNotificationGod.Audio
 
         private AudioClip lastClip;
         private float lastClipTime = -999f;
+        private AudioClip generatedCountdownTickClip;
 
         private void Awake()
         {
@@ -80,7 +82,17 @@ namespace PushNotificationGod.Audio
         }
         public void PlayGameOver() => Play(gameOverSe, gameOverVolume);
         public void PlayResult() => Play(resultSe, resultVolume);
-        public void PlayCountdownTick() => Play(countdownTickSe, countdownTickVolume);
+        public void PlayCountdownTick()
+        {
+            if (useGeneratedCountdownTick)
+            {
+                Play(GetGeneratedCountdownTickClip(), countdownTickVolume);
+                return;
+            }
+
+            Play(countdownTickSe, countdownTickVolume);
+        }
+
         public void PlayCountdownStart() => Play(countdownStartSe, countdownStartVolume);
 
         public void PlayGameplayBgm()
@@ -159,6 +171,31 @@ namespace PushNotificationGod.Audio
             lastClip = clip;
             lastClipTime = now;
             audioSource.PlayOneShot(clip, Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume));
+        }
+
+        private AudioClip GetGeneratedCountdownTickClip()
+        {
+            if (generatedCountdownTickClip != null)
+            {
+                return generatedCountdownTickClip;
+            }
+
+            const int sampleRate = 44100;
+            const float duration = 0.08f;
+            const float frequency = 880f;
+            int sampleCount = Mathf.CeilToInt(sampleRate * duration);
+            float[] samples = new float[sampleCount];
+
+            for (int i = 0; i < sampleCount; i++)
+            {
+                float t = i / (float)sampleRate;
+                float envelope = 1f - (i / (float)sampleCount);
+                samples[i] = Mathf.Sin(2f * Mathf.PI * frequency * t) * envelope * 0.35f;
+            }
+
+            generatedCountdownTickClip = AudioClip.Create("generated_countdown_tick", sampleCount, 1, sampleRate, false);
+            generatedCountdownTickClip.SetData(samples, 0);
+            return generatedCountdownTickClip;
         }
     }
 }

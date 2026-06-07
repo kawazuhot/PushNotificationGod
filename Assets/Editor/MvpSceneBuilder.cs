@@ -677,6 +677,7 @@ public static class MvpSceneBuilder
         SetSerialized(audioManager, "countdownTickSe", LoadSeClip("se_countdown_tick.mp3"));
         SetSerialized(audioManager, "countdownStartSe", LoadSeClip("se_countdown_start.mp3"));
         SetSerialized(audioManager, "gameplayBgm", LoadBgmClip("bgm_gameplay.mp3"));
+        SetSerializedBool(audioManager, "useGeneratedCountdownTick", true);
         SetSerializedFloat(audioManager, "notificationPopVolume", 0.6f);
         SetSerializedFloat(audioManager, "correctVolume", 0.7f);
         SetSerializedFloat(audioManager, "swipeVolume", 0.7f);
