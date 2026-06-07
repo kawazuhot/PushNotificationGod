@@ -23,6 +23,7 @@ namespace PushNotificationGod.Audio
         [SerializeField] private AudioClip countdownStartSe;
         [SerializeField] private AudioClip gameplayBgm;
         [SerializeField] private bool useGeneratedCountdownTick = true;
+        [SerializeField] private bool useTickClipAsCountdownStart = true;
 
         [SerializeField] private float notificationPopVolume = 0.6f;
         [SerializeField] private float correctVolume = 0.7f;
@@ -49,6 +50,12 @@ namespace PushNotificationGod.Audio
                 audioSource = GetComponent<AudioSource>();
             }
 
+            if (audioSource != null)
+            {
+                audioSource.playOnAwake = false;
+                audioSource.spatialBlend = 0f;
+            }
+
             if (bgmAudioSource == null)
             {
                 bgmAudioSource = gameObject.AddComponent<AudioSource>();
@@ -59,6 +66,7 @@ namespace PushNotificationGod.Audio
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.loop = true;
             bgmAudioSource.volume = bgmVolume;
+            bgmAudioSource.spatialBlend = 0f;
         }
 
         public void PlayNotificationPop() => Play(notificationPopSe, notificationPopVolume);
@@ -93,10 +101,18 @@ namespace PushNotificationGod.Audio
             Play(countdownTickSe, countdownTickVolume);
         }
 
-        public void PlayCountdownStart() => Play(countdownStartSe, countdownStartVolume);
+        public void PlayCountdownStart()
+        {
+            AudioClip clip = useTickClipAsCountdownStart && countdownTickSe != null
+                ? countdownTickSe
+                : countdownStartSe;
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown START SE requested. clip={(clip != null ? clip.name : "null")}");
+            Play(clip, countdownStartVolume);
+        }
 
         public void PlayGameplayBgm()
         {
+            Debug.Log($"[{BuildInfo.BuildId}] Gameplay BGM requested. sourceNull={bgmAudioSource == null}, clip={(gameplayBgm != null ? gameplayBgm.name : "null")}");
             PlayBgm(gameplayBgm);
         }
 
@@ -137,6 +153,7 @@ namespace PushNotificationGod.Audio
         {
             if (bgmAudioSource == null || clip == null)
             {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] BGM play skipped. sourceNull={bgmAudioSource == null}, clipNull={clip == null}");
                 return;
             }
 
