@@ -1,4 +1,5 @@
 using PushNotificationGod.Core;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PushNotificationGod.Audio
@@ -39,9 +40,12 @@ namespace PushNotificationGod.Audio
         [SerializeField] private float bgmVolume = 0.35f;
         [SerializeField] private float seVolume = 0.8f;
         [SerializeField] private float sameClipCooldownSeconds = 0.04f;
+        [SerializeField] private int seSourcePoolSize = 8;
 
         private AudioClip lastClip;
         private float lastClipTime = -999f;
+        private readonly List<AudioSource> seSources = new();
+        private int nextSeSourceIndex;
 
         private void Awake()
         {
@@ -60,6 +64,7 @@ namespace PushNotificationGod.Audio
                 audioSource.playOnAwake = false;
                 audioSource.spatialBlend = 0f;
                 audioSource.loop = false;
+                audioSource.volume = 1f;
             }
 
             if (bgmAudioSource == null)
@@ -67,6 +72,7 @@ namespace PushNotificationGod.Audio
                 bgmAudioSource = gameObject.AddComponent<AudioSource>();
             }
 
+            EnsureSeSourcePool();
             LoadExplicitAudioClips();
             PreloadSeClips();
             LoadVolumes();
@@ -264,6 +270,28 @@ namespace PushNotificationGod.Audio
             PreloadClip(CountdownStartClip);
         }
 
+        private void EnsureSeSourcePool()
+        {
+            seSources.Clear();
+            if (audioSource != null)
+            {
+                seSources.Add(audioSource);
+            }
+
+            int targetCount = Mathf.Max(1, seSourcePoolSize);
+            for (int i = seSources.Count; i < targetCount; i++)
+            {
+                AudioSource source = gameObject.AddComponent<AudioSource>();
+                source.playOnAwake = false;
+                source.spatialBlend = 0f;
+                source.loop = false;
+                source.volume = 1f;
+                seSources.Add(source);
+            }
+
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] SE source pool ready. count={seSources.Count}");
+        }
+
         private void PreloadClip(AudioClip clip)
         {
             if (clip == null)
@@ -343,7 +371,7 @@ namespace PushNotificationGod.Audio
 
             lastClip = clip;
             lastClipTime = now;
-            audioSource.PlayOneShot(clip, Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume));
+            PlayLoadedSe(clip, volume, "immediate");
         }
 
         private System.Collections.IEnumerator PlayWhenLoaded(AudioClip clip, float volume, float maxWaitSeconds)
@@ -368,8 +396,45 @@ namespace PushNotificationGod.Audio
 
             lastClip = clip;
             lastClipTime = now;
-            audioSource.PlayOneShot(clip, Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume));
+            PlayLoadedSe(clip, volume, "delayed");
             Debug.Log($"[{BuildInfo.BuildId}] [Audio] Delayed SE played. clip={clip.name} waited={(Time.realtimeSinceStartup - startTime):F2}s");
+        }
+
+        private void PlayLoadedSe(AudioClip clip, float volume, string mode)
+        {
+            AudioSource source = GetNextSeSource(out int sourceIndex);
+            if (source == null)
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [Audio] SE skipped. No AudioSource. clip={ClipName(clip)}");
+                return;
+            }
+
+            float finalVolume = Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume);
+            source.Stop();
+            source.clip = clip;
+            source.volume = finalVolume;
+            source.loop = false;
+            source.Play();
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlaySE mode={mode} clip={clip.name} state={clip.loadState} volume={finalVolume:F2} sourceIndex={sourceIndex} isPlaying={source.isPlaying}");
+        }
+
+        private AudioSource GetNextSeSource(out int sourceIndex)
+        {
+            if (seSources.Count == 0)
+            {
+                EnsureSeSourcePool();
+            }
+
+            if (seSources.Count == 0)
+            {
+                sourceIndex = -1;
+                return audioSource;
+            }
+
+            sourceIndex = nextSeSourceIndex % seSources.Count;
+            AudioSource source = seSources[sourceIndex];
+            nextSeSourceIndex = (nextSeSourceIndex + 1) % seSources.Count;
+            return source;
         }
 
         private void LoadVolumes()
