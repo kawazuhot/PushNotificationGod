@@ -95,18 +95,19 @@ namespace PushNotificationGod.Audio
         public void PlayResult() => Play(resultSe, resultVolume);
         public void PlayCountdownTick()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownTick clip={(countdownTickSe != null ? countdownTickSe.name : "NULL")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownTick clip={ClipName(countdownTickSe)}");
             Play(countdownTickSe, countdownTickVolume);
         }
 
         public void PlayCountdownStart()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownStart skipped. START sound disabled.");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownStart clip={ClipName(countdownStartSe)}");
+            Play(countdownStartSe, countdownStartVolume);
         }
 
         public void PlayGameplayBgm()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayGameplayBgm clip={(gameplayBgm != null ? gameplayBgm.name : "NULL")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayGameplayBgm clip={ClipName(gameplayBgm)} volume={bgmVolume:F2}");
             StopAllBgm();
             PlayBgm(gameplayBgm);
         }
@@ -146,11 +147,21 @@ namespace PushNotificationGod.Audio
 
         public void LogGameSceneAudioStatus()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] countdownTickClip={(countdownTickSe != null ? "OK" : "NULL")}");
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] countdownStartClip={(countdownStartSe != null ? "OK" : "NULL")}");
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] gameplayBgmClip={(gameplayBgm != null ? "OK" : "NULL")}");
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] seSource={(audioSource != null ? "OK" : "NULL")} bgmSource={(bgmAudioSource != null ? "OK" : "NULL")}");
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] seVolume={seVolume:F2} bgmVolume={bgmVolume:F2}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] countdownTickClip = {ClipName(countdownTickSe)}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] countdownStartClip = {ClipName(countdownStartSe)}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] gameplayBgmClip = {ClipName(gameplayBgm)}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] seVolume = {seVolume:F2}, seSource.volume = {(audioSource != null ? audioSource.volume.ToString("F2") : "NULL")}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] bgmVolume = {bgmVolume:F2}, bgmSource.volume = {(bgmAudioSource != null ? bgmAudioSource.volume.ToString("F2") : "NULL")}");
+
+            if (countdownTickSe != null && countdownTickSe.name.Contains("start"))
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] countdownTickClip looks wrong: {countdownTickSe.name}");
+            }
+
+            if (gameplayBgm == null)
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] gameplayBgmClip is NULL.");
+            }
         }
 
         private void PlayBgm(AudioClip clip)
@@ -173,7 +184,7 @@ namespace PushNotificationGod.Audio
             bgmAudioSource.loop = true;
             bgmAudioSource.volume = bgmVolume;
             bgmAudioSource.Play();
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] Gameplay BGM started: {clip.name}, volume={bgmVolume:F2}");
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] Gameplay BGM started: {clip.name}, volume={bgmVolume:F2}, sourceVolume={bgmAudioSource.volume:F2}, isPlaying={bgmAudioSource.isPlaying}");
         }
 
         private void Play(AudioClip clip, float volume)
@@ -216,6 +227,11 @@ namespace PushNotificationGod.Audio
             }
 
             return Mathf.Clamp01(value);
+        }
+
+        private static string ClipName(AudioClip clip)
+        {
+            return clip != null ? clip.name : "NULL";
         }
     }
 }

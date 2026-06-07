@@ -279,8 +279,6 @@ public static class MvpSceneBuilder
         SetSerialized(controller, "rankingButtonLabelSprite", LoadUiSprite(RankingButtonLabelPath, true));
         SetSerialized(controller, "howToButtonLabelSprite", LoadUiSprite(HowToButtonLabelPath, true));
         SetSerialized(controller, "settingsButtonLabelSprite", LoadUiSprite(SettingsButtonLabelPath, true));
-        SetSerialized(controller, "titleBgmClip", LoadBgmClip("bgm_title.mp3"));
-
         EditorSceneManager.SaveScene(scene, $"{SceneDir}/TitleScene.unity");
     }
 

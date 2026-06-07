@@ -502,7 +502,7 @@ namespace PushNotificationGod.Core
             yield return new WaitForSecondsRealtime(1f);
 
             ShowCountdownLabelImmediately("START!", 160);
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] START sound disabled");
+            audioManager?.PlayCountdownStart();
             Debug.Log($"[Countdown] START at {Time.realtimeSinceStartup:F3} runId={runId}");
             yield return new WaitForSecondsRealtime(0.8f);
 

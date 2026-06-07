@@ -28,8 +28,6 @@ namespace PushNotificationGod.UI
         [SerializeField] private Sprite howToButtonLabelSprite;
         [SerializeField] private Sprite settingsButtonLabelSprite;
         [SerializeField] private AudioManager audioManager;
-        [SerializeField] private AudioClip titleBgmClip;
-        [SerializeField] private AudioSource titleBgmSource;
         [SerializeField] private Slider bgmVolumeSlider;
         [SerializeField] private Slider seVolumeSlider;
 
@@ -56,8 +54,9 @@ namespace PushNotificationGod.UI
             ForceHideModalPanels();
             UIJapaneseFont.ApplyToSceneTexts();
             EnsureBuildText();
-            EnsureTitleBgmSource();
-            Debug.Log($"[{BuildInfo.BuildId}] TitleScene started. titleBgmClip={(titleBgmClip != null ? "OK" : "NULL")}");
+            EnsureAudioManager();
+            audioManager?.StopAllBgm();
+            Debug.Log($"[{BuildInfo.BuildId}] TitleScene started. Title BGM disabled.");
         }
 
         private void Update()
@@ -65,14 +64,12 @@ namespace PushNotificationGod.UI
             if (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.touchCount > 0)
             {
                 Debug.Log($"[{BuildInfo.BuildId}] First title user input detected.");
-                TryPlayTitleBgm();
             }
         }
 
         public void StartGame()
         {
             Debug.Log($"[{BuildInfo.BuildId}] Start button pressed. Showing player name input.");
-            TryPlayTitleBgm();
             ShowPlayerNameInput();
         }
 
@@ -121,7 +118,7 @@ namespace PushNotificationGod.UI
 
             Debug.Log("[NameDialog] Confirm finished");
             Debug.Log($"[{BuildInfo.BuildId}] Player name confirmed. Loading GameScene.");
-            StopTitleBgm();
+            audioManager?.StopAllBgm();
             SceneManager.LoadScene("GameScene");
         }
 
@@ -487,63 +484,6 @@ namespace PushNotificationGod.UI
             {
                 audioManager = FindAnyObjectByType<AudioManager>();
             }
-        }
-
-        private void EnsureTitleBgmSource()
-        {
-            if (titleBgmSource == null)
-            {
-                titleBgmSource = gameObject.GetComponent<AudioSource>();
-            }
-
-            if (titleBgmSource == null)
-            {
-                titleBgmSource = gameObject.AddComponent<AudioSource>();
-            }
-
-            titleBgmSource.playOnAwake = false;
-            titleBgmSource.loop = true;
-            titleBgmSource.spatialBlend = 0f;
-            titleBgmSource.volume = GetSafeVolume("bgm_volume", 0.35f);
-        }
-
-        private void TryPlayTitleBgm()
-        {
-            EnsureTitleBgmSource();
-            if (titleBgmClip == null || titleBgmSource == null || titleBgmSource.isPlaying)
-            {
-                return;
-            }
-
-            titleBgmSource.clip = titleBgmClip;
-            titleBgmSource.volume = GetSafeVolume("bgm_volume", 0.35f);
-            titleBgmSource.Play();
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] Title BGM started: {titleBgmClip.name}, volume={titleBgmSource.volume:F2}");
-        }
-
-        private void StopTitleBgm()
-        {
-            if (titleBgmSource != null)
-            {
-                titleBgmSource.Stop();
-            }
-        }
-
-        private static float GetSafeVolume(string key, float fallback)
-        {
-            if (!PlayerPrefs.HasKey(key))
-            {
-                return fallback;
-            }
-
-            float value = PlayerPrefs.GetFloat(key, fallback);
-            if (value <= 0.001f)
-            {
-                PlayerPrefs.SetFloat(key, fallback);
-                return fallback;
-            }
-
-            return Mathf.Clamp01(value);
         }
 
         private GameObject CreateHowToImagePanel()
