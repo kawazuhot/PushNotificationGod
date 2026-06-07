@@ -22,6 +22,9 @@ namespace PushNotificationGod.Audio
         [SerializeField] private AudioClip countdownTickSe;
         [SerializeField] private AudioClip countdownStartSe;
         [SerializeField] private AudioClip gameplayBgm;
+        [SerializeField] private AudioClip countdownTickClipOverride;
+        [SerializeField] private AudioClip countdownStartClipOverride;
+        [SerializeField] private AudioClip gameplayBgmClipOverride;
 
         [SerializeField] private float notificationPopVolume = 0.6f;
         [SerializeField] private float correctVolume = 0.7f;
@@ -95,21 +98,24 @@ namespace PushNotificationGod.Audio
         public void PlayResult() => Play(resultSe, resultVolume);
         public void PlayCountdownTick()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownTick clip={ClipName(countdownTickSe)}");
-            Play(countdownTickSe, countdownTickVolume);
+            AudioClip clip = CountdownTickClip;
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownTick clip={ClipName(clip)}");
+            Play(clip, countdownTickVolume);
         }
 
         public void PlayCountdownStart()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownStart clip={ClipName(countdownStartSe)}");
-            Play(countdownStartSe, countdownStartVolume);
+            AudioClip clip = CountdownStartClip;
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayCountdownStart clip={ClipName(clip)}");
+            Play(clip, countdownStartVolume);
         }
 
         public void PlayGameplayBgm()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayGameplayBgm clip={ClipName(gameplayBgm)} volume={bgmVolume:F2}");
+            AudioClip clip = GameplayBgmClip;
+            Debug.Log($"[{BuildInfo.BuildId}] [Audio] PlayGameplayBgm clip={ClipName(clip)} volume={bgmVolume:F2}");
             StopAllBgm();
-            PlayBgm(gameplayBgm);
+            PlayBgm(clip);
         }
 
         public void StopGameplayBgm()
@@ -147,22 +153,26 @@ namespace PushNotificationGod.Audio
 
         public void LogGameSceneAudioStatus()
         {
-            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] countdownTickClip = {ClipName(countdownTickSe)}");
-            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] countdownStartClip = {ClipName(countdownStartSe)}");
-            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] gameplayBgmClip = {ClipName(gameplayBgm)}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] countdownTickClip = {ClipName(CountdownTickClip)} raw={ClipName(countdownTickSe)} override={ClipName(countdownTickClipOverride)}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] countdownStartClip = {ClipName(CountdownStartClip)} raw={ClipName(countdownStartSe)} override={ClipName(countdownStartClipOverride)}");
+            Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] gameplayBgmClip = {ClipName(GameplayBgmClip)} raw={ClipName(gameplayBgm)} override={ClipName(gameplayBgmClipOverride)}");
             Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] seVolume = {seVolume:F2}, seSource.volume = {(audioSource != null ? audioSource.volume.ToString("F2") : "NULL")}");
             Debug.Log($"[{BuildInfo.BuildId}] [AudioCheck] bgmVolume = {bgmVolume:F2}, bgmSource.volume = {(bgmAudioSource != null ? bgmAudioSource.volume.ToString("F2") : "NULL")}");
 
-            if (countdownTickSe != null && countdownTickSe.name.Contains("start"))
+            if (CountdownTickClip != null && CountdownTickClip.name.Contains("start"))
             {
-                Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] countdownTickClip looks wrong: {countdownTickSe.name}");
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] countdownTickClip looks wrong: {CountdownTickClip.name}");
             }
 
-            if (gameplayBgm == null)
+            if (GameplayBgmClip == null)
             {
                 Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] gameplayBgmClip is NULL.");
             }
         }
+
+        private AudioClip CountdownTickClip => countdownTickClipOverride != null ? countdownTickClipOverride : countdownTickSe;
+        private AudioClip CountdownStartClip => countdownStartClipOverride != null ? countdownStartClipOverride : countdownStartSe;
+        private AudioClip GameplayBgmClip => gameplayBgmClipOverride != null ? gameplayBgmClipOverride : gameplayBgm;
 
         private void PlayBgm(AudioClip clip)
         {

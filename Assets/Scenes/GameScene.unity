@@ -710,6 +710,9 @@ MonoBehaviour:
   countdownTickSe: {fileID: 8300000, guid: b84d4d73d487d4c2299fe782eb83a40d, type: 3}
   countdownStartSe: {fileID: 8300000, guid: fe15018a35a22477e8bf0915ec65a4c1, type: 3}
   gameplayBgm: {fileID: 8300000, guid: f0f305d8ee5db465ebad6336fbd2adbd, type: 3}
+  countdownTickClipOverride: {fileID: 8300000, guid: b84d4d73d487d4c2299fe782eb83a40d, type: 3}
+  countdownStartClipOverride: {fileID: 8300000, guid: fe15018a35a22477e8bf0915ec65a4c1, type: 3}
+  gameplayBgmClipOverride: {fileID: 8300000, guid: f0f305d8ee5db465ebad6336fbd2adbd, type: 3}
   notificationPopVolume: 0.6
   correctVolume: 0.7
   swipeVolume: 0.7
