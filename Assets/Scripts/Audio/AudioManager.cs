@@ -67,6 +67,7 @@ namespace PushNotificationGod.Audio
                 bgmAudioSource = gameObject.AddComponent<AudioSource>();
             }
 
+            LoadExplicitGameSceneAudioClips();
             LoadVolumes();
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.loop = true;
@@ -173,6 +174,40 @@ namespace PushNotificationGod.Audio
         private AudioClip CountdownTickClip => countdownTickClipOverride != null ? countdownTickClipOverride : countdownTickSe;
         private AudioClip CountdownStartClip => countdownStartClipOverride != null ? countdownStartClipOverride : countdownStartSe;
         private AudioClip GameplayBgmClip => gameplayBgmClipOverride != null ? gameplayBgmClipOverride : gameplayBgm;
+
+        private void LoadExplicitGameSceneAudioClips()
+        {
+            AudioClip tick = Resources.Load<AudioClip>("Audio/SE/se_countdown_tick");
+            AudioClip start = Resources.Load<AudioClip>("Audio/SE/se_countdown_start");
+            AudioClip bgm = Resources.Load<AudioClip>("Audio/BGM/bgm_gameplay");
+
+            if (tick != null)
+            {
+                countdownTickClipOverride = tick;
+            }
+            else
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] Resources tick clip missing: Audio/SE/se_countdown_tick");
+            }
+
+            if (start != null)
+            {
+                countdownStartClipOverride = start;
+            }
+            else
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] Resources start clip missing: Audio/SE/se_countdown_start");
+            }
+
+            if (bgm != null)
+            {
+                gameplayBgmClipOverride = bgm;
+            }
+            else
+            {
+                Debug.LogWarning($"[{BuildInfo.BuildId}] [AudioCheck] Resources gameplay BGM missing: Audio/BGM/bgm_gameplay");
+            }
+        }
 
         private void PlayBgm(AudioClip clip)
         {
