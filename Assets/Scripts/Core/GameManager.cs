@@ -89,6 +89,10 @@ namespace PushNotificationGod.Core
         private void Update()
         {
             UpdateLastSecondsWarning();
+            if (gameState == GameState.Playing && !gameEnded)
+            {
+                audioManager?.RetryGameplayBgmIfNeeded();
+            }
 
             if (taskOverflowCheckEnabled && gameState == GameState.Playing && !gameEnded && taskManager.IsOverflow(deadlineY, maxVisibleTaskCount))
             {

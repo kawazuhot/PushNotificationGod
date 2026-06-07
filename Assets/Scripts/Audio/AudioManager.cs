@@ -41,7 +41,7 @@ namespace PushNotificationGod.Audio
 
         private AudioClip lastClip;
         private float lastClipTime = -999f;
-        private AudioClip generatedCountdownTickClip;
+        private bool gameplayBgmRequested;
 
         private void Awake()
         {
@@ -94,10 +94,13 @@ namespace PushNotificationGod.Audio
         {
             if (useGeneratedCountdownTick)
             {
-                Play(GetGeneratedCountdownTickClip(), countdownTickVolume);
+                AudioClip fallbackTick = scorePopSe != null ? scorePopSe : countdownTickSe;
+                Debug.Log($"[{BuildInfo.BuildId}] Countdown TICK SE requested. clip={(fallbackTick != null ? fallbackTick.name : "null")}");
+                Play(fallbackTick, countdownTickVolume);
                 return;
             }
 
+            Debug.Log($"[{BuildInfo.BuildId}] Countdown TICK SE requested. clip={(countdownTickSe != null ? countdownTickSe.name : "null")}");
             Play(countdownTickSe, countdownTickVolume);
         }
 
@@ -112,6 +115,7 @@ namespace PushNotificationGod.Audio
 
         public void PlayGameplayBgm()
         {
+            gameplayBgmRequested = true;
             Debug.Log($"[{BuildInfo.BuildId}] Gameplay BGM requested. sourceNull={bgmAudioSource == null}, clip={(gameplayBgm != null ? gameplayBgm.name : "null")}");
             PlayBgm(gameplayBgm);
         }
@@ -128,7 +132,19 @@ namespace PushNotificationGod.Audio
                 return;
             }
 
+            gameplayBgmRequested = false;
             bgmAudioSource.Stop();
+        }
+
+        public void RetryGameplayBgmIfNeeded()
+        {
+            if (!gameplayBgmRequested || bgmAudioSource == null || gameplayBgm == null || bgmAudioSource.isPlaying)
+            {
+                return;
+            }
+
+            Debug.Log($"[{BuildInfo.BuildId}] Gameplay BGM retry requested.");
+            PlayBgm(gameplayBgm);
         }
 
         public void SetBgmVolume(float volume)
@@ -188,31 +204,7 @@ namespace PushNotificationGod.Audio
             lastClip = clip;
             lastClipTime = now;
             audioSource.PlayOneShot(clip, Mathf.Clamp01(volume) * Mathf.Clamp01(seVolume));
-        }
-
-        private AudioClip GetGeneratedCountdownTickClip()
-        {
-            if (generatedCountdownTickClip != null)
-            {
-                return generatedCountdownTickClip;
-            }
-
-            const int sampleRate = 44100;
-            const float duration = 0.08f;
-            const float frequency = 880f;
-            int sampleCount = Mathf.CeilToInt(sampleRate * duration);
-            float[] samples = new float[sampleCount];
-
-            for (int i = 0; i < sampleCount; i++)
-            {
-                float t = i / (float)sampleRate;
-                float envelope = 1f - (i / (float)sampleCount);
-                samples[i] = Mathf.Sin(2f * Mathf.PI * frequency * t) * envelope * 0.35f;
-            }
-
-            generatedCountdownTickClip = AudioClip.Create("generated_countdown_tick", sampleCount, 1, sampleRate, false);
-            generatedCountdownTickClip.SetData(samples, 0);
-            return generatedCountdownTickClip;
+            RetryGameplayBgmIfNeeded();
         }
     }
 }
