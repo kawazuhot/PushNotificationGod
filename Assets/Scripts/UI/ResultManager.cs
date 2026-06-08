@@ -19,6 +19,11 @@ namespace PushNotificationGod.UI
         [SerializeField] private Sprite roundedUiSprite;
         private Text successText;
         private Text missText;
+        private Image resultPanelBackground;
+
+        private const string SpecialScoreTitleId = "title_score_100000_plus";
+        private static readonly Color DefaultPanelColor = new(0.94f, 0.99f, 1f, 0.92f);
+        private static readonly Color GoldPanelColor = new(1f, 0.91f, 0.52f, 0.94f);
 
         private void Start()
         {
@@ -79,6 +84,8 @@ namespace PushNotificationGod.UI
             {
                 rankDescriptionText.text = GameResultData.RankDescription;
             }
+
+            ApplyResultBackground();
         }
 
         public void OnRetryButton()
@@ -165,8 +172,8 @@ namespace PushNotificationGod.UI
             rootRect.offsetMin = Vector2.zero;
             rootRect.offsetMax = Vector2.zero;
 
-            Image panel = CreateRuntimePanel(root.transform, "ResultPanelBackground", new Vector2(0f, 0f), new Vector2(860f, 1460f), new Color(0.94f, 0.99f, 1f, 0.92f));
-            panel.transform.SetAsFirstSibling();
+            resultPanelBackground = CreateRuntimePanel(root.transform, "ResultPanelBackground", new Vector2(0f, 0f), new Vector2(860f, 1460f), DefaultPanelColor);
+            resultPanelBackground.transform.SetAsFirstSibling();
 
             retryButton = CreateRuntimeButton(root.transform, "RetryButton_Runtime", "もう一度", new Vector2(-188f, 548f), new Vector2(340f, 82f), OnRetryButton);
             titleButton = CreateRuntimeButton(root.transform, "BackToTitleButton_Runtime", "タイトルへ", new Vector2(188f, 548f), new Vector2(340f, 82f), OnTitleButton);
@@ -194,6 +201,19 @@ namespace PushNotificationGod.UI
             CreateRuntimeText(root.transform, "MaxComboLabelText", "最大コンボ", 28, FontStyle.Bold, new Vector2(0f, -326f), new Vector2(740f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             CreateRuntimePanel(root.transform, "MaxComboValueBackground", new Vector2(0f, -388f), new Vector2(650f, 84f), new Color(0.02f, 0.07f, 0.12f, 0.48f));
             maxComboText = CreateRuntimeText(root.transform, "MaxComboText_Runtime", "0 COMBO", 54, FontStyle.Bold, new Vector2(0f, -388f), new Vector2(760f, 72f), Color.white, true);
+        }
+
+        private void ApplyResultBackground()
+        {
+            if (resultPanelBackground == null)
+            {
+                Debug.LogWarning("ResultPanelBackground is missing. Cannot apply result background color.");
+                return;
+            }
+
+            bool isSpecialScoreTitle = GameResultData.RankTitleId == SpecialScoreTitleId;
+            resultPanelBackground.color = isSpecialScoreTitle ? GoldPanelColor : DefaultPanelColor;
+            Debug.Log($"[ResultBackground] titleId={GameResultData.RankTitleId} gold={isSpecialScoreTitle}");
         }
 
         private static string GetDisplayPlayerName()

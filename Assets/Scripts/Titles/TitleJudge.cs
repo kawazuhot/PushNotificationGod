@@ -290,6 +290,16 @@ namespace PushNotificationGod.Titles
                 minScore = 60000,
                 maxScore = -1,
                 priority = 100
+            },
+            new TitleDefinition
+            {
+                titleId = "title_score_100000_plus",
+                titleName = "通知処理バグってる人",
+                description = "その指、たぶん人間の速度ではありません。",
+                conditionType = ConditionScoreRange,
+                minScore = 100000,
+                maxScore = -1,
+                priority = 120
             }
         };
 

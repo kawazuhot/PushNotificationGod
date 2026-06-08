@@ -10,6 +10,7 @@ namespace PushNotificationGod.Core
         public static int SuccessCount { get; private set; }
         public static int MissCount { get; private set; }
         public static int MaxCombo { get; private set; }
+        public static string RankTitleId { get; private set; } = "title_score_0000_4999";
         public static string RankTitle { get; private set; } = "通知に飲まれた人";
         public static string RankDescription { get; private set; } = "気づいたら通知の波に流されていました。";
         public static bool WasNewRecord { get; private set; }
@@ -35,6 +36,7 @@ namespace PushNotificationGod.Core
             SuccessCount = Mathf.Max(0, successCount);
             MissCount = Mathf.Max(0, missCount);
             MaxCombo = Mathf.Max(0, maxCombo);
+            RankTitleId = string.IsNullOrWhiteSpace(title?.titleId) ? "title_score_0000_4999" : title.titleId;
             RankTitle = string.IsNullOrWhiteSpace(title?.titleName) ? "通知に飲まれた人" : title.titleName;
             RankDescription = string.IsNullOrWhiteSpace(title?.description) ? "気づいたら通知の波に流されていました。" : title.description;
             WasNewRecord = false;
@@ -44,11 +46,16 @@ namespace PushNotificationGod.Core
             LastMistakeTaskTag = lastMistakeTaskTag ?? string.Empty;
             LastMistakeAction = lastMistakeAction?.ToString() ?? string.Empty;
 
-            Debug.Log($"[SaveResult] FinalScore={FinalScore}, Success={SuccessCount}, Miss={MissCount}, MaxCombo={MaxCombo}, Rank={RankTitle}, Description={RankDescription}, EndReason={EndReason}, LastMistakeTaskId={LastMistakeTaskId}, LastMistakeTag={LastMistakeTaskTag}, LastMistakeAction={LastMistakeAction}");
+            Debug.Log($"[SaveResult] FinalScore={FinalScore}, Success={SuccessCount}, Miss={MissCount}, MaxCombo={MaxCombo}, RankId={RankTitleId}, Rank={RankTitle}, Description={RankDescription}, EndReason={EndReason}, LastMistakeTaskId={LastMistakeTaskId}, LastMistakeTag={LastMistakeTaskTag}, LastMistakeAction={LastMistakeAction}");
         }
 
         public static string GetRankTitle(int score)
         {
+            if (score >= 100000)
+            {
+                return "通知処理バグってる人";
+            }
+
             if (score >= 60000)
             {
                 return "タスク処理の神様";

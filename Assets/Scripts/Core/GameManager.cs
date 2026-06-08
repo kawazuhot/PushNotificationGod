@@ -41,6 +41,8 @@ namespace PushNotificationGod.Core
         [SerializeField] private Button restartButton;
         [SerializeField] private LastSecondsWarningController lastSecondsWarningController;
 
+        private const string SpecialScoreTitleId = "title_score_100000_plus";
+
         private bool gameEnded;
         private GameState gameState = GameState.WaitingForStart;
         private int successCount;
@@ -352,8 +354,12 @@ namespace PushNotificationGod.Core
             panelRect.anchoredPosition = Vector2.zero;
             panelRect.sizeDelta = new Vector2(850f, 1280f);
             Image panelImage = panel.GetComponent<Image>();
-            panelImage.color = new Color(0.94f, 0.99f, 1f, 0.94f);
+            bool isSpecialScoreTitle = GameResultData.RankTitleId == SpecialScoreTitleId;
+            panelImage.color = isSpecialScoreTitle
+                ? new Color(1f, 0.91f, 0.52f, 0.94f)
+                : new Color(0.94f, 0.99f, 1f, 0.94f);
             panelImage.raycastTarget = true;
+            Debug.Log($"[ResultBackground] titleId={GameResultData.RankTitleId} gold={isSpecialScoreTitle}");
             Shadow panelShadow = panel.GetComponent<Shadow>();
             panelShadow.effectColor = new Color(0f, 0f, 0f, 0.32f);
             panelShadow.effectDistance = new Vector2(0f, -8f);
