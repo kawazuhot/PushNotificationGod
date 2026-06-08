@@ -7,27 +7,27 @@ namespace PushNotificationGod.UI
     {
         public static int GetScoreTier(int score)
         {
-            if (score >= 15000)
-            {
-                return 5;
-            }
-
-            if (score >= 7000)
+            if (score >= 60000)
             {
                 return 4;
             }
 
-            if (score >= 5000)
+            if (score >= 30000)
             {
                 return 3;
             }
 
-            if (score >= 3000)
+            if (score >= 10000)
             {
                 return 2;
             }
 
-            return score >= 1000 ? 1 : 0;
+            if (score >= 5000)
+            {
+                return 1;
+            }
+
+            return 0;
         }
 
         public static int GetComboTier(int combo)
@@ -120,12 +120,9 @@ namespace PushNotificationGod.UI
                     gradient.SetGradient(new Color(1f, 0.98f, 0.36f), new Color(1f, 0.62f, 0.02f));
                     break;
                 case 3:
-                    gradient.SetGradient(new Color(0.82f, 1f, 0.28f), new Color(0.02f, 0.74f, 0.18f));
-                    break;
-                case 4:
                     gradient.SetGradient(new Color(1f, 0.58f, 0.08f), new Color(1f, 0.05f, 0.04f));
                     break;
-                case 5:
+                case 4:
                     gradient.SetRainbow();
                     break;
             }

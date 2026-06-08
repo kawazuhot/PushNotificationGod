@@ -49,22 +49,22 @@ namespace PushNotificationGod.Core
 
         public static string GetRankTitle(int score)
         {
-            if (score >= 20000)
+            if (score >= 60000)
             {
                 return "タスク処理の神様";
             }
 
-            if (score >= 10000)
+            if (score >= 30000)
             {
                 return "通知さばき職人";
             }
 
-            if (score >= 5000)
+            if (score >= 10000)
             {
                 return "そこそこ既読マン";
             }
 
-            if (score >= 2000)
+            if (score >= 5000)
             {
                 return "未読ためがち";
             }

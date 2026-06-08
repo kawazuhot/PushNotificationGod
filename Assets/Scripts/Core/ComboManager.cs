@@ -30,6 +30,16 @@ namespace PushNotificationGod.Core
 
         public float GetMultiplier(int combo)
         {
+            if (combo >= 100)
+            {
+                return 3.0f;
+            }
+
+            if (combo >= 50)
+            {
+                return 2.5f;
+            }
+
             if (combo >= 20)
             {
                 return 2.0f;

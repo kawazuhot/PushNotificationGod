@@ -243,29 +243,19 @@ namespace PushNotificationGod.Titles
             },
             new TitleDefinition
             {
-                titleId = "title_score_0000_1999",
+                titleId = "title_score_0000_4999",
                 titleName = "通知に飲まれた人",
                 description = "気づいたら通知の波に流されていました。",
                 conditionType = ConditionScoreRange,
                 minScore = 0,
-                maxScore = 1999,
-                priority = 50
-            },
-            new TitleDefinition
-            {
-                titleId = "title_score_2000_4999",
-                titleName = "未読ためがち",
-                description = "読む気はある。たぶん。あとで。",
-                conditionType = ConditionScoreRange,
-                minScore = 2000,
                 maxScore = 4999,
                 priority = 50
             },
             new TitleDefinition
             {
                 titleId = "title_score_5000_9999",
-                titleName = "そこそこ既読マン",
-                description = "通知に振り回されつつ、ちゃんと戦いました。",
+                titleName = "未読ためがち",
+                description = "読む気はある。たぶん。あとで。",
                 conditionType = ConditionScoreRange,
                 minScore = 5000,
                 maxScore = 9999,
@@ -273,21 +263,31 @@ namespace PushNotificationGod.Titles
             },
             new TitleDefinition
             {
-                titleId = "title_score_10000_19999",
+                titleId = "title_score_10000_29999",
+                titleName = "そこそこ既読マン",
+                description = "通知に振り回されつつ、ちゃんと戦いました。",
+                conditionType = ConditionScoreRange,
+                minScore = 10000,
+                maxScore = 29999,
+                priority = 50
+            },
+            new TitleDefinition
+            {
+                titleId = "title_score_30000_59999",
                 titleName = "通知さばき職人",
                 description = "指先だけで今日の混乱をだいぶ片付けました。",
                 conditionType = ConditionScoreRange,
-                minScore = 10000,
-                maxScore = 19999,
+                minScore = 30000,
+                maxScore = 59999,
                 priority = 100
             },
             new TitleDefinition
             {
-                titleId = "title_score_20000_plus",
+                titleId = "title_score_60000_plus",
                 titleName = "タスク処理の神様",
                 description = "もはや通知の方があなたを怖がっています。",
                 conditionType = ConditionScoreRange,
-                minScore = 20000,
+                minScore = 60000,
                 maxScore = -1,
                 priority = 100
             }
@@ -346,7 +346,7 @@ namespace PushNotificationGod.Titles
                 }
             }
 
-            TitleDefinition selected = bestTitle ?? definitions.Find(definition => definition.titleId == "title_score_0000_1999");
+            TitleDefinition selected = bestTitle ?? definitions.Find(definition => definition.titleId == "title_score_0000_4999");
             Debug.Log($"[TitleJudge] selected={selected.titleName}");
             return selected;
         }

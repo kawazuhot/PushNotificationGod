@@ -1,98 +1,98 @@
 taskId,appName,iconId,messageText,correctAction,baseScore,backgroundStyleId,spawnWeight,tag
-task_self_001,自分,icon_self,歯をみがく,Tap,100,normal,100,health
-task_self_002,自分,icon_self,布団から出たくない,SwipeRight,100,normal,100,lazy
-task_self_003,自分,icon_self,前髪が決まらない,SwipeRight,100,normal,100,hair
-task_self_004,自分,icon_self,なんとなくスマホを開く,SwipeRight,100,normal,100,lazy
-task_self_005,自分,icon_self,昨日より少しだけがんばる,Tap,300,gold,10,
-task_self_006,自分,icon_self,トイレでSNSを見る,SwipeRight,100,normal,100,sns
-task_self_007,自分,icon_self,明日からやろう,SwipeRight,100,normal,100,lazy
-task_self_008,自分,icon_self,お皿を洗う,Tap,100,normal,100,life
-task_self_009,自分,icon_self,二度寝する,SwipeRight,100,normal,100,lazy
-task_message_001,メッセージ,icon_message,恋人 今日のご飯どうする？,Tap,100,normal,100,lover
-task_message_002,メッセージ,icon_message,お母さん 帰りに牛乳買ってきて、あと...,Tap,100,normal,100,mother
-task_message_003,メッセージ,icon_message,恋人 いま電話できる？,Tap,100,normal,100,lover
-task_message_004,メッセージ,icon_message,絶対儲かる！【究極の投資法】無料登録はこちら↓,SwipeRight,100,normal,100,scam
-task_message_005,メッセージ,icon_message,【重要】1000万円当選おめでとうございます！受け取り方法はこちら↓↓,SwipeRight,100,normal,100,scam
-task_message_006,メッセージ,icon_message,昔の知り合い 久しぶり！良い話があるんだけど,SwipeRight,100,normal,100,old_friend
-task_message_007,メッセージ,icon_message,【無料運勢占い】人生変えたい人だけ見て！,SwipeRight,100,normal,100,fortune
-task_message_008,メッセージ,icon_message,恋人 帰り何時くらい？,Tap,100,normal,100,lover
-task_message_009,メッセージ,icon_message,お母さん これ見たら電話して,Tap,100,normal,100,mother
-task_message_010,メッセージ,icon_message,【緊急】ポイントが失効します！今すぐ確認,SwipeRight,100,normal,100,scam
-task_message_011,メッセージ,icon_message,美人投資家から友達申請が届きました,SwipeRight,100,normal,100,fake_beauty
-task_message_012,メッセージ,icon_message,【限定】今だけ無料で診断できます,SwipeRight,100,normal,100,diagnosis
-task_message_013,メッセージ,icon_message,たった1日で人生が変わる方法,SwipeRight,100,normal,100,lifehack
-task_message_014,メッセージ,icon_message,副業で月収100万円を目指しませんか,SwipeRight,100,normal,100,scam
-task_message_015,メッセージ,icon_message,あなたの口座が危険です 今すぐ確認,SwipeRight,100,normal,100,scam
-task_message_016,メッセージ,icon_message,【当選確定】受け取り期限は本日まで,SwipeRight,100,normal,100,scam
-task_message_017,メッセージ,icon_message,あなただけに特別価格！！,SwipeRight,100,normal,100,sale
-task_message_018,メッセージ,icon_message,今すぐ登録で現金プレゼント,SwipeRight,100,normal,100,scam
-task_furima_001,フリマ,icon_furima,購入者からメッセージがあります,Tap,100,normal,100,furima
-task_furima_002,フリマ,icon_furima,いいね！がつきました,SwipeRight,100,normal,100,like
-task_sns_001,SNS,icon_sns,3年前の投稿を振り返ろう,SwipeRight,100,normal,100,sns
-task_sns_002,SNS,icon_sns,あなたの投稿にいいね！,SwipeRight,100,normal,100,sns
-task_sns_003,SNS,icon_sns,話題の投稿をチェックしよう,SwipeRight,100,normal,100,sns
-task_sns_004,SNS,icon_sns,友達からDMが届いています,Tap,100,normal,100,friend_dm
-task_sns_005,SNS,icon_sns,知らない人からDMが届いています,SwipeRight,100,normal,100,sns
-task_life_001,生活,icon_life,お風呂に入る,Tap,100,normal,100,life
-task_life_002,生活,icon_life,電気を消す,Tap,100,normal,100,life
-task_life_003,生活,icon_life,冷蔵庫を閉める,Tap,100,normal,100,life
-task_life_004,生活,icon_life,明日の準備をする,Tap,100,normal,100,life
-task_life_005,生活,icon_life,なんとなく冷蔵庫を見る,SwipeRight,100,normal,100,life
-task_life_006,生活,icon_life,ソファでサボる,SwipeRight,100,normal,100,lazy
-task_life_007,生活,icon_life,ゴミを捨てる,Tap,100,normal,100,life
-task_life_008,生活,icon_life,虫歯を治す,Tap,300,gold,30,health
-task_video_001,動画,icon_video,あなたへのおすすめ動画,SwipeRight,100,normal,100,video
-task_video_002,動画,icon_video,【衝撃】3分で人生が変わる話,SwipeRight,100,normal,100,video
-task_video_003,動画,icon_video,おすすめショート動画,SwipeRight,100,normal,100,video
-task_video_004,動画,icon_video,今すぐ見たいランキング動画,SwipeRight,100,normal,100,video
-task_self_010,自分,icon_self,とりあえず横になる,SwipeRight,100,normal,100,lazy
-task_self_011,自分,icon_self,謎に部屋をうろつく,SwipeRight,100,normal,100,lazy
-task_self_012,自分,icon_self,鏡の前で前髪チェック,SwipeRight,100,normal,100,hair
-task_life_009,生活,icon_life,玄関の鍵を確認する,Tap,100,normal,100,life
-task_life_010,生活,icon_life,窓を閉める,Tap,100,normal,100,life
-task_life_011,生活,icon_life,使ったコップを下げる,Tap,100,normal,100,life
-task_life_012,生活,icon_life,とりあえず床に置く,SwipeRight,100,normal,100,lazy
-task_life_013,生活,icon_life,トイレを我慢する,SwipeRight,100,normal,100,toilet
-task_message_019,メッセージ,icon_message,恋人 今日ちょっと遅くなる,Tap,100,normal,100,lover
-task_message_020,メッセージ,icon_message,恋人 ちゃんと寝てね,Tap,100,normal,100,lover
-task_message_021,メッセージ,icon_message,お母さん 写真送ったよ,Tap,100,normal,100,mother
-task_message_022,メッセージ,icon_message,友達 今日いけそう？,Tap,100,normal,100,friend
-task_message_023,メッセージ,icon_message,投資で自由になりませんか？,SwipeRight,100,normal,100,scam
-task_message_024,メッセージ,icon_message,美人投資家 ねぇ、週末お茶しない？,SwipeRight,100,normal,100,fake_beauty
-task_message_025,メッセージ,icon_message,あなたの健康【無料診断】できます,SwipeRight,100,normal,100,diagnosis
-task_message_026,メッセージ,icon_message,突然ごめん！久しぶりだよね！,SwipeRight,100,normal,100,old_friend
-task_message_027,メッセージ,icon_message,お母さん 確認して欲しいことがあるんだけど,Tap,100,normal,100,mother
-task_message_028,メッセージ,icon_message,お母さん 調子はどう？,Tap,100,normal,100,mother
-task_sns_006,SNS,icon_sns,友達から返信が届いています,Tap,100,normal,100,friend
-task_sns_007,SNS,icon_sns,人気の投稿を見逃しています,SwipeRight,100,normal,100,sns
-task_video_005,動画,icon_video,たった10秒で分かる裏ワザ,SwipeRight,100,normal,100,video
-task_furima_003,フリマ,icon_furima,商品に質問が届いています,Tap,100,normal,100,furima
-task_furima_004,フリマ,icon_furima,限定価格 クーポン配布中！,SwipeRight,100,normal,100,sale
-task_game_001,ゲーム,icon_game,ログインボーナスがあります,SwipeRight,100,normal,100,game
-task_game_002,ゲーム,icon_game,今なら10連無料,SwipeRight,100,normal,100,game
-task_game_003,ゲーム,icon_game,もう一戦だけやりませんか,SwipeRight,100,normal,100,game
-task_game_004,ゲーム,icon_game,寝る前にデイリー消化,SwipeRight,100,normal,100,game
-task_work_001,仕事,icon_work,今日中に確認してください,Tap,100,normal,100,work
-task_work_002,仕事,icon_work,締切が近づいています,Tap,100,normal,100,work
-task_work_003,仕事,icon_work,会議が始まります,Tap,100,normal,100,work
-task_work_004,仕事,icon_work,返信待ちの連絡があります,Tap,100,normal,100,work
-task_news_001,ニュース,icon_news,交通機関の遅延情報があります,Tap,100,normal,100,news
-task_news_002,ニュース,icon_news,災害注意報が出ています,Tap,100,normal,100,news
-task_news_003,ニュース,icon_news,芸能人の意外な一面とは,SwipeRight,100,normal,100,clickbait
-task_news_004,ニュース,icon_news,知らないと損する話,SwipeRight,100,normal,100,clickbait
-task_food_001,フード,icon_food,こっそり夜食を食べる,SwipeRight,100,normal,100,diet
-task_food_002,フード,icon_food,のどが乾いてジュースを飲む,SwipeRight,100,normal,100,diet
-task_food_003,フード,icon_food,1日3食ハンバーガー,SwipeRight,100,normal,100,diet
-task_food_004,フード,icon_food,青汁を飲む,Tap,100,normal,100,diet
-task_food_005,フード,icon_food,野菜をたべる,Tap,100,normal,100,diet
-task_food_006,フード,icon_food,毎日コーラを飲む,SwipeRight,100,normal,100,diet
-task_food_007,フード,icon_food,ゆっくり噛んで食べる,Tap,100,normal,100,diet
-task_food_008,フード,icon_food,食べすぎる前にやめる,Tap,100,normal,100,diet
-task_food_009,フード,icon_food,深夜にラーメンを食べる,SwipeRight,100,normal,100,diet
-task_food_010,フード,icon_food,寝る前にアイスを食べる,SwipeRight,100,normal,100,diet
-task_food_011,フード,icon_food,カロリーは見なかったことにする,SwipeRight,100,normal,100,diet
-task_food_012,フード,icon_food,サラダ味だから実質野菜,SwipeRight,100,normal,100,diet
-task_message_029,メッセージ,icon_message,恋人 ほんとに大事な話,Tap,300,gold,30,lover
-task_self_013,自分,icon_self,昨日の自分に勝つ,Tap,300,gold,30,lazy
-task_work_005,仕事,icon_work,締め切りは今日です,Tap,300,gold,30,work
-task_life_014,生活,icon_life,コンロの火を確認する,Tap,300,gold,30,life
+task_self_001,自分,icon_self,歯をみがく,Tap,300,normal,100,health
+task_self_002,自分,icon_self,布団から出たくない,SwipeRight,300,normal,100,lazy
+task_self_003,自分,icon_self,前髪が決まらない,SwipeRight,300,normal,100,hair
+task_self_004,自分,icon_self,なんとなくスマホを開く,SwipeRight,300,normal,100,lazy
+task_self_005,自分,icon_self,昨日より少しだけがんばる,Tap,1000,gold,10,
+task_self_006,自分,icon_self,トイレでSNSを見る,SwipeRight,300,normal,100,sns
+task_self_007,自分,icon_self,明日からやろう,SwipeRight,300,normal,100,lazy
+task_self_008,自分,icon_self,お皿を洗う,Tap,300,normal,100,life
+task_self_009,自分,icon_self,二度寝する,SwipeRight,300,normal,100,lazy
+task_message_001,メッセージ,icon_message,恋人 今日のご飯どうする？,Tap,300,normal,100,lover
+task_message_002,メッセージ,icon_message,お母さん 帰りに牛乳買ってきて、あと...,Tap,300,normal,100,mother
+task_message_003,メッセージ,icon_message,恋人 いま電話できる？,Tap,300,normal,100,lover
+task_message_004,メッセージ,icon_message,絶対儲かる！【究極の投資法】無料登録はこちら↓,SwipeRight,300,normal,100,scam
+task_message_005,メッセージ,icon_message,【重要】1000万円当選おめでとうございます！受け取り方法はこちら↓↓,SwipeRight,300,normal,100,scam
+task_message_006,メッセージ,icon_message,昔の知り合い 久しぶり！良い話があるんだけど,SwipeRight,300,normal,100,old_friend
+task_message_007,メッセージ,icon_message,【無料運勢占い】人生変えたい人だけ見て！,SwipeRight,300,normal,100,fortune
+task_message_008,メッセージ,icon_message,恋人 帰り何時くらい？,Tap,300,normal,100,lover
+task_message_009,メッセージ,icon_message,お母さん これ見たら電話して,Tap,300,normal,100,mother
+task_message_010,メッセージ,icon_message,【緊急】ポイントが失効します！今すぐ確認,SwipeRight,300,normal,100,scam
+task_message_011,メッセージ,icon_message,美人投資家から友達申請が届きました,SwipeRight,300,normal,100,fake_beauty
+task_message_012,メッセージ,icon_message,【限定】今だけ無料で診断できます,SwipeRight,300,normal,100,diagnosis
+task_message_013,メッセージ,icon_message,たった1日で人生が変わる方法,SwipeRight,300,normal,100,lifehack
+task_message_014,メッセージ,icon_message,副業で月収100万円を目指しませんか,SwipeRight,300,normal,100,scam
+task_message_015,メッセージ,icon_message,あなたの口座が危険です 今すぐ確認,SwipeRight,300,normal,100,scam
+task_message_016,メッセージ,icon_message,【当選確定】受け取り期限は本日まで,SwipeRight,300,normal,100,scam
+task_message_017,メッセージ,icon_message,あなただけに特別価格！！,SwipeRight,300,normal,100,sale
+task_message_018,メッセージ,icon_message,今すぐ登録で現金プレゼント,SwipeRight,300,normal,100,scam
+task_furima_001,フリマ,icon_furima,購入者からメッセージがあります,Tap,300,normal,100,furima
+task_furima_002,フリマ,icon_furima,いいね！がつきました,SwipeRight,300,normal,100,like
+task_sns_001,SNS,icon_sns,3年前の投稿を振り返ろう,SwipeRight,300,normal,100,sns
+task_sns_002,SNS,icon_sns,あなたの投稿にいいね！,SwipeRight,300,normal,100,sns
+task_sns_003,SNS,icon_sns,話題の投稿をチェックしよう,SwipeRight,300,normal,100,sns
+task_sns_004,SNS,icon_sns,友達からDMが届いています,Tap,300,normal,100,friend_dm
+task_sns_005,SNS,icon_sns,知らない人からDMが届いています,SwipeRight,300,normal,100,sns
+task_life_001,生活,icon_life,お風呂に入る,Tap,300,normal,100,life
+task_life_002,生活,icon_life,電気を消す,Tap,300,normal,100,life
+task_life_003,生活,icon_life,冷蔵庫を閉める,Tap,300,normal,100,life
+task_life_004,生活,icon_life,明日の準備をする,Tap,300,normal,100,life
+task_life_005,生活,icon_life,なんとなく冷蔵庫を見る,SwipeRight,300,normal,100,life
+task_life_006,生活,icon_life,ソファでサボる,SwipeRight,300,normal,100,lazy
+task_life_007,生活,icon_life,ゴミを捨てる,Tap,300,normal,100,life
+task_life_008,生活,icon_life,虫歯を治す,Tap,1000,gold,30,health
+task_video_001,動画,icon_video,あなたへのおすすめ動画,SwipeRight,300,normal,100,video
+task_video_002,動画,icon_video,【衝撃】3分で人生が変わる話,SwipeRight,300,normal,100,video
+task_video_003,動画,icon_video,おすすめショート動画,SwipeRight,300,normal,100,video
+task_video_004,動画,icon_video,今すぐ見たいランキング動画,SwipeRight,300,normal,100,video
+task_self_010,自分,icon_self,とりあえず横になる,SwipeRight,300,normal,100,lazy
+task_self_011,自分,icon_self,謎に部屋をうろつく,SwipeRight,300,normal,100,lazy
+task_self_012,自分,icon_self,鏡の前で前髪チェック,SwipeRight,300,normal,100,hair
+task_life_009,生活,icon_life,玄関の鍵を確認する,Tap,300,normal,100,life
+task_life_010,生活,icon_life,窓を閉める,Tap,300,normal,100,life
+task_life_011,生活,icon_life,使ったコップを下げる,Tap,300,normal,100,life
+task_life_012,生活,icon_life,とりあえず床に置く,SwipeRight,300,normal,100,lazy
+task_life_013,生活,icon_life,トイレを我慢する,SwipeRight,300,normal,100,toilet
+task_message_019,メッセージ,icon_message,恋人 今日ちょっと遅くなる,Tap,300,normal,100,lover
+task_message_020,メッセージ,icon_message,恋人 ちゃんと寝てね,Tap,300,normal,100,lover
+task_message_021,メッセージ,icon_message,お母さん 写真送ったよ,Tap,300,normal,100,mother
+task_message_022,メッセージ,icon_message,友達 今日いけそう？,Tap,300,normal,100,friend
+task_message_023,メッセージ,icon_message,投資で自由になりませんか？,SwipeRight,300,normal,100,scam
+task_message_024,メッセージ,icon_message,美人投資家 ねぇ、週末お茶しない？,SwipeRight,300,normal,100,fake_beauty
+task_message_025,メッセージ,icon_message,あなたの健康【無料診断】できます,SwipeRight,300,normal,100,diagnosis
+task_message_026,メッセージ,icon_message,突然ごめん！久しぶりだよね！,SwipeRight,300,normal,100,old_friend
+task_message_027,メッセージ,icon_message,お母さん 確認して欲しいことがあるんだけど,Tap,300,normal,100,mother
+task_message_028,メッセージ,icon_message,お母さん 調子はどう？,Tap,300,normal,100,mother
+task_sns_006,SNS,icon_sns,友達から返信が届いています,Tap,300,normal,100,friend
+task_sns_007,SNS,icon_sns,人気の投稿を見逃しています,SwipeRight,300,normal,100,sns
+task_video_005,動画,icon_video,たった10秒で分かる裏ワザ,SwipeRight,300,normal,100,video
+task_furima_003,フリマ,icon_furima,商品に質問が届いています,Tap,300,normal,100,furima
+task_furima_004,フリマ,icon_furima,限定価格 クーポン配布中！,SwipeRight,300,normal,100,sale
+task_game_001,ゲーム,icon_game,ログインボーナスがあります,SwipeRight,300,normal,100,game
+task_game_002,ゲーム,icon_game,今なら10連無料,SwipeRight,300,normal,100,game
+task_game_003,ゲーム,icon_game,もう一戦だけやりませんか,SwipeRight,300,normal,100,game
+task_game_004,ゲーム,icon_game,寝る前にデイリー消化,SwipeRight,300,normal,100,game
+task_work_001,仕事,icon_work,今日中に確認してください,Tap,300,normal,100,work
+task_work_002,仕事,icon_work,締切が近づいています,Tap,300,normal,100,work
+task_work_003,仕事,icon_work,会議が始まります,Tap,300,normal,100,work
+task_work_004,仕事,icon_work,返信待ちの連絡があります,Tap,300,normal,100,work
+task_news_001,ニュース,icon_news,交通機関の遅延情報があります,Tap,300,normal,100,news
+task_news_002,ニュース,icon_news,災害注意報が出ています,Tap,300,normal,100,news
+task_news_003,ニュース,icon_news,芸能人の意外な一面とは,SwipeRight,300,normal,100,clickbait
+task_news_004,ニュース,icon_news,知らないと損する話,SwipeRight,300,normal,100,clickbait
+task_food_001,フード,icon_food,こっそり夜食を食べる,SwipeRight,300,normal,100,diet
+task_food_002,フード,icon_food,のどが乾いてジュースを飲む,SwipeRight,300,normal,100,diet
+task_food_003,フード,icon_food,1日3食ハンバーガー,SwipeRight,300,normal,100,diet
+task_food_004,フード,icon_food,青汁を飲む,Tap,300,normal,100,diet
+task_food_005,フード,icon_food,野菜をたべる,Tap,300,normal,100,diet
+task_food_006,フード,icon_food,毎日コーラを飲む,SwipeRight,300,normal,100,diet
+task_food_007,フード,icon_food,ゆっくり噛んで食べる,Tap,300,normal,100,diet
+task_food_008,フード,icon_food,食べすぎる前にやめる,Tap,300,normal,100,diet
+task_food_009,フード,icon_food,深夜にラーメンを食べる,SwipeRight,300,normal,100,diet
+task_food_010,フード,icon_food,寝る前にアイスを食べる,SwipeRight,300,normal,100,diet
+task_food_011,フード,icon_food,カロリーは見なかったことにする,SwipeRight,300,normal,100,diet
+task_food_012,フード,icon_food,サラダ味だから実質野菜,SwipeRight,300,normal,100,diet
+task_message_029,メッセージ,icon_message,恋人 ほんとに大事な話,Tap,1000,gold,30,lover
+task_self_013,自分,icon_self,昨日の自分に勝つ,Tap,1000,gold,30,lazy
+task_work_005,仕事,icon_work,締め切りは今日です,Tap,1000,gold,30,work
+task_life_014,生活,icon_life,コンロの火を確認する,Tap,1000,gold,30,life
