@@ -691,7 +691,7 @@ namespace PushNotificationGod.Core
             instructionObject.transform.SetParent(instructionPanel.transform, false);
             countdownInstructionText = instructionObject.GetComponent<Text>();
             countdownInstructionText.font = UIJapaneseFont.Get();
-            countdownInstructionText.text = "⭕ 必要なものは【タップ！】\n❌ いらないものは【右スワイプ！】";
+            countdownInstructionText.text = "⭕ 大事なものは【タップ！】\n❌ いらないものは【右スワイプ！】";
             countdownInstructionText.fontSize = 48;
             countdownInstructionText.fontStyle = FontStyle.Bold;
             countdownInstructionText.alignment = TextAnchor.MiddleCenter;
