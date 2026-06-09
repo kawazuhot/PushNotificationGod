@@ -83,7 +83,7 @@ namespace PushNotificationGod.Titles
             {
                 titleId = "title_life_lifezero",
                 titleName = "生活放棄モード",
-                description = "生活タスクを右に流した先に、だいたい散らかった部屋があります。",
+                description = "大事な生活タスクを右に流しました。",
                 conditionType = ConditionLifeZeroLastMistakeTag,
                 targetTag = "life",
                 priority = 80
