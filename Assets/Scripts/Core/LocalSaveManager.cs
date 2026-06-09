@@ -5,7 +5,7 @@ namespace PushNotificationGod.Core
     public static class LocalSaveManager
     {
         private const string PlayerNameKey = "player_name";
-        private const float DefaultBgmVolume = 0.35f;
+        private const float DefaultBgmVolume = 0.175f;
         private const float DefaultSeVolume = 0.8f;
 
         public static string PlayerName => SafeGetString(PlayerNameKey, string.Empty);

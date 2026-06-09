@@ -689,14 +689,14 @@ public static class MvpSceneBuilder
         SetSerializedFloat(audioManager, "resultVolume", 0.8f);
         SetSerializedFloat(audioManager, "countdownTickVolume", 0.8f);
         SetSerializedFloat(audioManager, "countdownStartVolume", 0.9f);
-        SetSerializedFloat(audioManager, "bgmVolume", 0.35f);
+        SetSerializedFloat(audioManager, "bgmVolume", 0.175f);
         SetSerializedFloat(audioManager, "seVolume", 0.8f);
         audioSource.playOnAwake = false;
         if (bgmAudioSource != null)
         {
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.loop = true;
-            bgmAudioSource.volume = 0.35f;
+            bgmAudioSource.volume = 0.175f;
         }
     }
 

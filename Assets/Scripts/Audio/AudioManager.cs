@@ -37,7 +37,7 @@ namespace PushNotificationGod.Audio
         [SerializeField] private float resultVolume = 0.8f;
         [SerializeField] private float countdownTickVolume = 0.8f;
         [SerializeField] private float countdownStartVolume = 0.9f;
-        [SerializeField] private float bgmVolume = 0.35f;
+        [SerializeField] private float bgmVolume = 0.175f;
         [SerializeField] private float seVolume = 0.8f;
         [SerializeField] private float sameClipCooldownSeconds = 0.04f;
         [SerializeField] private int seSourcePoolSize = 8;
@@ -437,7 +437,7 @@ namespace PushNotificationGod.Audio
         private void LoadVolumes()
         {
             // MVP WebGL builds should not inherit stale browser PlayerPrefs volume values.
-            bgmVolume = 0.35f;
+            bgmVolume = 0.175f;
             seVolume = 0.8f;
             Debug.Log($"[{BuildInfo.BuildId}] [Audio] Using fixed MVP volumes. bgmVolume={bgmVolume:F2}, seVolume={seVolume:F2}");
         }
