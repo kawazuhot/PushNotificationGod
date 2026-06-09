@@ -657,22 +657,26 @@ namespace PushNotificationGod.UI
 
             copyright.text = "© 2026 Hyorome";
             copyright.font = uiFont;
-            copyright.fontSize = 22;
+            copyright.fontSize = 28;
             copyright.fontStyle = FontStyle.Normal;
             copyright.alignment = TextAnchor.MiddleCenter;
-            copyright.color = new Color(1f, 1f, 1f, 0.68f);
+            copyright.color = new Color(1f, 1f, 1f, 0.84f);
             copyright.raycastTarget = false;
 
             Shadow shadow = copyright.GetComponent<Shadow>();
-            shadow.effectColor = new Color(0f, 0f, 0f, 0.35f);
-            shadow.effectDistance = new Vector2(0f, -2f);
+            if (shadow == null)
+            {
+                shadow = copyright.gameObject.AddComponent<Shadow>();
+            }
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.45f);
+            shadow.effectDistance = new Vector2(0f, -2.5f);
 
             RectTransform rect = copyright.rectTransform;
             rect.anchorMin = new Vector2(0.5f, 0f);
             rect.anchorMax = new Vector2(0.5f, 0f);
             rect.pivot = new Vector2(0.5f, 0f);
-            rect.anchoredPosition = new Vector2(0f, 36f);
-            rect.sizeDelta = new Vector2(700f, 42f);
+            rect.anchoredPosition = new Vector2(0f, 96f);
+            rect.sizeDelta = new Vector2(760f, 52f);
             copyright.transform.SetAsLastSibling();
         }
 

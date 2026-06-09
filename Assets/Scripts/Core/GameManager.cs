@@ -57,6 +57,7 @@ namespace PushNotificationGod.Core
         private bool isCountingDown;
         private int countdownRunId;
         private Sprite restartButtonSprite;
+        private Sprite resultRoundedSprite;
 
         private void Start()
         {
@@ -354,6 +355,8 @@ namespace PushNotificationGod.Core
             panelRect.anchoredPosition = Vector2.zero;
             panelRect.sizeDelta = new Vector2(850f, 1280f);
             Image panelImage = panel.GetComponent<Image>();
+            panelImage.sprite = GetResultRoundedSprite();
+            panelImage.type = Image.Type.Sliced;
             bool isSpecialScoreTitle = GameResultData.RankTitleId == SpecialScoreTitleId;
             panelImage.color = isSpecialScoreTitle
                 ? new Color(1f, 0.91f, 0.52f, 0.94f)
@@ -410,6 +413,8 @@ namespace PushNotificationGod.Core
             rect.anchoredPosition = anchoredPosition;
             rect.sizeDelta = size;
             Image image = band.GetComponent<Image>();
+            image.sprite = GetResultRoundedSprite();
+            image.type = Image.Type.Sliced;
             image.color = new Color(0.02f, 0.07f, 0.12f, 0.48f);
             image.raycastTarget = false;
             return image;
@@ -461,6 +466,8 @@ namespace PushNotificationGod.Core
             rect.anchoredPosition = anchoredPosition;
             rect.sizeDelta = size;
             Image image = buttonObject.GetComponent<Image>();
+            image.sprite = GetResultRoundedSprite();
+            image.type = Image.Type.Sliced;
             image.color = new Color(0.92f, 0.98f, 1f, 0.9f);
             Shadow shadow = buttonObject.GetComponent<Shadow>();
             shadow.effectColor = new Color(0f, 0f, 0f, 0.24f);
@@ -469,6 +476,16 @@ namespace PushNotificationGod.Core
             button.onClick.AddListener(action);
             CreateResultText(buttonObject.transform, "Label", label, 32, FontStyle.Bold, Vector2.zero, size, new Color(0.04f, 0.08f, 0.12f, 1f), false);
             return button;
+        }
+
+        private Sprite GetResultRoundedSprite()
+        {
+            if (resultRoundedSprite == null)
+            {
+                resultRoundedSprite = RoundedUiSpriteFactory.Get();
+            }
+
+            return resultRoundedSprite;
         }
 
         private void LoadSceneAfterStoppingBgm(string sceneName)
@@ -654,6 +671,23 @@ namespace PushNotificationGod.Core
             countdownCanvasGroup = overlay.GetComponent<CanvasGroup>();
             countdownCanvasGroup.blocksRaycasts = false;
 
+            GameObject windowObject = new("CountdownWindow", typeof(RectTransform), typeof(Image), typeof(Shadow));
+            windowObject.transform.SetParent(overlay.transform, false);
+            Image windowImage = windowObject.GetComponent<Image>();
+            windowImage.sprite = RoundedUiSpriteFactory.Get();
+            windowImage.type = Image.Type.Sliced;
+            windowImage.color = new Color(0.03f, 0.07f, 0.12f, 0.38f);
+            windowImage.raycastTarget = false;
+            Shadow windowShadow = windowObject.GetComponent<Shadow>();
+            windowShadow.effectColor = new Color(0f, 0f, 0f, 0.32f);
+            windowShadow.effectDistance = new Vector2(0f, -8f);
+            RectTransform windowRect = windowObject.GetComponent<RectTransform>();
+            windowRect.anchorMin = new Vector2(0.5f, 0.5f);
+            windowRect.anchorMax = new Vector2(0.5f, 0.5f);
+            windowRect.pivot = new Vector2(0.5f, 0.5f);
+            windowRect.anchoredPosition = new Vector2(0f, -20f);
+            windowRect.sizeDelta = new Vector2(900f, 560f);
+
             GameObject textObject = new("CountdownText", typeof(RectTransform), typeof(Text), typeof(Shadow), typeof(Outline));
             textObject.transform.SetParent(overlay.transform, false);
             countdownText = textObject.GetComponent<Text>();
@@ -678,6 +712,8 @@ namespace PushNotificationGod.Core
             GameObject instructionPanel = new("CountdownInstructionPanel", typeof(RectTransform), typeof(Image));
             instructionPanel.transform.SetParent(overlay.transform, false);
             Image panelImage = instructionPanel.GetComponent<Image>();
+            panelImage.sprite = RoundedUiSpriteFactory.Get();
+            panelImage.type = Image.Type.Sliced;
             panelImage.color = new Color(0f, 0f, 0f, 0.42f);
             panelImage.raycastTarget = false;
             RectTransform panelRect = instructionPanel.GetComponent<RectTransform>();

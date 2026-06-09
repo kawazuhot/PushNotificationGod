@@ -94,3 +94,6 @@ task_message_029,メッセージ,icon_message,恋人 ほんとに大事な話,Ta
 task_self_013,自分,icon_self,昨日の自分に勝つ,Tap,1000,gold,30,lazy
 task_work_005,仕事,icon_work,締め切りは今日です,Tap,1000,gold,30,work
 task_life_014,生活,icon_life,コンロの火を確認する,Tap,1000,gold,30,life
+task_life_015,生活,icon_life,運動をする,Tap,100,normal,100,health
+task_life_016,生活,icon_life,目を休める,Tap,100,normal,100,health
+task_life_017,生活,icon_life,ストレッチをする,Tap,100,normal,100,health

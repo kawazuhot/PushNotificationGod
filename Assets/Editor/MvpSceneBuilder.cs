@@ -259,17 +259,17 @@ public static class MvpSceneBuilder
         settings.GetComponent<RectTransform>().anchorMax = new Vector2(0f, 1f);
         settings.onClick.AddListener(controller.ShowSettings);
 
-        Text copyright = CreateText("CopyrightText", safe.transform, "© 2026 Hyorome", 22, FontStyle.Normal, TextAnchor.MiddleCenter, new Color(1f, 1f, 1f, 0.68f));
+        Text copyright = CreateText("CopyrightText", safe.transform, "© 2026 Hyorome", 28, FontStyle.Normal, TextAnchor.MiddleCenter, new Color(1f, 1f, 1f, 0.84f));
         copyright.raycastTarget = false;
         RectTransform copyrightRect = copyright.rectTransform;
         copyrightRect.anchorMin = new Vector2(0.5f, 0f);
         copyrightRect.anchorMax = new Vector2(0.5f, 0f);
         copyrightRect.pivot = new Vector2(0.5f, 0f);
-        copyrightRect.anchoredPosition = new Vector2(0f, 36f);
-        copyrightRect.sizeDelta = new Vector2(700f, 42f);
+        copyrightRect.anchoredPosition = new Vector2(0f, 96f);
+        copyrightRect.sizeDelta = new Vector2(760f, 52f);
         Shadow copyrightShadow = copyright.gameObject.AddComponent<Shadow>();
-        copyrightShadow.effectColor = new Color(0f, 0f, 0f, 0.35f);
-        copyrightShadow.effectDistance = new Vector2(0f, -2f);
+        copyrightShadow.effectColor = new Color(0f, 0f, 0f, 0.45f);
+        copyrightShadow.effectDistance = new Vector2(0f, -2.5f);
 
         SetSerialized(controller, "titleBackgroundSprite", LoadGameplayBackgroundSprite());
         SetSerialized(controller, "titleLogoSprite", LoadUiSprite(TitleLogoPath, true));

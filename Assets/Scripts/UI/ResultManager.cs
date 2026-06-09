@@ -234,8 +234,8 @@ namespace PushNotificationGod.UI
             rect.sizeDelta = size;
 
             Image image = panel.GetComponent<Image>();
-            image.sprite = roundedUiSprite;
-            image.type = roundedUiSprite != null ? Image.Type.Sliced : Image.Type.Simple;
+            image.sprite = GetRoundedUiSprite();
+            image.type = Image.Type.Sliced;
             image.color = color;
             image.raycastTarget = false;
 
@@ -288,8 +288,8 @@ namespace PushNotificationGod.UI
             rect.sizeDelta = size;
 
             Image image = buttonObject.GetComponent<Image>();
-            image.sprite = roundedUiSprite;
-            image.type = roundedUiSprite != null ? Image.Type.Sliced : Image.Type.Simple;
+            image.sprite = GetRoundedUiSprite();
+            image.type = Image.Type.Sliced;
             image.color = new Color(0.92f, 0.98f, 1f, 0.88f);
 
             Shadow shadow = buttonObject.GetComponent<Shadow>();
@@ -302,6 +302,11 @@ namespace PushNotificationGod.UI
 
             CreateRuntimeText(buttonObject.transform, "Label", label, 34, FontStyle.Bold, Vector2.zero, size, new Color(0.04f, 0.08f, 0.12f, 1f), false);
             return button;
+        }
+
+        private Sprite GetRoundedUiSprite()
+        {
+            return roundedUiSprite != null ? roundedUiSprite : RoundedUiSpriteFactory.Get();
         }
 
         private static void ConfigureButton(Button button, UnityEngine.Events.UnityAction action)
