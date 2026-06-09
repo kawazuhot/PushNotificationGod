@@ -213,13 +213,55 @@ namespace PushNotificationGod.UI
             HideTitleButton("RuntimeSettingButton");
             HideTitleButton("RuntimeNormalModeButton");
             HideTitleButton("RuntimeEasyModeButton");
+            HideTitleButton("RuntimeEasyModeDescriptionPanel");
 
             normalModeButton = CreateRuntimeButton("RuntimeNormalModeButton", buttonParent, "通常モード", null, new Vector2(-170f, -125f), new Vector2(310f, 76f), () => SelectGameMode(GameMode.Normal));
             easyModeButton = CreateRuntimeButton("RuntimeEasyModeButton", buttonParent, "かんたんモード", null, new Vector2(170f, -125f), new Vector2(310f, 76f), () => SelectGameMode(GameMode.Easy));
+            CreateEasyModeDescription(buttonParent);
             CreateRuntimeButton("RuntimeStartButton", buttonParent, "ゲームスタート", null, new Vector2(0f, -245f), new Vector2(640f, 120f), StartGame);
             CreateRuntimeButton("RuntimeHowToButton", buttonParent, "あそびかた", null, new Vector2(0f, -395f), new Vector2(640f, 104f), ShowHowTo);
             CreateRuntimeButton("RuntimeSettingButton", buttonParent, "設定", null, new Vector2(0f, -525f), new Vector2(640f, 104f), ShowSettings);
             RefreshModeButtons();
+        }
+
+        private void CreateEasyModeDescription(Transform parent)
+        {
+            Transform existing = parent.Find("RuntimeEasyModeDescriptionPanel");
+            if (existing != null)
+            {
+                Destroy(existing.gameObject);
+            }
+
+            GameObject panel = CreatePanel(
+                "RuntimeEasyModeDescriptionPanel",
+                parent,
+                new Color(0.02f, 0.07f, 0.12f, 0.36f),
+                new Vector2(0f, -22f),
+                new Vector2(660f, 96f));
+
+            Image panelImage = panel.GetComponent<Image>();
+            ApplyRoundedImage(panelImage, new Color(0.02f, 0.07f, 0.12f, 0.36f), false);
+
+            Shadow panelShadow = panel.AddComponent<Shadow>();
+            panelShadow.effectColor = new Color(0f, 0f, 0f, 0.22f);
+            panelShadow.effectDistance = new Vector2(0f, -4f);
+
+            Text descriptionText = CreateText(
+                "DescriptionText",
+                panel.transform,
+                "かんたんモード\n・得点 1/3\n・赤い背景＝右スワイプ",
+                24,
+                FontStyle.Bold,
+                TextAnchor.MiddleCenter,
+                Vector2.zero,
+                new Vector2(630f, 84f),
+                new Color(1f, 1f, 1f, 0.9f));
+
+            descriptionText.horizontalOverflow = HorizontalWrapMode.Wrap;
+            descriptionText.verticalOverflow = VerticalWrapMode.Overflow;
+            Shadow textShadow = descriptionText.gameObject.AddComponent<Shadow>();
+            textShadow.effectColor = new Color(0f, 0f, 0f, 0.48f);
+            textShadow.effectDistance = new Vector2(0f, -2f);
         }
 
         private void SelectGameMode(GameMode mode)
