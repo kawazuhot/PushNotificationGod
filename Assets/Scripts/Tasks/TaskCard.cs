@@ -88,7 +88,14 @@ namespace PushNotificationGod.Tasks
                 return normalColor;
             }
 
-            return task.correctAction == TaskAction.SwipeRight ? easySwipeColor : easyTapColor;
+            return task.correctAction == TaskAction.SwipeRight
+                ? EnsureVisibleColor(easySwipeColor, new Color(1f, 0.93f, 0.93f, 0.94f))
+                : EnsureVisibleColor(easyTapColor, new Color(0.92f, 0.97f, 1f, 0.94f));
+        }
+
+        private static Color EnsureVisibleColor(Color serializedColor, Color fallbackColor)
+        {
+            return serializedColor.a <= 0.01f ? fallbackColor : serializedColor;
         }
 
         private void ApplyTextStyle()

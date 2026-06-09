@@ -210,6 +210,8 @@ MonoBehaviour:
   messageText: {fileID: 7449404725171646414}
   normalColor: {r: 0.96, g: 0.99, b: 1, a: 0.94}
   goldColor: {r: 1, g: 0.95, b: 0.78, a: 0.95}
+  easyTapColor: {r: 0.92, g: 0.97, b: 1, a: 0.94}
+  easySwipeColor: {r: 1, g: 0.93, b: 0.93, a: 0.94}
   tapFlashColor: {r: 1, g: 1, b: 1, a: 1}
   tapPopScale: 1.06
   tapDismissScale: 0.9
