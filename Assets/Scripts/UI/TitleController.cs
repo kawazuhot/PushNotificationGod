@@ -33,11 +33,16 @@ namespace PushNotificationGod.UI
 
         private Transform uiRoot;
         private Font uiFont;
+        private GameMode selectedMode = GameMode.Normal;
+        private Button normalModeButton;
+        private Button easyModeButton;
 
         private void Start()
         {
             uiFont = UIJapaneseFont.Get();
             uiRoot = FindAnyObjectByType<Canvas>()?.transform;
+            selectedMode = GameMode.Normal;
+            GameModeSettings.SelectedMode = selectedMode;
             EnsureEventSystem();
             UIJapaneseFont.ApplyToSceneTexts();
             ForceHideModalPanels();
@@ -117,7 +122,8 @@ namespace PushNotificationGod.UI
             }
 
             Debug.Log("[NameDialog] Confirm finished");
-            Debug.Log($"[{BuildInfo.BuildId}] Player name confirmed. Loading GameScene.");
+            GameModeSettings.SelectedMode = selectedMode;
+            Debug.Log($"[{BuildInfo.BuildId}] Player name confirmed. Loading GameScene. mode={GameModeSettings.SelectedModeName}");
             audioManager?.StopAllBgm();
             SceneManager.LoadScene("GameScene");
         }
@@ -205,10 +211,45 @@ namespace PushNotificationGod.UI
             HideTitleButton("RuntimeStartButton");
             HideTitleButton("RuntimeHowToButton");
             HideTitleButton("RuntimeSettingButton");
+            HideTitleButton("RuntimeNormalModeButton");
+            HideTitleButton("RuntimeEasyModeButton");
 
+            normalModeButton = CreateRuntimeButton("RuntimeNormalModeButton", buttonParent, "通常モード", null, new Vector2(-170f, -125f), new Vector2(310f, 76f), () => SelectGameMode(GameMode.Normal));
+            easyModeButton = CreateRuntimeButton("RuntimeEasyModeButton", buttonParent, "かんたんモード", null, new Vector2(170f, -125f), new Vector2(310f, 76f), () => SelectGameMode(GameMode.Easy));
             CreateRuntimeButton("RuntimeStartButton", buttonParent, "ゲームスタート", null, new Vector2(0f, -245f), new Vector2(640f, 120f), StartGame);
             CreateRuntimeButton("RuntimeHowToButton", buttonParent, "あそびかた", null, new Vector2(0f, -395f), new Vector2(640f, 104f), ShowHowTo);
             CreateRuntimeButton("RuntimeSettingButton", buttonParent, "設定", null, new Vector2(0f, -525f), new Vector2(640f, 104f), ShowSettings);
+            RefreshModeButtons();
+        }
+
+        private void SelectGameMode(GameMode mode)
+        {
+            selectedMode = mode;
+            GameModeSettings.SelectedMode = mode;
+            RefreshModeButtons();
+            Debug.Log($"[{BuildInfo.BuildId}] Game mode selected: {GameModeSettings.GetDisplayName(mode)}");
+        }
+
+        private void RefreshModeButtons()
+        {
+            ApplyModeButtonVisual(normalModeButton, selectedMode == GameMode.Normal);
+            ApplyModeButtonVisual(easyModeButton, selectedMode == GameMode.Easy);
+        }
+
+        private static void ApplyModeButtonVisual(Button button, bool selected)
+        {
+            if (button == null)
+            {
+                return;
+            }
+
+            Image image = button.GetComponent<Image>();
+            if (image != null)
+            {
+                image.color = selected
+                    ? new Color(0.74f, 0.93f, 1f, 0.96f)
+                    : new Color(0.92f, 0.98f, 1f, 0.72f);
+            }
         }
 
         private Transform GetTitleButtonParent()

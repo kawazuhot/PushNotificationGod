@@ -177,8 +177,9 @@ namespace PushNotificationGod.Core
             {
                 successCount++;
                 float multiplier = comboManager.RegisterCorrect();
-                int gainedScore = scoreManager.AddScore(card.Definition.baseScore, multiplier);
-                Debug.Log($"[ScoreAdd] currentScore={scoreManager.Score}, success={successCount}, miss={missCount}, combo={comboManager.CurrentCombo}, maxCombo={comboManager.MaxCombo}");
+                int modeBaseScore = GameModeSettings.GetModeAdjustedBaseScore(card.Definition);
+                int gainedScore = scoreManager.AddScore(modeBaseScore, multiplier);
+                Debug.Log($"[ScoreAdd] mode={GameModeSettings.SelectedModeName}, taskBase={card.Definition.baseScore}, modeBase={modeBaseScore}, gained={gainedScore}, currentScore={scoreManager.Score}, success={successCount}, miss={missCount}, combo={comboManager.CurrentCombo}, maxCombo={comboManager.MaxCombo}");
                 if (action == TaskAction.Tap)
                 {
                     audioManager?.PlayTapCorrect();
@@ -277,7 +278,8 @@ namespace PushNotificationGod.Core
                 lastMistakeTaskId,
                 lastMistakeTaskMessage,
                 lastMistakeTaskTag,
-                lastMistakeAction);
+                lastMistakeAction,
+                GameModeSettings.SelectedMode);
             Debug.Log("[GameOverFlow] 5 Save result done");
             Debug.Log($"[GameEnd AfterSave] FinalScore={GameResultData.FinalScore}, Success={GameResultData.SuccessCount}, Miss={GameResultData.MissCount}, MaxCombo={GameResultData.MaxCombo}, Rank={GameResultData.RankTitle}, Description={GameResultData.RankDescription}");
             Debug.Log("[GameOverFlow] 6 Hide active tasks start");
@@ -372,6 +374,7 @@ namespace PushNotificationGod.Core
 
             CreateResultText(panel.transform, "ResultHeadingText", "通知斬り完了！", 54, FontStyle.Bold, new Vector2(0f, 420f), new Vector2(760f, 82f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             CreateResultText(panel.transform, "PlayerNameText", GetDisplayPlayerName(), 50, FontStyle.Bold, new Vector2(0f, 348f), new Vector2(780f, 74f), new Color(0.04f, 0.08f, 0.12f, 0.95f), false);
+            CreateResultText(panel.transform, "ResultModeText", GameResultData.ModeName, 28, FontStyle.Bold, new Vector2(0f, 300f), new Vector2(760f, 40f), new Color(0.04f, 0.08f, 0.12f, 0.82f), false);
 
             CreateResultText(panel.transform, "RankLabelText", "今回の称号", 28, FontStyle.Bold, new Vector2(0f, 254f), new Vector2(720f, 40f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             CreateValueBand(panel.transform, new Vector2(0f, 168f), new Vector2(720f, 134f));

@@ -16,6 +16,8 @@ namespace PushNotificationGod.Tasks
         [SerializeField] private Text messageText;
         [SerializeField] private Color normalColor = new(0.96f, 0.99f, 1f, 0.94f);
         [SerializeField] private Color goldColor = new(1f, 0.95f, 0.78f, 0.95f);
+        [SerializeField] private Color easyTapColor = new(0.92f, 0.97f, 1f, 0.94f);
+        [SerializeField] private Color easySwipeColor = new(1f, 0.93f, 0.93f, 0.94f);
         [SerializeField] private Color tapFlashColor = new(1f, 1f, 1f, 1f);
         [SerializeField] private float tapPopScale = 1.06f;
         [SerializeField] private float tapDismissScale = 0.9f;
@@ -46,7 +48,7 @@ namespace PushNotificationGod.Tasks
             inputHandler.OnSwipeRight += () => Submit(TaskAction.SwipeRight);
         }
 
-        public void Setup(TaskDefinition task, Sprite iconSprite = null)
+        public void Setup(TaskDefinition task, Sprite iconSprite = null, bool useEasyActionColors = false)
         {
             definition = task;
             handled = false;
@@ -54,7 +56,7 @@ namespace PushNotificationGod.Tasks
             timeText.text = "今";
             messageText.text = task.messageText;
             ApplyTextStyle();
-            baseBackgroundColor = task.backgroundStyleId == "gold" ? goldColor : normalColor;
+            baseBackgroundColor = ResolveBackgroundColor(task, useEasyActionColors);
             backgroundImage.color = baseBackgroundColor;
 
             if (iconImage != null)
@@ -72,6 +74,21 @@ namespace PushNotificationGod.Tasks
 
             RectTransform.localRotation = Quaternion.identity;
             RectTransform.localScale = Vector3.one;
+        }
+
+        private Color ResolveBackgroundColor(TaskDefinition task, bool useEasyActionColors)
+        {
+            if (task != null && string.Equals(task.backgroundStyleId, "gold", StringComparison.OrdinalIgnoreCase))
+            {
+                return goldColor;
+            }
+
+            if (!useEasyActionColors || task == null)
+            {
+                return normalColor;
+            }
+
+            return task.correctAction == TaskAction.SwipeRight ? easySwipeColor : easyTapColor;
         }
 
         private void ApplyTextStyle()

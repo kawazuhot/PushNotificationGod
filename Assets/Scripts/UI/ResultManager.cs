@@ -19,6 +19,7 @@ namespace PushNotificationGod.UI
         [SerializeField] private Sprite roundedUiSprite;
         private Text successText;
         private Text missText;
+        private Text modeText;
         private Image resultPanelBackground;
 
         private const string SpecialScoreTitleId = "title_score_100000_plus";
@@ -73,6 +74,11 @@ namespace PushNotificationGod.UI
             if (playerNameText != null)
             {
                 playerNameText.text = GetDisplayPlayerName();
+            }
+
+            if (modeText != null)
+            {
+                modeText.text = GameResultData.ModeName;
             }
 
             if (rankTitleText != null)
@@ -181,6 +187,7 @@ namespace PushNotificationGod.UI
             CreateRuntimeText(root.transform, "HeadingText", "通知斬り完了！", 56, FontStyle.Bold, new Vector2(0f, 448f), new Vector2(780f, 90f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             playerNameText = CreateRuntimeText(root.transform, "PlayerNameText_Runtime", "ななしの通知人", 52, FontStyle.Bold, new Vector2(0f, 364f), new Vector2(800f, 76f), new Color(0.04f, 0.08f, 0.12f, 0.95f), false);
             ScoreColorUtility.ApplyReadableEffects(playerNameText);
+            modeText = CreateRuntimeText(root.transform, "ResultModeText_Runtime", "通常モード", 28, FontStyle.Bold, new Vector2(0f, 310f), new Vector2(760f, 40f), new Color(0.04f, 0.08f, 0.12f, 0.82f), false);
 
             CreateRuntimeText(root.transform, "RankTitleLabelText", "今回の称号", 30, FontStyle.Bold, new Vector2(0f, 270f), new Vector2(740f, 42f), new Color(0.04f, 0.08f, 0.12f, 1f), false);
             CreateRuntimePanel(root.transform, "RankTitleValueBackground", new Vector2(0f, 180f), new Vector2(740f, 140f), new Color(0.02f, 0.07f, 0.12f, 0.48f));

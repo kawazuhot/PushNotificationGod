@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using PushNotificationGod.Core;
 using PushNotificationGod.Data;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace PushNotificationGod.Tasks
             TaskCard card = Instantiate(taskCardPrefab, cardParent);
             NormalizeCardRect(card.RectTransform);
             Sprite iconSprite = iconDatabase != null ? iconDatabase.GetIcon(definition.iconId) : null;
-            card.Setup(definition, iconSprite);
+            card.Setup(definition, iconSprite, GameModeSettings.IsEasyMode);
             visibleCards.Add(card);
             ReorderSiblings();
 
