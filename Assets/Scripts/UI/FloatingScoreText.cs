@@ -36,6 +36,8 @@ namespace PushNotificationGod.UI
             scoreText.text = $"+{gainedScore}";
             scoreText.fontSize = isGold ? goldFontSize : normalFontSize;
             scoreText.color = isGold ? goldScoreColor : normalScoreColor;
+            scoreText.horizontalOverflow = HorizontalWrapMode.Overflow;
+            scoreText.verticalOverflow = VerticalWrapMode.Overflow;
             startPosition = rectTransform.anchoredPosition;
             StartCoroutine(Animate());
         }
